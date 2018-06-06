@@ -34,16 +34,21 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -68,6 +73,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.ClientUI;
+import org.slf4j.helpers.MessageFormatter;
 
 @Slf4j
 class WidgetInspector extends JFrame
@@ -83,11 +89,10 @@ class WidgetInspector extends JFrame
 
 	private List<DefaultMutableTreeNode> searchNodes = new ArrayList<>();
 	private List<Widget> widgetResults = new ArrayList<>();
-	private WidgetSearch widgetSearch = new WidgetSearch();
 	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
 	private boolean readyToSelectWidget;
-	private boolean searchIsActive;
+	private Predicate<Widget> searchMatcher;
 	private int searchIndex;
 	private Point mousePos;
 
@@ -242,6 +247,20 @@ class WidgetInspector extends JFrame
 		}
 	}
 
+	private static final Pattern SEARCH_SPLITTER = Pattern.compile("(?:^| )(\\w+) ?((?:[<>=!]=)|[:=<>]) ?((?:.(?!(?:[<>=!]=)|[:=<>]))*)(?=(?:$|(?: \\w+)))");
+
+	private static final Map<String, WidgetField<?>> fieldByName;
+
+	static
+	{
+		Map<String, WidgetField<?>> fs = new HashMap<>();
+		for (WidgetField<?> f : WidgetField.FIELDS)
+		{
+			fs.put(f.getName().toLowerCase(), f);
+		}
+		fieldByName = Collections.unmodifiableMap(fs);
+	}
+
 	private void startSearch(String search)
 	{
 		if (loggedIn())
@@ -252,9 +271,130 @@ class WidgetInspector extends JFrame
 				widgetResults.clear();
 			}
 
+			searchMatcher = null;
+
+			// Parse the search string into a composed predicate
+			Matcher m = SEARCH_SPLITTER.matcher(search);
+			for (; m.find(); )
+			{
+				String field = m.group(1);
+				String operator = m.group(2);
+				String strValue = m.group(3);
+
+				final WidgetField<?> f = fieldByName.get(field.toLowerCase());
+				if (f == null)
+				{
+					log.warn("Invalid key in search '{}'", field);
+					continue;
+				}
+
+				Predicate<Widget> match;
+				if (Number.class.isAssignableFrom(f.getType()))
+				{
+					// If the widget contains a number we can support extra operators
+					// and other input formats
+					long mutValue;
+					long mutMask = -1;
+					try
+					{
+						// If there is a decimal in the input, its probably fixed16 for a widget
+						int widgetSep = strValue.indexOf(".");
+						if (widgetSep != -1)
+						{
+							String sgroup = strValue.substring(0, widgetSep);
+							String schild = strValue.substring(widgetSep + 1, strValue.length());
+							mutValue = 0;
+							// If a part is empty treat it as a wildcard by bitmasking it away
+							if (sgroup.length() == 0)
+							{
+								mutMask ^= 0xFFFF0000;
+							}
+							else
+							{
+								mutValue |= (Integer.parseInt(sgroup) & 0xFFFF) << 16;
+							}
+
+							if (schild.length() == 0)
+							{
+								mutMask ^= 0xFFFF;
+							}
+							else
+							{
+								mutValue |= Integer.parseInt(schild) & 0xFFFF;
+							}
+						}
+						else if (strValue.startsWith("#") || strValue.startsWith("0x"))
+						{
+							mutValue = Long.parseLong(strValue, 16);
+						}
+						else
+						{
+							mutValue = Long.parseLong(strValue);
+						}
+					}
+					catch (NumberFormatException e)
+					{
+						log.warn("Unable to parse number for key '{}'", field, e);
+						continue;
+					}
+					final long value = mutValue;
+					final long mask = mutMask;
+
+					switch (operator)
+					{
+						case "<=":
+							match = w -> (((Number) f.getValue(w)).longValue() & mask) <= value;
+							break;
+						case "<":
+							match = w -> (((Number) f.getValue(w)).longValue() & mask) < value;
+							break;
+						case ">=":
+							match = w -> (((Number) f.getValue(w)).longValue() & mask) >= value;
+							break;
+						case ">":
+							match = w -> (((Number) f.getValue(w)).longValue() & mask) > value;
+							break;
+						case "!=":
+							match = w -> (((Number) f.getValue(w)).longValue() & mask) != value;
+							break;
+						default:
+							log.warn("Unknown operator for number '{}'", operator);
+							//fallthrough
+						case "==":
+						case "=":
+						case ":":
+							match = w -> ((Number) f.getValue(w)).longValue() == value;
+							break;
+					}
+				}
+				else // Standard string search,
+				{
+					final String lValue = strValue.toLowerCase();
+					switch (operator)
+					{
+						default:
+							// only == is supported here
+							log.warn("Unknown operator '{}'", operator);
+						case "==":
+						case "=":
+						case ":":
+					}
+					match = w -> MessageFormatter.format("{}", f.getValue(w)).getMessage().toLowerCase().contains(lValue);
+				}
+
+				// Compose the matcher onto previous ones
+				if (searchMatcher == null)
+				{
+					searchMatcher = match;
+				}
+				else
+				{
+					searchMatcher = searchMatcher.and(match);
+				}
+			}
+
 			searchIndex = 0;
-			searchIsActive = true;
-			widgetSearch.searchRequest(search);
+
 			refreshWidgets(client.getWidgetRoots());
 		}
 		else
@@ -291,7 +431,7 @@ class WidgetInspector extends JFrame
 		return client.getGameState().equals(GameState.LOGGED_IN);
 	}
 
-	private void refreshWidgets(Widget[] widgets )
+	private void refreshWidgets(Widget[] widgets)
 	{
 		new SwingWorker<DefaultMutableTreeNode, Void>()
 		{
@@ -306,7 +446,7 @@ class WidgetInspector extends JFrame
 					if (childNode != null)
 					{
 						root.add(childNode);
-						if (searchIsActive && widgetSearch.isMatch(widget) || readyToSelectWidget && widgetSearch.matchesMousePosition(widget.getBounds(), mousePos))
+						if (matchesSearch(widget) || readyToSelectWidget && matchesMousePosition(widget.getBounds(), mousePos))
 						{
 							searchNodes.add(childNode);
 							widgetResults.add(widget);
@@ -327,13 +467,13 @@ class WidgetInspector extends JFrame
 					refreshInfo();
 					widgetTree.setModel(new DefaultTreeModel(get()));
 
-					if (searchIsActive || readyToSelectWidget)
+					if (searchMatcher != null || readyToSelectWidget)
 					{
 						searchIndex = 0;
 						updateResults();
 						nextResultBtn.setEnabled(true);
 						readyToSelectWidget = false;
-						searchIsActive = false;
+						searchMatcher = null;
 					}
 					else
 					{
@@ -370,7 +510,7 @@ class WidgetInspector extends JFrame
 				if (childNode != null)
 				{
 					node.add(childNode);
-					if (searchIsActive && widgetSearch.isMatch(component) || readyToSelectWidget && widgetSearch.matchesMousePosition(component.getBounds(), mousePos))
+					if (matchesSearch(component) || readyToSelectWidget && matchesMousePosition(component.getBounds(), mousePos))
 					{
 						searchNodes.add(childNode);
 						widgetResults.add(component);
@@ -388,7 +528,7 @@ class WidgetInspector extends JFrame
 				if (childNode != null)
 				{
 					node.add(childNode);
-					if (searchIsActive && widgetSearch.isMatch(component) || readyToSelectWidget && widgetSearch.matchesMousePosition(component.getBounds(), mousePos))
+					if (matchesSearch(component) || readyToSelectWidget && matchesMousePosition(component.getBounds(), mousePos))
 					{
 						searchNodes.add(childNode);
 						widgetResults.add(component);
@@ -406,7 +546,7 @@ class WidgetInspector extends JFrame
 				if (childNode != null)
 				{
 					node.add(childNode);
-					if (searchIsActive && widgetSearch.isMatch(component) || readyToSelectWidget && widgetSearch.matchesMousePosition(component.getBounds(), mousePos))
+					if (matchesSearch(component) || readyToSelectWidget && matchesMousePosition(component.getBounds(), mousePos))
 					{
 						searchNodes.add(childNode);
 						widgetResults.add(component);
@@ -431,6 +571,11 @@ class WidgetInspector extends JFrame
 		return node;
 	}
 
+	private static boolean matchesMousePosition(Rectangle bounds, Point mousePos)
+	{
+		return bounds.contains(mousePos.getX(), mousePos.getY());
+	}
+
 	private void refreshInfo()
 	{
 		infoTableModel.setWidget(plugin.currentWidget);
@@ -449,5 +594,14 @@ class WidgetInspector extends JFrame
 			}
 		}
 		return widgetIdMap.get(packedId);
+	}
+
+	private boolean matchesSearch(Widget widget)
+	{
+		if (searchMatcher == null)
+		{
+			return true;
+		}
+		return searchMatcher.test(widget);
 	}
 }
