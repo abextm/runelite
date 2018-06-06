@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.devtools;
 
 import com.google.common.collect.ImmutableList;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -41,12 +43,12 @@ public class WidgetField<T>
 	static
 	{
 		FIELDS = ImmutableList.of(
-			new WidgetField<>("Id", Widget::getId),
+			new WidgetField<>("Id", Widget::getId, Integer.class),
 			new WidgetField<>("Type", Widget::getType, Widget::setType, Integer.class),
 			new WidgetField<>("ContentType", Widget::getContentType, Widget::setContentType, Integer.class),
-			new WidgetField<>("ParentId", Widget::getParentId),
+			new WidgetField<>("ParentId", Widget::getParentId, Integer.class),
 			new WidgetField<>("SelfHidden", Widget::isSelfHidden, Widget::setHidden, Boolean.class),
-			new WidgetField<>("Hidden", Widget::isHidden),
+			new WidgetField<>("Hidden", Widget::isHidden, Boolean.class),
 			new WidgetField<>("Text", Widget::getText, Widget::setText, String.class),
 			new WidgetField<>("TextColor",
 				w -> Integer.toString(w.getTextColor(), 16),
@@ -54,22 +56,22 @@ public class WidgetField<T>
 				String.class
 			),
 			new WidgetField<>("Name", w -> w.getName().trim(), Widget::setName, String.class),
-			new WidgetField<>("ItemId", Widget::getItemId),
-			new WidgetField<>("ItemQuantity", Widget::getItemQuantity),
-			new WidgetField<>("ModelId", Widget::getModelId),
+			new WidgetField<>("ItemId", Widget::getItemId, Integer.class),
+			new WidgetField<>("ItemQuantity", Widget::getItemQuantity, Integer.class),
+			new WidgetField<>("ModelId", Widget::getModelId, Integer.class),
 			new WidgetField<>("SpriteId", Widget::getSpriteId, Widget::setSpriteId, Integer.class),
 			new WidgetField<>("Width", Widget::getWidth, Widget::setWidth, Integer.class),
 			new WidgetField<>("Height", Widget::getHeight, Widget::setHeight, Integer.class),
 			new WidgetField<>("RelativeX", Widget::getRelativeX, Widget::setRelativeX, Integer.class),
 			new WidgetField<>("RelativeY", Widget::getRelativeY, Widget::setRelativeY, Integer.class),
-			new WidgetField<>("CanvasLocation", Widget::getCanvasLocation),
-			new WidgetField<>("Bounds", Widget::getBounds),
-			new WidgetField<>("ScrollX", Widget::getScrollX),
-			new WidgetField<>("ScrollY", Widget::getScrollY),
-			new WidgetField<>("OriginalX", Widget::getOriginalX),
-			new WidgetField<>("OriginalY", Widget::getOriginalY),
-			new WidgetField<>("PaddingX", Widget::getPaddingX),
-			new WidgetField<>("PaddingY", Widget::getPaddingY)
+			new WidgetField<>("CanvasLocation", Widget::getCanvasLocation, Point.class),
+			new WidgetField<>("Bounds", Widget::getBounds, Rectangle.class),
+			new WidgetField<>("ScrollX", Widget::getScrollX, Integer.class),
+			new WidgetField<>("ScrollY", Widget::getScrollY, Integer.class),
+			new WidgetField<>("OriginalX", Widget::getOriginalX, Integer.class),
+			new WidgetField<>("OriginalY", Widget::getOriginalY, Integer.class),
+			new WidgetField<>("PaddingX", Widget::getPaddingX, Integer.class),
+			new WidgetField<>("PaddingY", Widget::getPaddingY, Integer.class)
 		);
 	}
 
@@ -80,11 +82,12 @@ public class WidgetField<T>
 
 	private final BiConsumer<Widget, T> setter;
 
+	@Getter
 	private final Class<T> type;
 
-	WidgetField(String name, Function<Widget, T> getter)
+	WidgetField(String name, Function<Widget, T> getter, Class<T> type)
 	{
-		this(name, getter, null, null);
+		this(name, getter, null, type);
 	}
 
 	WidgetField(String name, Function<Widget, T> getter, BiConsumer<Widget, T> setter, Class<T> type)
