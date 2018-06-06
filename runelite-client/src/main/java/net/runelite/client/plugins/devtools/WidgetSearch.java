@@ -240,6 +240,6 @@ public class WidgetSearch
 
 	public boolean matchesMousePosition(Rectangle bounds, Point mousePos)
 	{
-		return ((mousePos.getX() >= bounds.x) && (mousePos.getY() >= bounds.y) && (mousePos.getX() < bounds.x + bounds.width) && (mousePos.getY() < bounds.y + bounds.height));
+		return bounds.contains(mousePos.getX(), mousePos.getY());
 	}
 }

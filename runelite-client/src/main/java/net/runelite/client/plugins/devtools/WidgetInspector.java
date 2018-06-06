@@ -286,7 +286,7 @@ class WidgetInspector extends JFrame
 		pack();
 	}
 
-	private Boolean loggedIn()
+	private boolean loggedIn()
 	{
 		return client.getGameState().equals(GameState.LOGGED_IN);
 	}
@@ -350,7 +350,7 @@ class WidgetInspector extends JFrame
 				}
 			}
 		}.execute();
-		}
+	}
 
 	private DefaultMutableTreeNode addWidget(String type, Widget widget)
 	{
