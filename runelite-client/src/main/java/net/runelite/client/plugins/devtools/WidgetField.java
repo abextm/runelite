@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import lombok.Getter;
@@ -34,6 +36,43 @@ import org.slf4j.helpers.MessageFormatter;
 @Slf4j
 public class WidgetField<T>
 {
+	public static final List<WidgetField> FIELDS;
+
+	static
+	{
+		FIELDS = ImmutableList.of(
+			new WidgetField<>("Id", Widget::getId),
+			new WidgetField<>("Type", Widget::getType, Widget::setType, Integer.class),
+			new WidgetField<>("ContentType", Widget::getContentType, Widget::setContentType, Integer.class),
+			new WidgetField<>("ParentId", Widget::getParentId),
+			new WidgetField<>("SelfHidden", Widget::isSelfHidden, Widget::setHidden, Boolean.class),
+			new WidgetField<>("Hidden", Widget::isHidden),
+			new WidgetField<>("Text", Widget::getText, Widget::setText, String.class),
+			new WidgetField<>("TextColor",
+				w -> Integer.toString(w.getTextColor(), 16),
+				(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
+				String.class
+			),
+			new WidgetField<>("Name", w -> w.getName().trim(), Widget::setName, String.class),
+			new WidgetField<>("ItemId", Widget::getItemId),
+			new WidgetField<>("ItemQuantity", Widget::getItemQuantity),
+			new WidgetField<>("ModelId", Widget::getModelId),
+			new WidgetField<>("SpriteId", Widget::getSpriteId, Widget::setSpriteId, Integer.class),
+			new WidgetField<>("Width", Widget::getWidth, Widget::setWidth, Integer.class),
+			new WidgetField<>("Height", Widget::getHeight, Widget::setHeight, Integer.class),
+			new WidgetField<>("RelativeX", Widget::getRelativeX, Widget::setRelativeX, Integer.class),
+			new WidgetField<>("RelativeY", Widget::getRelativeY, Widget::setRelativeY, Integer.class),
+			new WidgetField<>("CanvasLocation", Widget::getCanvasLocation),
+			new WidgetField<>("Bounds", Widget::getBounds),
+			new WidgetField<>("ScrollX", Widget::getScrollX),
+			new WidgetField<>("ScrollY", Widget::getScrollY),
+			new WidgetField<>("OriginalX", Widget::getOriginalX),
+			new WidgetField<>("OriginalY", Widget::getOriginalY),
+			new WidgetField<>("PaddingX", Widget::getPaddingX),
+			new WidgetField<>("PaddingY", Widget::getPaddingY)
+		);
+	}
+
 	@Getter
 	private final String name;
 
