@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
@@ -92,7 +93,8 @@ class FarmingTrackerPanel extends PluginPanel
 
 		display.setBorder(new EmptyBorder(10, 10, 8, 10));
 
-		tabGroup.setBorder(new EmptyBorder(10, 1, 0, 0));
+		tabGroup.setBorder(new EmptyBorder(10, 10, 0, 10));
+		tabGroup.setLayout(new GridLayout(0, 5, 7, 7));
 
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
@@ -168,7 +170,7 @@ class FarmingTrackerPanel extends PluginPanel
 
 			//Use a placeholder icon until the async image gets loaded
 			MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scroller);
-			materialTab.setPreferredSize(new Dimension(30, 27));
+			materialTab.setBorder(new EmptyBorder(2, 2, 2, 2));
 			materialTab.setName(tab.getName());
 
 			AsyncBufferedImage icon = itemManager.getImage(tab.getItemID());

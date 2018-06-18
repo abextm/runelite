@@ -1458,7 +1458,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	HOPS(Tab.SPECIAL, "Hops")
+	HOPS(Tab.HOPS, "")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2271,7 +2271,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GRAPES(Tab.BUSH, "Grapes")
+	GRAPES(Tab.GRAPES, "")
 		{
 			@Override
 			PatchState forVarbitValue(int value)
