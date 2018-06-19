@@ -52,7 +52,6 @@ class FarmingPatchPanel extends JPanel
 		this.patch = patch;
 
 		setLayout(new BorderLayout());
-		setBorder(new EmptyBorder(7, 0, 0, 0));
 
 		JPanel topContainer = new JPanel();
 		topContainer.setBorder(new EmptyBorder(7, 7, 6, 0));

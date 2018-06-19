@@ -28,8 +28,6 @@ package net.runelite.client.plugins.farmingtracker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -52,6 +50,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
@@ -101,7 +100,7 @@ class FarmingTrackerPanel extends PluginPanel
 
 		farmingWorld.getTabs().forEach((tab, patches) ->
 		{
-			JPanel container = new JPanel(new GridBagLayout())
+			JPanel container = new JPanel(new DynamicGridLayout(0, 1, 0, 7))
 			{
 				@Override
 				public Dimension getPreferredSize()
@@ -110,12 +109,6 @@ class FarmingTrackerPanel extends PluginPanel
 				}
 			};
 			container.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.weightx = 1;
-			c.gridx = 0;
-			c.gridy = 0;
 
 			PatchImplementation lastImpl = null;
 
@@ -141,14 +134,12 @@ class FarmingTrackerPanel extends PluginPanel
 
 					groupLabel.setFont(FontManager.getRunescapeSmallFont());
 
-					container.add(groupLabel, c);
-					c.gridy++;
+					container.add(groupLabel);
 					lastImpl = patch.getImplementation();
 				}
 
 				patchPanels.add(p);
-				container.add(p, c);
-				c.gridy++;
+				container.add(p);
 
 				/* This is a weird hack to remove the top border on the first tracker of every tab */
 				if (first)
