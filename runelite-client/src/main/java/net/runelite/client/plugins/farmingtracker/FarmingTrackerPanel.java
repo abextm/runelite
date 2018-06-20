@@ -28,16 +28,13 @@ package net.runelite.client.plugins.farmingtracker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -59,6 +56,8 @@ import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 @Slf4j
 class FarmingTrackerPanel extends PluginPanel
 {
+	private static final BufferedImage BLANK_ICON = new BufferedImage(32, 36, BufferedImage.TYPE_INT_ARGB);
+
 	private final Client client;
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
@@ -110,17 +109,17 @@ class FarmingTrackerPanel extends PluginPanel
 			};
 			container.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-			PatchImplementation lastImpl = null;
+			String lastCategory = null;
 
 			boolean first = true;
-			for (FarmingPatch patch : patches)
+			for (Timeable patch : patches)
 			{
 				FarmingPatchPanel p = new FarmingPatchPanel(patch);
 
 				/* Show labels to subdivide tabs into sections */
-				if (patch.getImplementation() != lastImpl && !Strings.isNullOrEmpty(patch.getImplementation().getName()))
+				if (!Strings.isNullOrEmpty(patch.getCategory()) && !patch.getCategory().equals(lastCategory))
 				{
-					JLabel groupLabel = new JLabel(patch.getImplementation().getName());
+					JLabel groupLabel = new JLabel(patch.getCategory());
 
 					if (first)
 					{
@@ -135,7 +134,7 @@ class FarmingTrackerPanel extends PluginPanel
 					groupLabel.setFont(FontManager.getRunescapeSmallFont());
 
 					container.add(groupLabel);
-					lastImpl = patch.getImplementation();
+					lastCategory = patch.getCategory();
 				}
 
 				patchPanels.add(p);
@@ -204,9 +203,12 @@ class FarmingTrackerPanel extends PluginPanel
 		}
 		for (FarmingPatchPanel panel : patchPanels)
 		{
-			FarmingPatch patch = panel.getPatch();
-			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
-			String key = Integer.toString(patch.getVarbit().getId());
+			Timeable timable = panel.getPatch();
+			FarmingPatch patch = timable instanceof FarmingPatch ? (FarmingPatch) timable : null;
+			Birdhouse birdhouse = timable instanceof Birdhouse ? (Birdhouse) timable : null;
+			String regionKey = patch == null ? FarmingTrackerConfig.BIRDHOUSE : Integer.toString(patch.getRegion().getRegionID());
+			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + regionKey;
+			String key = Integer.toString(patch == null ? birdhouse.getVarp().getId() : patch.getVarbit().getId());
 			String storedValue = configManager.getConfiguration(group, key);
 			long unixTime = 0;
 			int value = 0;
@@ -226,23 +228,68 @@ class FarmingTrackerPanel extends PluginPanel
 				}
 			}
 
+			if (birdhouse != null)
+			{
+				BirdhouseState state = birdhouse.getState(value);
+				int itemID = birdhouse.getItemID(value);
+
+				if (itemID >= 0)
+				{
+					itemManager.getImage(itemID).addTo(panel.getIcon());
+				}
+				else
+				{
+					panel.getIcon().setIcon(new ImageIcon(BLANK_ICON));
+				}
+
+				if (unixTime <= 0 || state == null)
+				{
+					panel.getEstimate().setText("Unknown");
+					panel.getProgress().setVisible(false);
+				}
+				else if (state == BirdhouseState.EMPTY)
+				{
+					panel.getProgress().setForeground(ColorScheme.PROGRESS_ERROR_COLOR.darker());
+					panel.getProgress().setMaximumValue(1);
+					panel.getProgress().setValue(0);
+					panel.getProgress().setVisible(true);
+					panel.getProgress().update();
+					panel.getEstimate().setText("Not enough seeds");
+				}
+				else if (state == BirdhouseState.UNSET)
+				{
+					panel.getProgress().setVisible(false);
+					panel.getEstimate().setText("No birdhouse");
+				}
+				else
+				{
+					long doneEstimate = unixTime + 50 * 60;
+					int progress = (int) (unixNow - unixTime) / 60;
+					panel.setTime(config, doneEstimate);
+					panel.getProgress().setVisible(true);
+					panel.getProgress().setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR.darker());
+					panel.getProgress().setMaximumValue(50);
+					panel.getProgress().setValue(progress);
+					panel.getProgress().update();
+				}
+
+				continue;
+			}
+
 			PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
 			if (state == null)
 			{
-				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(panel.getIcon());
+				panel.getIcon().setIcon(new ImageIcon(BLANK_ICON));
 				panel.getIcon().setToolTipText("Unknown state");
-				panel.getProgress().setMaximumValue(0);
-				panel.getProgress().setValue(0);
 				panel.getProgress().setVisible(false);
-				panel.getEstimate().setText("Unknown");
-				panel.getProgress().setBackground(null);
 			}
 			else
 			{
 				if (state.getProduce().getItemID() < 0)
 				{
-					panel.getIcon().setIcon(null);
+					panel.getIcon().setIcon(new ImageIcon(BLANK_ICON));
 					panel.getIcon().setToolTipText("Unknown state");
+					panel.getProgress().setVisible(false);
 				}
 				else
 				{
@@ -284,45 +331,7 @@ class FarmingTrackerPanel extends PluginPanel
 						stage = stages - 1;
 					}
 
-					if (doneEstimate < unixNow)
-					{
-						panel.getEstimate().setText("Done");
-					}
-					else if (config.estimateRelative())
-					{
-						int remaining = (int) (59 + doneEstimate - unixNow) / 60;
-						StringBuilder f = new StringBuilder();
-						f.append("Done in ");
-						int min = remaining % 60;
-						int hours = (remaining / 60) % 24;
-						int days = remaining / (60 * 24);
-						if (days > 0)
-						{
-							f.append(days).append("d ");
-						}
-						if (hours > 0)
-						{
-							f.append(hours).append("h ");
-						}
-						if (min > 0)
-						{
-							f.append(min).append("m ");
-						}
-						panel.getEstimate().setText(f.toString());
-					}
-					else
-					{
-						StringBuilder f = new StringBuilder();
-						LocalDateTime ldtTime = LocalDateTime.ofEpochSecond(doneEstimate, 0, OffsetDateTime.now().getOffset());
-						LocalDateTime ldtNow = LocalDateTime.now();
-						f.append("Done ");
-						if (ldtTime.getDayOfWeek() != ldtNow.getDayOfWeek())
-						{
-							f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
-						}
-						f.append(String.format("at %d:%02d", ldtTime.getHour(), ldtTime.getMinute()));
-						panel.getEstimate().setText(f.toString());
-					}
+					panel.setTime(config, doneEstimate);
 				}
 				else
 				{

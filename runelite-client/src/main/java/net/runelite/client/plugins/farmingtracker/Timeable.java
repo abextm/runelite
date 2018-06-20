@@ -24,47 +24,8 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup(
-	keyName = "farmingTracker",
-	name = "Farming Tracker",
-	description = "Configuration for the farming tracker"
-)
-public interface FarmingTrackerConfig extends Config
+public interface Timeable
 {
-	String KEY_NAME = "farmingTracker";
-	String AUTOWEED = "autoweed";
-	String BIRDHOUSE = "birdhouses";
-
-	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining for a patch, opposed to when the patch is finished"
-	)
-	default boolean estimateRelative()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "patch",
-		name = "Default patch",
-		description = "Default patch on opening the panel",
-		hidden = true
-	)
-	default Tab patch()
-	{
-		return Tab.ALLOTMENT;
-	}
-
-	@ConfigItem(
-		keyName = "patch",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	void setPatch(Tab t);
+	String getName();
+	String getCategory();
 }

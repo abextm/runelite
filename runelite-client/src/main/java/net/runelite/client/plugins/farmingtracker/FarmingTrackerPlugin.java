@@ -35,6 +35,8 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -121,7 +123,7 @@ public class FarmingTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick t)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN /*|| client.getVar(VarClientInt.CLICK_HERE_TO_CONTINUE_SCREEN) == -1*/)
 		{
 			lastTickLoc = null;
 			return;
@@ -146,13 +148,14 @@ public class FarmingTrackerPlugin extends Plugin
 			}
 		}
 
+		long unixNow = Instant.now().getEpochSecond();
+
 		FarmingRegion region = farmingWorld.getRegions().get(loc.getRegionID());
 		if (region != null && region.isInBounds(loc))
 		{
 			// Write config with new varbits
 			// farmingTracker.<login-username>.<regionID>.<VarbitID>=<varbitValue>:<unix time>
 			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + region.getRegionID();
-			long unixNow = Instant.now().getEpochSecond();
 			for (Varbits varbit : region.getVarbits())
 			{
 				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
@@ -176,6 +179,29 @@ public class FarmingTrackerPlugin extends Plugin
 						{
 							continue;
 						}
+					}
+				}
+				String value = strVarbit + ":" + unixNow;
+				configManager.setConfiguration(group, key, value);
+				changed = true;
+			}
+		}
+
+		if (loc.getX() > 3648 && loc.getX() < 3840 && loc.getY() > 3712 && loc.getY() < 3904 && loc.getPlane() == 0)
+		{
+			String group = FarmingTrackerConfig.KEY_NAME + "." + client.getUsername() + "." + FarmingTrackerConfig.BIRDHOUSE;
+			for (Birdhouse b : farmingWorld.getBirdhouses())
+			{
+				VarPlayer varp = b.getVarp();
+				String key = Integer.toString(varp.getId());
+				String strVarbit = Integer.toString(client.getVar(varp));
+				String storedValue = configManager.getConfiguration(group, key);
+				if (storedValue != null)
+				{
+					String[] parts = storedValue.split(":");
+					if (parts.length == 2 && parts[0].equals(strVarbit))
+					{
+						continue;
 					}
 				}
 				String value = strVarbit + ":" + unixNow;

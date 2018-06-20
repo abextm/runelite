@@ -39,7 +39,8 @@ public enum Tab
 	GRAPES("Grapes", ItemID.GRAPES),
 	TREE("Trees", ItemID.MAHOGANY_LOGS),
 	FRUIT_TREE("Fruit Trees", ItemID.PINEAPPLE),
-	SPECIAL("Special", ItemID.MUSHROOM);
+	SPECIAL("Special", ItemID.MUSHROOM),
+	BIRDHOUSES("Birdhouses", ItemID.OAK_BIRD_HOUSE);
 
 	private final String name;
 	private final int itemID;

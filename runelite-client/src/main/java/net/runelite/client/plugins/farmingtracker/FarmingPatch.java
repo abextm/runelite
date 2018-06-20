@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
+import com.google.common.base.Strings;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +35,23 @@ import net.runelite.api.Varbits;
 	access = AccessLevel.PACKAGE
 )
 @Getter
-public class FarmingPatch
+public class FarmingPatch implements Timeable
 {
 	@Setter(AccessLevel.PACKAGE)
 	private FarmingRegion region;
 	private final String name;
 	private final Varbits varbit;
 	private final PatchImplementation implementation;
+
+	@Override
+	public String getCategory()
+	{
+		return implementation.getName();
+	}
+
+	@Override
+	public String toString()
+	{
+		return getRegion().getName() + (Strings.isNullOrEmpty(getName()) ? "" : " (" + getName() + ")");
+	}
 }

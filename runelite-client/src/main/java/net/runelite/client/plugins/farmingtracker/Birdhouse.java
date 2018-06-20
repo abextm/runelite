@@ -24,47 +24,70 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.ItemID;
+import net.runelite.api.VarPlayer;
 
-@ConfigGroup(
-	keyName = "farmingTracker",
-	name = "Farming Tracker",
-	description = "Configuration for the farming tracker"
-)
-public interface FarmingTrackerConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public class Birdhouse implements Timeable
 {
-	String KEY_NAME = "farmingTracker";
-	String AUTOWEED = "autoweed";
-	String BIRDHOUSE = "birdhouses";
+	private final String name;
+	private final VarPlayer varp;
 
-	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining for a patch, opposed to when the patch is finished"
-	)
-	default boolean estimateRelative()
+	@Override
+	public String getCategory()
 	{
-		return false;
+		return "";
 	}
 
-	@ConfigItem(
-		keyName = "patch",
-		name = "Default patch",
-		description = "Default patch on opening the panel",
-		hidden = true
-	)
-	default Tab patch()
+	private static final int[] BIRDHOUSES = new int[]
+		{
+			ItemID.BIRD_HOUSE,
+			ItemID.OAK_BIRD_HOUSE,
+			ItemID.WILLOW_BIRD_HOUSE,
+			ItemID.TEAK_BIRD_HOUSE,
+			ItemID.MAPLE_BIRD_HOUSE,
+			ItemID.MAHOGANY_BIRD_HOUSE,
+			ItemID.YEW_BIRD_HOUSE,
+			ItemID.MAGIC_BIRD_HOUSE,
+			ItemID.REDWOOD_BIRD_HOUSE,
+		};
+
+	public int getItemID(int varpValue)
 	{
-		return Tab.ALLOTMENT;
+		if (varpValue < 1 || varpValue > BIRDHOUSES.length * 3 + 1)
+		{
+			return -1;
+		}
+		return BIRDHOUSES[(varpValue - 1) / 3];
 	}
 
-	@ConfigItem(
-		keyName = "patch",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	void setPatch(Tab t);
+	public BirdhouseState getState(int varpValue)
+	{
+		if (varpValue < 1)
+		{
+			return BirdhouseState.UNSET;
+		}
+		if (varpValue > BIRDHOUSES.length * 3 + 1)
+		{
+			return null;
+		}
+
+		if ((varpValue - 1) % 3 != 2)
+		{
+			return BirdhouseState.EMPTY;
+		}
+			else
+		{
+			return BirdhouseState.CATCHING;
+		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

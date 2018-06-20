@@ -25,11 +25,15 @@
  */
 package net.runelite.client.plugins.farmingtracker;
 
-import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -42,12 +46,12 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 @Getter
 class FarmingPatchPanel extends JPanel
 {
-	private final FarmingPatch patch;
+	private final Timeable patch;
 	private final JLabel icon = new JLabel();
 	private final JLabel estimate = new JLabel();
 	private final ThinProgressBar progress = new ThinProgressBar();
 
-	FarmingPatchPanel(FarmingPatch patch)
+	FarmingPatchPanel(Timeable patch)
 	{
 		this.patch = patch;
 
@@ -65,8 +69,7 @@ class FarmingPatchPanel extends JPanel
 		infoPanel.setLayout(new GridLayout(2, 1));
 		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
-		final JLabel location = new JShadowedLabel(patch.getRegion().getName()
-			+ (Strings.isNullOrEmpty(patch.getName()) ? "" : " (" + patch.getName() + ")"));
+		final JLabel location = new JShadowedLabel(patch.toString());
 		location.setFont(FontManager.getRunescapeSmallFont());
 		location.setForeground(Color.WHITE);
 
@@ -81,5 +84,50 @@ class FarmingPatchPanel extends JPanel
 
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);
+	}
+
+	void setTime(FarmingTrackerConfig config, long doneEstimate)
+	{
+		long unixNow = Instant.now().getEpochSecond();
+
+		if (doneEstimate < unixNow)
+		{
+			estimate.setText("Done");
+		}
+		else if (config.estimateRelative())
+		{
+			int remaining = (int) (59 + doneEstimate - unixNow) / 60;
+			StringBuilder f = new StringBuilder();
+			f.append("Done in ");
+			int min = remaining % 60;
+			int hours = (remaining / 60) % 24;
+			int days = remaining / (60 * 24);
+			if (days > 0)
+			{
+				f.append(days).append("d ");
+			}
+			if (hours > 0)
+			{
+				f.append(hours).append("h ");
+			}
+			if (min > 0)
+			{
+				f.append(min).append("m ");
+			}
+			estimate.setText(f.toString());
+		}
+		else
+		{
+			StringBuilder f = new StringBuilder();
+			LocalDateTime ldtTime = LocalDateTime.ofEpochSecond(doneEstimate, 0, OffsetDateTime.now().getOffset());
+			LocalDateTime ldtNow = LocalDateTime.now();
+			f.append("Done ");
+			if (ldtTime.getDayOfWeek() != ldtNow.getDayOfWeek())
+			{
+				f.append(ldtTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
+			}
+			f.append(String.format("at %d:%02d", ldtTime.getHour(), ldtTime.getMinute()));
+			estimate.setText(f.toString());
+		}
 	}
 }

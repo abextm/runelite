@@ -29,11 +29,13 @@ import com.google.inject.Singleton;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import lombok.Getter;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
@@ -44,7 +46,10 @@ public class FarmingWorld
 	private Map<Integer, FarmingRegion> regions = new HashMap<>();
 
 	@Getter
-	private Map<Tab, Set<FarmingPatch>> tabs = new HashMap<>();
+	private Map<Tab, Set<? extends Timeable>> tabs = new HashMap<>();
+
+	@Getter
+	private Set<Birdhouse> birdhouses;
 
 	private final Comparator<FarmingPatch> tabSorter = Comparator
 		.comparing(FarmingPatch::getImplementation)
@@ -220,10 +225,19 @@ public class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
 		));
 
+		// Birdhouses
+		Set<Birdhouse> birdhouses = new LinkedHashSet<>();
+		birdhouses.add(new Birdhouse("Meadow North", VarPlayer.BIRDHOUSE_MUSHROOM_MEADOW_NORTH));
+		birdhouses.add(new Birdhouse("Meadow South", VarPlayer.BIRDHOUSE_MUSHROOM_MEADOW_SOUTH));
+		birdhouses.add(new Birdhouse("Valley West", VarPlayer.BIRDHOUSE_VERDANT_VALLEY_NORTH_WEST));
+		birdhouses.add(new Birdhouse("Valley East", VarPlayer.BIRDHOUSE_VERDANT_VALLEY_SOUTH_EAST));
+		tabs.put(Tab.BIRDHOUSES, birdhouses);
+
 		// Finalize
+		this.birdhouses = Collections.unmodifiableSet(birdhouses);
 		this.regions = Collections.unmodifiableMap(regions);
-		Map<Tab, Set<FarmingPatch>> umtabs = new TreeMap<>();
-		for (Map.Entry<Tab, Set<FarmingPatch>> e : tabs.entrySet())
+		Map<Tab, Set<Timeable>> umtabs = new TreeMap<>();
+		for (Map.Entry<Tab, Set<? extends Timeable>> e : tabs.entrySet())
 		{
 			umtabs.put(e.getKey(), Collections.unmodifiableSet(e.getValue()));
 		}
@@ -239,8 +253,7 @@ public class FarmingWorld
 		}
 		for (FarmingPatch p : r.getPatches())
 		{
-			tabs
-				.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter))
+			((Set<FarmingPatch>)tabs.computeIfAbsent(p.getImplementation().getTab(), k -> new TreeSet<>(tabSorter)))
 				.add(p);
 		}
 	}
