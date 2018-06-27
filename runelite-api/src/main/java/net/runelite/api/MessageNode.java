@@ -36,6 +36,8 @@ public interface MessageNode
 	 */
 	ChatMessageType getType();
 
+	void setType(ChatMessageType type);
+
 	/**
 	 * Gets the name of the player that sent the message.
 	 *
