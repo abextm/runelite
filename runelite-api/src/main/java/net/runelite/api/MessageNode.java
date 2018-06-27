@@ -36,6 +36,9 @@ public interface MessageNode
 	 */
 	ChatMessageType getType();
 
+	/**
+	 * Sets the type of the message
+	 */
 	void setType(ChatMessageType type);
 
 	/**

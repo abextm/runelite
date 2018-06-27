@@ -32,6 +32,9 @@ public interface RSMessageNode extends MessageNode
 	@Import("type")
 	int getRSType();
 
+	@Import("type")
+	void setRSType(int type);
+
 	@Import("name")
 	@Override
 	String getName();

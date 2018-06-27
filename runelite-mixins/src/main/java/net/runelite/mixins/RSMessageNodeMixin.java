@@ -30,6 +30,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSMessageNode;
 
@@ -59,6 +60,14 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	public ChatMessageType getType()
 	{
 		return ChatMessageType.of(getRSType());
+	}
+
+
+	@Inject
+	@Override
+	public void setType(ChatMessageType type)
+	{
+		setRSType(type.getType());
 	}
 
 	@Inject
