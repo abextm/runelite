@@ -95,7 +95,13 @@ public enum VarPlayer
 	SLAYER_GOAL_END(1272),
 	FARMING_GOAL_END(1273),
 	CONSTRUCTION_GOAL_END(1274),
-	HUNTER_GOAL_END(1275);
+	HUNTER_GOAL_END(1275),
+
+	/**
+	 * Slayer unlock bitfields
+	 */
+	SLAYER_UNLOCK_1(1076),
+	SLAYER_UNLOCK_2(1344);
 
 	private final int id;
 }

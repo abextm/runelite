@@ -377,7 +377,13 @@ public enum Varbits
 	/**
 	 * Corp beast damage
 	 */
-	CORP_DAMAGE(999);
+	CORP_DAMAGE(999),
+
+	/**
+	 * Toggleable slayer unlocks
+	 */
+	SUPERIOR_ENABLED(5362),
+	FOSSIL_ISLAND_WYVERN_DISABLE(6251);
 
 	/**
 	 * The raw varbit ID.
