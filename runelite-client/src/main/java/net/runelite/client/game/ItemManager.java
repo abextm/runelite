@@ -48,6 +48,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.PostItemComposition;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -170,6 +171,12 @@ public class ItemManager
 		{
 			itemCompositions.invalidateAll();
 		}
+	}
+
+	@Subscribe
+	public void onPostItemComposition(PostItemComposition event)
+	{
+		itemCompositions.put(event.getItemComposition().getId(), event.getItemComposition());
 	}
 
 	/**

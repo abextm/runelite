@@ -492,10 +492,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (option != null)
 		{
 			itemComposition.setShiftClickActionIndex(option);
-
-			// Update our cached item composition too
-			ItemComposition ourItemComposition = itemManager.getItemComposition(itemComposition.getId());
-			ourItemComposition.setShiftClickActionIndex(option);
 		}
 	}
 
