@@ -58,7 +58,7 @@ public class ZoomPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptCallbackEvent event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();

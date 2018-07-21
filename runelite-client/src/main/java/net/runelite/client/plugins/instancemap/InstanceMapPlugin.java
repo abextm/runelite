@@ -102,9 +102,9 @@ public class InstanceMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void gameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
-		overlay.onGameStateChange(event);
+		overlay.onGameStateChanged(event);
 	}
 
 	private boolean clickedOptionEquals(WidgetMenuOptionClicked event, WidgetMenuOption widgetMenuOption)

@@ -166,7 +166,7 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChange(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("grandexchange"))
 		{

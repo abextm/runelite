@@ -98,7 +98,7 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 

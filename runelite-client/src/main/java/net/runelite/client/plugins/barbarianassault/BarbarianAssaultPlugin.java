@@ -125,7 +125,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int inGame = client.getVar(Varbits.IN_GAME_BA);
 
@@ -139,7 +139,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMessageEvent(ChatMessage event)
+	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SERVER
 			&& event.getMessage().startsWith("All of the Penance"))

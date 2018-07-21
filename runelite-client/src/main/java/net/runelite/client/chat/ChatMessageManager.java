@@ -85,7 +85,7 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onResizableChanged(ResizeableChanged event)
+	public void onResizeableChanged(ResizeableChanged event)
 	{
 		refreshAll();
 	}

@@ -216,7 +216,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
 

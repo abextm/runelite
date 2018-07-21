@@ -132,7 +132,7 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		updateConfig();
 	}
@@ -199,7 +199,7 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void checkSpots(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 

@@ -128,7 +128,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
 		if (lastRaidVarb != raidVarb)
@@ -140,7 +140,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (!config.showAntidotePlus())
 		{

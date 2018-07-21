@@ -202,7 +202,7 @@ public class KourendLibraryPlugin extends Plugin
 	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
 
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
 		if (config.hideButton() && inRegion != buttonAttached)

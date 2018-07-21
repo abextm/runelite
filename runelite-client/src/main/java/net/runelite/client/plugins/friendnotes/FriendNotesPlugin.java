@@ -224,7 +224,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNameableNameChange(NameableNameChanged event)
+	public void onNameableNameChanged(NameableNameChanged event)
 	{
 		final Nameable nameable = event.getNameable();
 
@@ -237,7 +237,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRemoveFriend(RemovedFriend event)
+	public void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
 		final String displayName = event.getName();

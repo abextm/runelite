@@ -530,7 +530,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProjectile(ProjectileMoved event)
+	public void onProjectileMoved(ProjectileMoved event)
 	{
 		Projectile projectile = event.getProjectile();
 		int projectileId = projectile.getId();
@@ -619,7 +619,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplat(HitsplatApplied event)
+	public void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (gorillas.isEmpty())
 		{
@@ -648,7 +648,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameState(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gs = event.getGameState();
 		if (gs == GameState.LOGGING_IN ||

@@ -134,7 +134,7 @@ public class InventoryTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClickMenu(final MenuOptionClicked event)
+	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE)
 		{

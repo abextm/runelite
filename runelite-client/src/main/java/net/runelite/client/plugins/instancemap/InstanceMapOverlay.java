@@ -213,7 +213,7 @@ class InstanceMapOverlay extends Overlay
 	 *
 	 * @param event The game state change event
 	 */
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		mapImage = null;
 	}

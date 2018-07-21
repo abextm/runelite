@@ -118,7 +118,7 @@ public class BankTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptCallbackEvent event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
 

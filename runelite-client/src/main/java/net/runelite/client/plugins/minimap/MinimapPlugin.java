@@ -92,7 +92,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
@@ -138,7 +138,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void configChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("minimap"))
 		{
@@ -160,7 +160,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChange(WidgetHiddenChanged event)
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
 

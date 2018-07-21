@@ -100,7 +100,7 @@ public class PohPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		overlay.updateConfig();
 	}

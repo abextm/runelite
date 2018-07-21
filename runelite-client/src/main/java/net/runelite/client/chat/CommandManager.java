@@ -73,7 +73,7 @@ public class CommandManager
 	}
 
 	@Subscribe
-	private void scriptEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (sending)
 		{
