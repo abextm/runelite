@@ -31,7 +31,7 @@ import net.runelite.api.widgets.Widget;
  * An event where the hidden state of a {@link Widget} has been modified.
  */
 @Data
-public class WidgetHiddenChanged
+public final class WidgetHiddenChanged
 {
 	/**
 	 * The affected widget.

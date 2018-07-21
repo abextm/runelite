@@ -32,7 +32,7 @@ import net.runelite.api.ItemComposition;
  * its data is initialized.
  */
 @Data
-public class PostItemComposition
+public final class PostItemComposition
 {
 	/**
 	 * The newly created item.

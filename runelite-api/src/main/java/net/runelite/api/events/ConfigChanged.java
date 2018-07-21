@@ -30,7 +30,7 @@ import lombok.Data;
  * An event where a configuration entry has been modified.
  */
 @Data
-public class ConfigChanged
+public final class ConfigChanged
 {
 	/**
 	 * The parent group for the key.

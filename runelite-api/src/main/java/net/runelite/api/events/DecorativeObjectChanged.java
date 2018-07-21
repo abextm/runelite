@@ -33,7 +33,7 @@ import net.runelite.api.Tile;
  * has been modified.
  */
 @Data
-public class DecorativeObjectChanged
+public final class DecorativeObjectChanged
 {
 	/**
 	 * The affected tile.

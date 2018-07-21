@@ -32,6 +32,6 @@ import lombok.Data;
  * An event where a varbit has changed.
  */
 @Data
-public class VarbitChanged
+public final class VarbitChanged
 {
 }

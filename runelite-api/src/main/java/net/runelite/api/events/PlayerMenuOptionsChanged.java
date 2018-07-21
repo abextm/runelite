@@ -27,7 +27,7 @@ package net.runelite.api.events;
 import lombok.Data;
 
 @Data
-public class PlayerMenuOptionsChanged
+public final class PlayerMenuOptionsChanged
 {
 	/**
 	 * Index in playerOptions which changed.

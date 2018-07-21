@@ -32,7 +32,7 @@ import net.runelite.api.WallObject;
  * An event where a {@link WallObject} is added to a {@link Tile}.
  */
 @Data
-public class WallObjectSpawned
+public final class WallObjectSpawned
 {
 	/**
 	 * The affected tile.

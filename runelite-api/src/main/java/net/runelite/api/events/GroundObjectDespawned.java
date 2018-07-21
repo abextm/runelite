@@ -32,7 +32,7 @@ import net.runelite.api.Tile;
  * An event where a {@link GroundObject} on a {@link Tile} has been removed.
  */
 @Data
-public class GroundObjectDespawned
+public final class GroundObjectDespawned
 {
 	/**
 	 * The affected tile.

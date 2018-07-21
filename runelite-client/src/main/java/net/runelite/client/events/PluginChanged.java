@@ -28,7 +28,7 @@ import lombok.Data;
 import net.runelite.client.plugins.Plugin;
 
 @Data
-public class PluginChanged
+public final class PluginChanged
 {
 	private final Plugin plugin;
 	private final boolean loaded;

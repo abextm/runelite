@@ -36,7 +36,7 @@ import net.runelite.api.Hitsplat;
  * visible hitsplats.
  */
 @Data
-public class HitsplatApplied
+public final class HitsplatApplied
 {
 	/**
 	 * The actor the hitsplat was applied to.

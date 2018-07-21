@@ -32,7 +32,7 @@ import lombok.Data;
  * An event where the client window has been resized.
  */
 @Data
-public class ResizeableChanged
+public final class ResizeableChanged
 {
 	/**
 	 * Whether the window is resized.

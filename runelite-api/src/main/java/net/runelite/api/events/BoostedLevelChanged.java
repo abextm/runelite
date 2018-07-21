@@ -42,7 +42,7 @@ import net.runelite.api.Skill;
  * retrieve the newly boosted skill level.
  */
 @Data
-public class BoostedLevelChanged
+public final class BoostedLevelChanged
 {
 	/**
 	 * The skill that has had its level modified.

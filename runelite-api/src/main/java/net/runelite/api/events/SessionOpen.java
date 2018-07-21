@@ -34,7 +34,7 @@ import lombok.Data;
  * it has nothing to do with whether an account is being logged in.
  */
 @Data
-public class SessionOpen
+public final class SessionOpen
 {
 
 }

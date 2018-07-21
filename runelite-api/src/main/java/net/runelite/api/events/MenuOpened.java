@@ -31,7 +31,7 @@ import net.runelite.api.MenuEntry;
  * An event where a menu has been opened.
  */
 @Data
-public class MenuOpened
+public final class MenuOpened
 {
 	/**
 	 * The menu entries in the newly opened menu.

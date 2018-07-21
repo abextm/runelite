@@ -32,7 +32,7 @@ import net.runelite.api.Tile;
  * An event where a {@link GameObject} on a {@link Tile} is removed.
  */
 @Data
-public class GameObjectDespawned
+public final class GameObjectDespawned
 {
 	/**
 	 * The affected tile.

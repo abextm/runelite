@@ -31,7 +31,7 @@ import lombok.Data;
  * been clicked (ie. HiScore Lookup).
  */
 @Data
-public class PlayerMenuOptionClicked
+public final class PlayerMenuOptionClicked
 {
 	/**
 	 * The menu option clicked.

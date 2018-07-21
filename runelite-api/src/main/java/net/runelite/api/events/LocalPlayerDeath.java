@@ -27,6 +27,6 @@ package net.runelite.api.events;
 /**
  * An event when the local player dies.
  */
-public class LocalPlayerDeath
+public final class LocalPlayerDeath
 {
 }

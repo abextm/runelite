@@ -31,7 +31,7 @@ import net.runelite.api.Script;
  * An event where a Runelite ASM script is called.
  */
 @Data
-public class ScriptCallbackEvent
+public final class ScriptCallbackEvent
 {
 	/**
 	 * The script being called.

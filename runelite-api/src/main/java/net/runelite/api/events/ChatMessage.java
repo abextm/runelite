@@ -38,7 +38,7 @@ import net.runelite.api.ChatMessageType;
  */
 @Data
 @AllArgsConstructor
-public class ChatMessage
+public final class ChatMessage
 {
 	/**
 	 * The type of message received.

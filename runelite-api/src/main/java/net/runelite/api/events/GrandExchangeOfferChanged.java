@@ -42,7 +42,7 @@ import net.runelite.api.GrandExchangeOfferState;
  * can change into.
  */
 @Data
-public class GrandExchangeOfferChanged
+public final class GrandExchangeOfferChanged
 {
 	/**
 	 * The offer that has been modified.

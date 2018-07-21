@@ -14,7 +14,7 @@ import net.runelite.api.MessageNode;
  * are held by the other fields of this event.
  */
 @Data
-public class SetMessage
+public final class SetMessage
 {
 	/**
 	 * The updated message node.

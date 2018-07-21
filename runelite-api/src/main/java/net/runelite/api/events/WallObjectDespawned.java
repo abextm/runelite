@@ -32,7 +32,7 @@ import net.runelite.api.WallObject;
  * An event where a {@link WallObject} on a {@link Tile} has been removed.
  */
 @Data
-public class WallObjectDespawned
+public final class WallObjectDespawned
 {
 	/**
 	 * The affected tile.

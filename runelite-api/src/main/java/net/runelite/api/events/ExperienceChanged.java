@@ -32,7 +32,7 @@ import net.runelite.api.Skill;
  * An event where the experience level of a {@link Skill} has been modified.
  */
 @Data
-public class ExperienceChanged
+public final class ExperienceChanged
 {
 	/**
 	 * The modified skill.

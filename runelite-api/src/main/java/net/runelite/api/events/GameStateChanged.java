@@ -31,7 +31,7 @@ import net.runelite.api.GameState;
  * An event where the clients game state has changed.
  */
 @Data
-public class GameStateChanged
+public final class GameStateChanged
 {
 	/**
 	 * The new game state.

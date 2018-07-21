@@ -37,7 +37,7 @@ import lombok.Data;
  * </ul>
  */
 @Data
-public class FocusChanged
+public final class FocusChanged
 {
 	/**
 	 * The new focus state.

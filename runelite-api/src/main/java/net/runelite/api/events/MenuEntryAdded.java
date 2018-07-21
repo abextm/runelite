@@ -32,7 +32,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class MenuEntryAdded
+public final class MenuEntryAdded
 {
 	/**
 	 * The option text added to the menu (ie. "Walk here", "Use").
