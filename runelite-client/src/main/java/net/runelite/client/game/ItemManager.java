@@ -27,6 +27,7 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -45,8 +46,8 @@ import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
@@ -73,7 +74,7 @@ public class ItemManager
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
-	private final ClientThread clientThread;
+	private final EventBus eventBus;
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
@@ -83,11 +84,11 @@ public class ItemManager
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public ItemManager(Client client, ScheduledExecutorService executor, EventBus eventBus)
 	{
 		this.client = client;
 		this.scheduledExecutorService = executor;
-		this.clientThread = clientThread;
+		this.eventBus = eventBus;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
 
@@ -216,7 +217,7 @@ public class ItemManager
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
 		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
-		clientThread.invokeLater(() ->
+		eventBus.onceOrMore(ClientTick.class, e ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
 			{

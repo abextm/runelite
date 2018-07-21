@@ -28,8 +28,9 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.EventBus;
 import net.runelite.api.VarClientStr;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.events.ClientTick;
 import net.runelite.client.input.KeyListener;
 
 @Singleton
@@ -42,7 +43,7 @@ public class ChatKeyboardListener implements KeyListener
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -82,11 +83,11 @@ public class ChatKeyboardListener implements KeyListener
 						replacement = "";
 					}
 
-					clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
+					eventBus.once(ClientTick.class, ev -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
 				}
 				break;
 			case KeyEvent.VK_BACK_SPACE:
-				clientThread.invokeLater(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
+				eventBus.once(ClientTick.class, ev -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
 				break;
 		}
 	}

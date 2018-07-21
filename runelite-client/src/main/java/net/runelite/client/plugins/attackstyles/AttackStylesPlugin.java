@@ -27,6 +27,7 @@ package net.runelite.client.plugins.attackstyles;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
@@ -38,6 +39,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -46,7 +48,6 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -75,7 +76,7 @@ public class AttackStylesPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	@Inject
 	private AttackStylesConfig config;
@@ -99,7 +100,7 @@ public class AttackStylesPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(this::start);
+			eventBus.once(ClientTick.class, e -> start());
 		}
 	}
 

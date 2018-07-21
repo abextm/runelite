@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -46,12 +47,12 @@ import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -113,7 +114,7 @@ public class CannonPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
@@ -152,7 +153,7 @@ public class CannonPlugin extends Plugin
 			{
 				if (cannonPlaced)
 				{
-					clientThread.invokeLater(this::addCounter);
+					eventBus.once(ClientTick.class, e -> addCounter());
 				}
 			}
 		}

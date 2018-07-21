@@ -33,8 +33,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.callback.ClientThread;
 
 @Singleton
 @Slf4j
@@ -42,7 +42,7 @@ public class ChatboxInputManager
 {
 	public static final int NO_LIMIT = Integer.MAX_VALUE;
 	private final Client client;
-	private final ClientThread clientThread;
+	private final EventBus eventBus;
 
 	private Consumer<String> done;
 	private Consumer<String> changed;
@@ -52,10 +52,10 @@ public class ChatboxInputManager
 	private boolean open = false;
 
 	@Inject
-	public ChatboxInputManager(Client client, ClientThread clientThread, EventBus eventBus)
+	public ChatboxInputManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
-		this.clientThread = clientThread;
+		this.eventBus = eventBus;
 		eventBus.register(this);
 	}
 
@@ -82,7 +82,7 @@ public class ChatboxInputManager
 		this.changed = changed;
 		this.characterLimit = characterLimit;
 		this.open = true;
-		clientThread.invokeLater(() -> client.runScript(
+		eventBus.once(ClientTick.class, e -> client.runScript(
 			ScriptID.RUNELITE_CHATBOX_INPUT_INIT,
 			text,
 			defaul
@@ -99,7 +99,7 @@ public class ChatboxInputManager
 			return;
 		}
 		this.open = false;
-		clientThread.invokeLater(() -> client.runScript(
+		eventBus.once(ClientTick.class, e -> client.runScript(
 			ScriptID.CLOSE_CHATBOX_INPUT,
 			1,
 			1

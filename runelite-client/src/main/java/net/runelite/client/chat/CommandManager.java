@@ -37,9 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ChatboxInput;
 
 @Slf4j
@@ -51,17 +51,15 @@ public class CommandManager
 
 	private final Provider<Client> clientProvider;
 	private final EventBus eventBus;
-	private final Provider<ClientThread> clientThreadProvider;
 	private boolean sending;
 
 	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
 
 	@Inject
-	public CommandManager(Provider<Client> clientProvider, EventBus eventBus, Provider<ClientThread> clientThreadProvider)
+	public CommandManager(Provider<Client> clientProvider, EventBus eventBus)
 	{
 		this.clientProvider = clientProvider;
 		this.eventBus = eventBus;
-		this.clientThreadProvider = clientThreadProvider;
 	}
 
 	public void register(ChatboxInputListener chatboxInputListener)
@@ -139,8 +137,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				ClientThread clientThread = clientThreadProvider.get();
-				clientThread.invokeLater(() -> sendChatboxInput(chatType, typedText));
+				eventBus.once(ClientTick.class, e -> sendChatboxInput(chatType, typedText));
 			}
 		};
 		boolean stop = false;

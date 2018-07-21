@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.interfacestyles;
 
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -40,11 +41,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -63,7 +64,7 @@ public class InterfaceStylesPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	@Inject
 	private InterfaceStylesConfig config;
@@ -80,7 +81,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		eventBus.once(ClientTick.class, e ->
 		{
 			overrideSprites();
 			overrideWidgetSprites();
@@ -92,7 +93,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientThread.invokeLater(() ->
+		eventBus.once(ClientTick.class, e ->
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
@@ -104,7 +105,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
-			clientThread.invokeLater(() ->
+			eventBus.once(ClientTick.class, e ->
 			{
 				removeGameframe();
 				overrideSprites();

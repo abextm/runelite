@@ -35,7 +35,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -59,7 +58,7 @@ public class HiscoreManager
 	private final LoadingCache<HiscoreKey, HiscoreResult> hiscoreCache;
 
 	@Inject
-	public HiscoreManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public HiscoreManager(Client client, ScheduledExecutorService executor)
 	{
 		hiscoreCache = CacheBuilder.newBuilder()
 			.maximumSize(128L)

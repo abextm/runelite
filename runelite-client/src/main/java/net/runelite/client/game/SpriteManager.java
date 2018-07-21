@@ -37,9 +37,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.EventBus;
 import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.events.ClientTick;
 
 @Singleton
 public class SpriteManager
@@ -48,7 +49,7 @@ public class SpriteManager
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	public Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
@@ -87,7 +88,7 @@ public class SpriteManager
 			return;
 		}
 
-		clientThread.invokeLater(() ->
+		eventBus.onceOrMore(ClientTick.class, e ->
 		{
 			BufferedImage img = getSprite(archive, file);
 			if (img == null)

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
@@ -48,6 +49,7 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -56,7 +58,6 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -108,7 +109,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	/**
 	 * NPCs to highlight
@@ -188,7 +189,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
-		clientThread.invokeLater(() ->
+		eventBus.once(ClientTick.class, e ->
 		{
 			skipNextSpawnCheck = true;
 			rebuildAllNpcs();

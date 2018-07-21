@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -55,7 +57,6 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -78,7 +79,7 @@ public class DemonicGorillaPlugin extends Plugin
 	private DemonicGorillaOverlay overlay;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	@Getter
 	private Map<NPC, DemonicGorilla> gorillas;
@@ -97,7 +98,7 @@ public class DemonicGorillaPlugin extends Plugin
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
-		clientThread.invokeLater(this::reset); // Updates the list of gorillas and players
+		eventBus.once(ClientTick.class, e -> reset()); // Updates the list of gorillas and players
 	}
 
 	@Override

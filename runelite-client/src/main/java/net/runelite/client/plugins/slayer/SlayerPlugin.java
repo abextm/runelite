@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import net.runelite.api.EventBus;
 import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -49,6 +50,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -58,7 +60,6 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -123,7 +124,7 @@ public class SlayerPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
-	private ClientThread clientThread;
+	private EventBus eventBus;
 
 	@Inject
 	private TargetClickboxOverlay targetClickboxOverlay;
@@ -177,7 +178,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invokeLater(() -> setTask(config.taskName(), config.amount()));
+			eventBus.once(ClientTick.class, e -> setTask(config.taskName(), config.amount()));
 		}
 	}
 
@@ -457,7 +458,7 @@ public class SlayerPlugin extends Plugin
 
 		if (config.showInfobox())
 		{
-			clientThread.invokeLater(this::addCounter);
+			eventBus.once(ClientTick.class, e -> addCounter());
 		}
 		else
 		{

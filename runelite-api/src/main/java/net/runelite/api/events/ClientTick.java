@@ -22,75 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.api.events;
 
-import com.google.inject.Inject;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.BooleanSupplier;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-
-@Singleton
-@Slf4j
-public class ClientThread
+public final class ClientTick
 {
-	private ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
-
-	@Inject
-	private Client client;
-
-	public void invokeLater(Runnable r)
-	{
-		invokeLater(() ->
-		{
-			r.run();
-			return true;
-		});
-	}
-
-	/**
-	 * Will run r on the game thread, at a unspecified point in the future.
-	 * If r returns false, r will be ran again, at a later point
-	 */
-	public void invokeLater(BooleanSupplier r)
-	{
-		if (client.isClientThread())
-		{
-			if (r.getAsBoolean())
-			{
-				invokes.add(r);
-			}
-			return;
-		}
-		invokes.add(r);
-	}
-
-	void invoke()
-	{
-		assert client.isClientThread();
-		Iterator<BooleanSupplier> ir = invokes.iterator();
-		for (; ir.hasNext(); )
-		{
-			BooleanSupplier r = ir.next();
-			boolean remove = true;
-			try
-			{
-				remove = r.getAsBoolean();
-			}
-			catch (ThreadDeath d)
-			{
-				throw d;
-			}
-			catch (Throwable e)
-			{
-				log.warn("Exception in invokeLater", e);
-			}
-			if (remove)
-			{
-				ir.remove();
-			}
-		}
-	}
 }
