@@ -27,7 +27,7 @@ package net.runelite.client.plugins.screenshot;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;

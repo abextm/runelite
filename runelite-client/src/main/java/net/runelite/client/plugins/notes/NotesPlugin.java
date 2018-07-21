@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.notes;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;

@@ -29,7 +29,7 @@
 package net.runelite.client.plugins.fairyring;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.Collection;
 import java.util.Map;

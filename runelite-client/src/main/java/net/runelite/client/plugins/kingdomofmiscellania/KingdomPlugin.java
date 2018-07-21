@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.instancemap;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.api.events.GameStateChanged;

@@ -27,7 +27,7 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;

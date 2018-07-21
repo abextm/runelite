@@ -24,7 +24,7 @@
  */
 package net.runelite.client.config;
 
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;

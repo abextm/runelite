@@ -27,7 +27,7 @@ package net.runelite.client.plugins.attackstyles;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;

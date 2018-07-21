@@ -24,8 +24,8 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.EventBus;
+import net.runelite.api.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;

@@ -25,7 +25,7 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;

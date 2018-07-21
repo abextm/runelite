@@ -25,6 +25,7 @@
 package net.runelite.api.events;
 
 import net.runelite.api.Actor;
+import net.runelite.api.ChildEvents;
 
 /**
  * Represents the base event where an {@link Actor} has spawned.
@@ -39,6 +40,7 @@ import net.runelite.api.Actor;
  *     <li>An actor moving into render distance</li>
  * </ul>
  */
+@ChildEvents({NpcDespawned.class, PlayerSpawned.class})
 public interface ActorSpawned
 {
 	/**

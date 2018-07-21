@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;

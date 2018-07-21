@@ -25,7 +25,7 @@
 package net.runelite.client.discord;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;

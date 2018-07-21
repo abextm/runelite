@@ -29,7 +29,7 @@ package net.runelite.client.plugins.friendnotes;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;

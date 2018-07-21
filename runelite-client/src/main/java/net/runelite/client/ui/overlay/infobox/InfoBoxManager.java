@@ -26,7 +26,7 @@ package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;

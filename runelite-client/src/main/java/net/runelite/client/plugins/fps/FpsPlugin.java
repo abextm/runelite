@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.fps;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.api.events.ConfigChanged;

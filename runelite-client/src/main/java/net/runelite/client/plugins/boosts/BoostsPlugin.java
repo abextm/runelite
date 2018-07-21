@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashSet;

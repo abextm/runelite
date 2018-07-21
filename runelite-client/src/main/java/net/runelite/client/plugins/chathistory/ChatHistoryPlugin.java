@@ -26,7 +26,7 @@ package net.runelite.client.plugins.chathistory;
 
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;

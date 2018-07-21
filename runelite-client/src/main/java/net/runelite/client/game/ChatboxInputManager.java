@@ -24,8 +24,8 @@
  */
 package net.runelite.client.game;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.EventBus;
+import net.runelite.api.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.function.Consumer;

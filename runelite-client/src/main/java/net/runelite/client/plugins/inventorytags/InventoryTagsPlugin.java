@@ -26,7 +26,7 @@ package net.runelite.client.plugins.inventorytags;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.List;

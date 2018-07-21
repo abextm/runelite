@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.corp;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.minimap;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

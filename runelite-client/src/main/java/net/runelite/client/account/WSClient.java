@@ -24,7 +24,7 @@
  */
 package net.runelite.client.account;
 
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import com.google.gson.Gson;
 import java.time.Duration;
 import java.time.Instant;

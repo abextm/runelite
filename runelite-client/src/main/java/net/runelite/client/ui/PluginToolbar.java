@@ -25,7 +25,7 @@
 package net.runelite.client.ui;
 
 import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -28,7 +28,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;

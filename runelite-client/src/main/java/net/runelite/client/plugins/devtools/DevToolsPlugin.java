@@ -26,8 +26,8 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.EventBus;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.image.BufferedImage;

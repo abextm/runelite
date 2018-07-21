@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

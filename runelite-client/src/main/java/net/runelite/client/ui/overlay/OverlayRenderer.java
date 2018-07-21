@@ -25,7 +25,7 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;

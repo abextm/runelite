@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.fightcave;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;

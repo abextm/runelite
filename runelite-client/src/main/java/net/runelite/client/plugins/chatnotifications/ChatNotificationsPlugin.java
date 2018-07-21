@@ -26,7 +26,7 @@
 package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.regex.Matcher;

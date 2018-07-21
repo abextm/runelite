@@ -25,7 +25,7 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;

@@ -27,7 +27,7 @@ package net.runelite.client;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;

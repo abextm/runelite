@@ -27,7 +27,7 @@
 package net.runelite.client.plugins.screenmarkers;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;

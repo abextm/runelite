@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.poh;
 
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashMap;
 import java.util.Map;

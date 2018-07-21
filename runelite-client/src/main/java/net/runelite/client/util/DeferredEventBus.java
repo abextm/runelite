@@ -24,7 +24,7 @@
  */
 package net.runelite.client.util;
 
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;

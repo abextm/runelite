@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;

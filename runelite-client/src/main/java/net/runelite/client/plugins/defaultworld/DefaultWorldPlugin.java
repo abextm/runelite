@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.defaultworld;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.EnumSet;

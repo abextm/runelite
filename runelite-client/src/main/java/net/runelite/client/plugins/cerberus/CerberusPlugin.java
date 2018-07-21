@@ -26,7 +26,7 @@
 package net.runelite.client.plugins.cerberus;
 
 import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;

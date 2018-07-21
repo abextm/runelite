@@ -25,8 +25,8 @@
  */
 package net.runelite.client.chat;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.EventBus;
+import net.runelite.api.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

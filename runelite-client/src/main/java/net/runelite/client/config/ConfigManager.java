@@ -26,7 +26,7 @@ package net.runelite.client.config;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;

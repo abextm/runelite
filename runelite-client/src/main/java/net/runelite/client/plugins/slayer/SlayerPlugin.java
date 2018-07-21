@@ -25,7 +25,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;

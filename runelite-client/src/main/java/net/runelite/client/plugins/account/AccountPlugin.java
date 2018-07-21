@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.account;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;

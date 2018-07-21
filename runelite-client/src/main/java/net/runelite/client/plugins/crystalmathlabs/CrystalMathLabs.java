@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.crystalmathlabs;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;

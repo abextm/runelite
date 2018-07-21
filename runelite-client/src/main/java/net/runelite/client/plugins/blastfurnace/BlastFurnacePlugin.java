@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.blastfurnace;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;

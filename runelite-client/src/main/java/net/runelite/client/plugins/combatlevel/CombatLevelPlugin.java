@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;

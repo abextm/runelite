@@ -24,8 +24,7 @@
  */
 package net.runelite.client;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
+import net.runelite.api.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
@@ -101,11 +100,6 @@ public class RuneLiteModule extends AbstractModule
 	@Singleton
 	EventBus provideEventBus()
 	{
-		return new EventBus(RuneLiteModule::eventExceptionHandler);
-	}
-
-	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
-	{
-		log.warn("uncaught exception in event subscriber", exception);
+		return new EventBus();
 	}
 }

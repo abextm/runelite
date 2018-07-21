@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.mta;
 
-import com.google.common.eventbus.EventBus;
+import net.runelite.api.EventBus;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;

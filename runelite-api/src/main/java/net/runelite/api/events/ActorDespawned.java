@@ -25,6 +25,7 @@
 package net.runelite.api.events;
 
 import net.runelite.api.Actor;
+import net.runelite.api.ChildEvents;
 
 /**
  * Represents the base event where an {@link Actor} has despawned.
@@ -45,6 +46,7 @@ import net.runelite.api.Actor;
  * <p>
  * The client logging out does not trigger this event.
  */
+@ChildEvents({NpcDespawned.class, PlayerDespawned.class})
 public interface ActorDespawned
 {
 	/**

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.banktags;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;

@@ -26,7 +26,7 @@ package net.runelite.client.plugins.examine;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;

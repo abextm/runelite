@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.roguesden;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.Subscribe;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
