@@ -16785,6 +16785,7 @@ public final class ObjectID
 	public static final int LADDER_31579 = 31579;
 	public static final int LADDER_31580 = 31580;
 	public static final int TABLE_31581 = 31581;
+	public static final int BANK_COUNTER_31582 = 31582;
 	public static final int DEADMAN_SUPPLY_CHEST = 31583;
 	public static final int CLOSED_BOOTH_31584 = 31584;
 	public static final int SPADE_31585 = 31585;
