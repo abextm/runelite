@@ -399,6 +399,7 @@ public final class ObjectID
 	public static final int PILE_OF_SKULLS_668 = 668;
 	public static final int CATAPULT = 671;
 	public static final int BROKEN_BARREL = 672;
+	public static final int SMALL_FISHING_NET = 674;
 	public static final int PASSAGE = 677;
 	public static final int CAVE = 678;
 	public static final int CAVE_EXIT = 679;
@@ -16785,6 +16786,7 @@ public final class ObjectID
 	public static final int LADDER_31579 = 31579;
 	public static final int LADDER_31580 = 31580;
 	public static final int TABLE_31581 = 31581;
+	public static final int BANK_COUNTER_31582 = 31582;
 	public static final int DEADMAN_SUPPLY_CHEST = 31583;
 	public static final int CLOSED_BOOTH_31584 = 31584;
 	public static final int SPADE_31585 = 31585;
