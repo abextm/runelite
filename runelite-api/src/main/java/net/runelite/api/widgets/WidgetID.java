@@ -336,11 +336,11 @@ public class WidgetID
 	static class ResizableViewportBottomLine
 	{
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
-		static final int INVENTORY_TAB = 51;
-		static final int PRAYER_TAB = 53;
-		static final int QUESTS_ICON = 57;
-		static final int INVENTORY_ICON = 58;
-		static final int PRAYER_ICON = 60;
+		static final int INVENTORY_TAB = 53;
+		static final int PRAYER_TAB = 55;
+		static final int QUESTS_ICON = 59;
+		static final int INVENTORY_ICON = 60;
+		static final int PRAYER_ICON = 62;
 	}
 
 	static class Chatbox
