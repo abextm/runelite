@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, raiyni <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.banktags;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.util.Objects;
+import lombok.Data;
+import net.runelite.api.widgets.Widget;
 
-/**
- * An enumeration of string local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientStr
+@Data
+public class TagTab
 {
-	CHATBOX_TYPED_TEXT(1),
-	SEARCH_TEXT(22);
+	private int itemId;
+	private String tag;
 
-	private final int index;
+	public TagTab(int itemId, String tag)
+	{
+		this.itemId = itemId;
+		this.tag = tag;
+	}
+
+	private Widget background;
+	private Widget icon;
+
+	public String toString()
+	{
+		return "TagTab{tag=" + tag + ", itemId=" + itemId + "}";
+	}
+
+	public boolean equals(String s)
+	{
+		return tag.equalsIgnoreCase(s);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == null || o.getClass() != TagTab.class)
+		{
+			return false;
+		}
+
+		TagTab t = (TagTab) o;
+
+		return equals(t.tag);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode(this.tag) + 7 * 31;
+	}
 }

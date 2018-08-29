@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, raiyni <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.banktags;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of string local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientStr
+@ConfigGroup("banktags")
+public interface BankTagsConfig extends Config
 {
-	CHATBOX_TYPED_TEXT(1),
-	SEARCH_TEXT(22);
+	@ConfigItem(
+		keyName = "useTabs",
+		name = "Use Tag Tabs",
+		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
+		position = 1
+	)
+	default boolean tabs()
+	{
+		return true;
+	}
 
-	private final int index;
+	@ConfigItem(
+		keyName = "rememberPosition",
+		name = "Remember Scroll Position",
+		description = "Remember the scroll position of the bank tag tabs.",
+		position = 2
+	)
+	default boolean rememberPosition()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "position",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int position()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "position",
+		name = "",
+		description = ""
+	)
+	void position(int idx);
 }

@@ -191,10 +191,21 @@ public class WidgetID
 
 	static class Bank
 	{
-		static final int ITEM_CONTAINER = 23;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
+		static final int BANK_CONTAINER = 12;
+		static final int BANK_INNER_CONTAINER = 13;
 		static final int BANK_TITLE_BAR = 15;
 		static final int BANK_ITEM_COUNT = 16;
+		static final int BANK_SETTINGS = 19;
+		static final int CONTENT_CONTAINER = 20;
+		static final int TAB_BAR = 21;
+		static final int ITEM_CONTAINER = 23;
+		static final int SCROLLBAR = 24;
+		static final int BOTTOM_BAR = 25;
+		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int INCINERATOR = 45;
+		static final int INCINERATOR_CONFIRM = 46;
+		static final int SOMETHING = 55;
 	}
 
 	static class GrandExchange
@@ -394,6 +405,7 @@ public class WidgetID
 		static final int CHATBOX_BUTTONS = 1;
 		static final int CHATBOX_REPORT_TEXT = 29;
 		static final int CHATBOX_FRAME = 30;
+		static final int CHATBOX_SEARCH = 38;
 		static final int CHATBOX_MESSAGES = 48;
 		static final int CHATBOX_INPUT = 50;
 	}

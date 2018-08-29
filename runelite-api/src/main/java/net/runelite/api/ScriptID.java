@@ -46,6 +46,11 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Opens the bank search
+	 */
+	public static final int OPEN_BANK_SEARCH = 281;
+
+	/**
 	 * Closes the chatbox input
 	 * <ul>
 	 * <li> int (boolean) Clear the current text </li>
