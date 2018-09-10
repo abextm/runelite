@@ -173,7 +173,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	private Rectangle canvasBounds = new Rectangle();
 	private Rectangle bounds = new Rectangle();
-	private Rectangle oldBounds = new Rectangle();
 
 	@Inject
 	private TabManager tabManager;
@@ -182,16 +181,14 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private int maxTabs = 0;
 
 	private boolean scrollWait = false;
-
 	private boolean isBankOpen = false;
-
-	private TagTab iconToSet = null;
 
 	private Widget upButton = null;
 	private Widget downButton = null;
 	private Widget newTab = null;
 	private Widget parent = null;
 
+	private TagTab iconToSet = null;
 	private TagTab activeTab = null;
 
 	private Map<Integer, SpritePixels> overrides = new HashMap<>();
@@ -483,24 +480,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				{
 					MenuEntry[] entries = client.getMenuEntries();
 
+
 					if (entries.length > 0)
 					{
 						MenuEntry entry = entries[entries.length - 1];
 
-						if (draggedWidget.getItemId() > 0 && entry.getOption().equals(OPEN_TAG))
+						if (draggedWidget.getItemId() > 0 && entry.getOption().equals(OPEN_TAG) && draggedOn.getId() != draggedWidget.getId())
 						{
-							if (draggedOn.getId() != draggedWidget.getId())
-							{
-								entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()));
-								entry.setTarget(draggedWidget.getName());
-
-							}
-							else
-							{
-								entry.setOption(MOVE_TAB);
-								entry.setTarget(draggedWidget.getName());
-							}
-
+							entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()));
+							entry.setTarget(draggedWidget.getName());
 							client.setMenuEntries(entries);
 						}
 
@@ -743,6 +731,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		log.debug("Removing tag tab: {}", tag);
 
 		tabManager.remove(tag);
+		configManager.unsetConfiguration(CONFIG_GROUP, ICON_SEARCH + tag);
 		tabManager.save();
 
 		updateTabs(0);
@@ -762,6 +751,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 		if (widget != null && widget.isHidden() && !Strings.isNullOrEmpty(searched))
 		{
+			// Re-triggering search requires this to be an empty string if search mode is off
 			client.setVar(VarClientStr.SEARCH_TEXT, "");
 		}
 
@@ -795,8 +785,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		if (itemContainer != null)
 		{
-			oldBounds.setBounds(bounds);
-
 			bounds.setSize(41, itemContainer.getHeight());
 			bounds.setLocation(1, itemContainer.getRelativeY() - 1);
 
@@ -831,12 +819,18 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		upButton = createGraphic("", UP_ARROW, -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
 		upButton.setAction(1, SCROLL_UP);
+		int clickmask = upButton.getClickMask();
+		clickmask |= DRAG;
+		upButton.setClickMask(clickmask);
 	}
 
 	private void makeDownButton()
 	{
 		downButton = createGraphic("", DOWN_ARROW, -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
 		downButton.setAction(1, SCROLL_DOWN);
+		int clickmask = downButton.getClickMask();
+		clickmask |= DRAG;
+		downButton.setClickMask(clickmask);
 	}
 
 	private void makeNewTabButton()
