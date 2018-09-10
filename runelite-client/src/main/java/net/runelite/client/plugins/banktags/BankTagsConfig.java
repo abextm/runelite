@@ -50,7 +50,7 @@ public interface BankTagsConfig extends Config
 	)
 	default boolean rememberPosition()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
