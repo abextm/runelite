@@ -80,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.math.NumberUtils;
 
 @PluginDescriptor(
 	name = "Bank Tags",
@@ -111,10 +112,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final String SCROLL_DOWN = "Scroll Down";
 	private static final String CHANGE_ICON = "Set Tab Icon";
 	private static final String CHANGE_ICON_ACTION = "Set tag:";
-	private static final String REMOVE_TAB = "Remove Tab";
+	private static final String REMOVE_TAB = "Delete Tab";
 	private static final String NEW_TAB = "New Tag Tab";
 	private static final String OPEN_TAG = "Open Tag";
-	private static final String MOVE_TAB = "Move Tab";
+	private static final String REMOVE_ITEMS = "Remove Items";
 	static final String ICON_SEARCH = "icon_";
 	static final String TAG_TAGS_CONFIG = "tagtabs";
 
@@ -189,6 +190,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private Widget parent = null;
 
 	private TagTab iconToSet = null;
+	private TagTab tagToRemove = null;
 	private TagTab activeTab = null;
 
 	private Map<Integer, SpritePixels> overrides = new HashMap<>();
@@ -392,6 +394,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				String itemName = stringStack[stringStackSize - 2];
 				String searchInput = stringStack[stringStackSize - 1];
 
+				log.debug(searchInput);
+
 				ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 				if (itemComposition.getPlaceholderTemplateId() != -1)
 				{
@@ -522,8 +526,52 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 					entry.setOption(CHANGE_ICON_ACTION + iconToSet.getTag() + " icon");
 					client.setMenuEntries(entries);
 				}
+
+				if (tagToRemove != null &&
+					(entry.getOption().equals("Withdraw-1") || entry.getOption().equals("Release")))
+				{
+					entry.setOption("Remove");
+					client.setMenuEntries(entries);
+				}
+
+				if (tagToRemove != null &&
+					entry.getOption().equals(OPEN_TAG) && Text.removeTags(entry.getTarget()).equals(tagToRemove.getTag()))
+				{
+					entry.setOption("Stop Removing");
+					client.setMenuEntries(entries);
+				}
 			}
 		}
+	}
+
+	private int getItemId(int idx)
+	{
+		int inventoryIndex = idx;
+		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+		if (bankContainer == null)
+		{
+			return -1;
+		}
+		Item[] items = bankContainer.getItems();
+		if (inventoryIndex < 0 || inventoryIndex >= items.length)
+		{
+			return -1;
+		}
+		Item item = bankContainer.getItems()[inventoryIndex];
+
+		if (item == null)
+		{
+			return -1;
+		}
+
+		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+		if (itemComposition.getPlaceholderTemplateId() != -1)
+		{
+			// if the item is a placeholder then get the item id for the normal item
+			return itemComposition.getPlaceholderId();
+		}
+
+		return item.getId();
 	}
 
 	@Subscribe
@@ -610,33 +658,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 					{
 						event.consume();
 
-						int inventoryIndex = event.getActionParam();
-						ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-						if (bankContainer == null)
-						{
-							return;
-						}
-						Item[] items = bankContainer.getItems();
-						if (inventoryIndex < 0 || inventoryIndex >= items.length)
-						{
-							return;
-						}
-						Item item = bankContainer.getItems()[inventoryIndex];
-						if (item == null)
-						{
-							return;
-						}
-						ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-						int itemId;
-						if (itemComposition.getPlaceholderTemplateId() != -1)
-						{
-							// if the item is a placeholder then get the item id for the normal item
-							itemId = itemComposition.getPlaceholderId();
-						}
-						else
-						{
-							itemId = item.getId();
-						}
+						int itemId = getItemId(event.getActionParam());
 
 						iconToSet.setItemId(itemId);
 						iconToSet.getIcon().setItemId(itemId);
@@ -645,6 +667,28 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 					}
 
 					iconToSet = null;
+				}
+
+				if (tagToRemove != null)
+				{
+
+					if (event.getMenuOption().startsWith("Stop Removing"))
+					{
+						event.consume();
+						tagToRemove = null;
+						return;
+					}
+					else if (event.getMenuOption().startsWith("Remove") && event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId())
+					{
+						event.consume();
+
+						int itemId = getItemId(event.getActionParam());
+						removeTag(itemId, tagToRemove.getTag());
+					}
+					else
+					{
+						tagToRemove = null;
+					}
 				}
 
 				switch (event.getMenuOption())
@@ -682,18 +726,35 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 						break;
 					case REMOVE_TAB:
 						event.consume();
-						chatboxInputManager.openInputWindow("Are you sure you want to delete tab " + Text.removeTags(event.getMenuTarget()) + "?<br>(y)es or (n)o:", "", (response) ->
-						{
-							if (response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes"))
+
+						chatboxInputManager.openInputWindow(
+							"1. Delete tag:" + Text.removeTags(event.getMenuTarget()) + " from all items<br>" +
+								"2. Delete tab " + Text.removeTags(event.getMenuTarget()) + "<br>" +
+								"3. Cancel", "", (response) ->
 							{
-								deleteTab(Text.removeTags(event.getMenuTarget()));
-							}
-						});
+								switch (response)
+								{
+									case "1":
+										deleteAllOfTag(Text.removeTags(event.getMenuTarget()));
+									case "2":
+										deleteTab(Text.removeTags(event.getMenuTarget()));
+										break;
+									default:
+										break;
+								}
+							});
+						break;
+					case REMOVE_ITEMS:
+						event.consume();
+						tagToRemove = tabManager.find(Text.removeTags(event.getMenuTarget()));
+						openTag(TAG_SEARCH + Text.removeTags(event.getMenuTarget()));
+
 						break;
 				}
 			}
 		}
 	}
+
 
 	public void scrollDragging(int direction, boolean fireEvent)
 	{
@@ -894,6 +955,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			btn.setAction(1, OPEN_TAG);
 			btn.setAction(2, CHANGE_ICON);
 			btn.setAction(3, REMOVE_TAB);
+			btn.setAction(4, REMOVE_ITEMS);
 
 			tagTab.setBackground(btn);
 		}
@@ -934,6 +996,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 		isBankOpen = true;
 		iconToSet = null;
+		tagToRemove = null;
 		setActiveTab(null);
 		tabManager.clear();
 
@@ -1055,12 +1118,37 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	}
 
 	// TODO: move tag stuff
+	public void deleteAllOfTag(String tag)
+	{
+		List<String> keys = configManager.getConfigurationKeys(CONFIG_GROUP + "." + ITEM_KEY_PREFIX);
+		for (String key : keys)
+		{
+			String k = key.substring(key.indexOf(ITEM_KEY_PREFIX) + 5);
+			int i = NumberUtils.toInt(k, -1);
+			if (i > 0)
+			{
+				removeTag(i, tag);
+			}
+		}
+	}
+
 	private void appendTag(int itemId, String tag)
 	{
 		String s = getTags(itemId);
 		List<String> tags = Arrays.stream(s.split(",")).filter(v -> !Strings.isNullOrEmpty(v) && !v.equalsIgnoreCase(tag)).collect(Collectors.toList());
 		tags.add(tag);
 		setTags(itemId, String.join(",", tags));
+	}
+
+	private void removeTag(int itemId, String tag)
+	{
+		log.debug("Removing tag {} from {}", tag, itemId);
+		String s = getTags(itemId);
+		if (s.contains(tag))
+		{
+			List<String> tags = Arrays.stream(s.split(",")).filter(v -> !Strings.isNullOrEmpty(v) && !v.equalsIgnoreCase(tag)).collect(Collectors.toList());
+			setTags(itemId, String.join(",", tags));
+		}
 	}
 
 	private List<String> getAllTags()
@@ -1097,7 +1185,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	private void setTags(int itemId, String tags)
 	{
-		if (tags == null || tags.isEmpty())
+		if (Strings.isNullOrEmpty(tags))
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 		}

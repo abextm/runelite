@@ -25,6 +25,7 @@
 package net.runelite.client.config;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import java.awt.Color;
@@ -237,11 +238,21 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-		{
-			clazz
-		}, handler);
+			{
+				clazz
+			}, handler);
 
 		return t;
+	}
+
+	public List<String> getConfigurationKeys(String prefix)
+	{
+		return properties.keySet().stream().filter(v -> ((String) v).startsWith(prefix)).map(o -> (String) o).collect(ImmutableList.toImmutableList());
+	}
+
+	public String getConfiguration(String key)
+	{
+		return properties.getProperty(key);
 	}
 
 	public String getConfiguration(String groupName, String key)
