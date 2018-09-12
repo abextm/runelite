@@ -394,8 +394,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				String itemName = stringStack[stringStackSize - 2];
 				String searchInput = stringStack[stringStackSize - 1];
 
-				log.debug(searchInput);
-
 				ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 				if (itemComposition.getPlaceholderTemplateId() != -1)
 				{
@@ -930,7 +928,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		{
 			widget.setItemId(itemId);
 			widget.setItemQuantity(-1);
-			widget.setBorderThickness(1);
+			widget.setBorderType(1);
 		}
 
 		if (hasListener)
