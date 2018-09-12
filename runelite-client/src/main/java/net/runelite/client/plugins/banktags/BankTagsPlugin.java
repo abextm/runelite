@@ -51,6 +51,7 @@ import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.WidgetType;
 import net.runelite.api.events.ConfigChanged;
@@ -283,15 +284,16 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onVarClientStrChanged(VarClientStrChanged clientStrChanged)
 	{
-		if (clientStrChanged.getIndex() == VarClientStr.SEARCH_TEXT.getIndex())
+		if (clientStrChanged.getIndex() == VarClientStr.INPUT_TEXT.getIndex())
 		{
-			String str = client.getVar(VarClientStr.SEARCH_TEXT);
+			String str = client.getVar(VarClientStr.INPUT_TEXT);
 
-			if (str != null)
+			if (str == null)
 			{
-				str = str.trim();
+				return;
 			}
 
+			str = str.trim();
 			if (str.startsWith(TAG_SEARCH))
 			{
 				TagTab tagTab = tabManager.find(str.substring(4));
@@ -796,45 +798,31 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		updateTabs(0);
 	}
 
-	private int getWidgetId(WidgetInfo widgetInfo)
-	{
-		return client.getWidget(widgetInfo).getId();
-	}
-
 	private void openTag(String tag)
 	{
-		Widget widget = client.getWidget(WidgetInfo.CHATBOX_SEARCH);
 		TagTab tagTab = tabManager.find(tag.substring(4));
-
-		String searched = client.getVar(VarClientStr.SEARCH_TEXT);
-
-		if (widget != null && widget.isHidden() && !Strings.isNullOrEmpty(searched))
+		
+		clientThread.invokeLater(() ->
 		{
-			// Re-triggering search requires this to be an empty string if search mode is off
-			client.setVar(VarClientStr.SEARCH_TEXT, "");
-		}
+			client.setVar(VarClientInt.INPUT_TYPE, 11);
+			client.setVar(VarClientStr.INPUT_TEXT, tag);
 
-		if (widget != null && widget.isHidden())
-		{
-			client.runScript(ScriptID.OPEN_BANK_SEARCH, 1,
-				getWidgetId(WidgetInfo.BANK_CONTAINER),
-				getWidgetId(WidgetInfo.BANK_INNER_CONTAINER),
-				getWidgetId(WidgetInfo.BANK_SETTINGS),
-				getWidgetId(WidgetInfo.BANK_ITEM_CONTAINER),
-				getWidgetId(WidgetInfo.BANK_SCROLLBAR),
-				getWidgetId(WidgetInfo.BANK_BOTTOM_BAR),
-				getWidgetId(WidgetInfo.BANK_TITLE_BAR),
-				getWidgetId(WidgetInfo.BANK_ITEM_COUNT),
-				getWidgetId(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND),
-				getWidgetId(WidgetInfo.BANK_TAB_BAR),
-				getWidgetId(WidgetInfo.BANK_INCINERATOR),
-				getWidgetId(WidgetInfo.BANK_INCINERATOR_CONFIRM),
-				getWidgetId(WidgetInfo.BANK_SOMETHING));
-			widget = client.getWidget(WidgetInfo.CHATBOX_SEARCH);
-		}
-
-		client.setVar(VarClientStr.SEARCH_TEXT, tag);
-		widget.setText(tag);
+			client.runScript(277,
+				WidgetInfo.BANK_CONTAINER.getId(),
+				WidgetInfo.BANK_INNER_CONTAINER.getId(),
+				WidgetInfo.BANK_SETTINGS.getId(),
+				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+				WidgetInfo.BANK_SCROLLBAR.getId(),
+				WidgetInfo.BANK_BOTTOM_BAR.getId(),
+				WidgetInfo.BANK_TITLE_BAR.getId(),
+				WidgetInfo.BANK_ITEM_COUNT.getId(),
+				WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND.getId(),
+				WidgetInfo.BANK_TAB_BAR.getId(),
+				WidgetInfo.BANK_INCINERATOR.getId(),
+				WidgetInfo.BANK_INCINERATOR_CONFIRM.getId(),
+				WidgetInfo.BANK_SOMETHING.getId()
+			);
+		});
 
 		setActiveTab(tagTab);
 	}
