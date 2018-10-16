@@ -51,9 +51,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
@@ -70,23 +73,26 @@ public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 
-	@Inject
-	EventBus eventBus;
-
+	private final EventBus eventBus;
 	private final ScheduledExecutorService executor;
+	private final Semaphore syncSemaphore = new Semaphore(1);
+	private boolean noConfigSync;
 
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
+	private ScheduledFuture<?> configWatcherTask;
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
 
 	@Inject
-	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
+	private ConfigManager(EventBus eventBus, ScheduledExecutorService scheduledExecutorService, @Named("noConfigSync") boolean noConfigSync)
 	{
+		this.eventBus = eventBus;
 		this.executor = scheduledExecutorService;
+		this.noConfigSync = noConfigSync;
 		this.propertiesFile = getPropertiesFile();
 
 		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
@@ -126,9 +132,24 @@ public class ConfigManager
 
 	public void load()
 	{
+		if (configWatcherTask != null)
+		{
+			try
+			{
+				syncSemaphore.acquireUninterruptibly();
+				configWatcherTask.cancel(true);
+				configWatcherTask = null;
+			}
+			finally
+			{
+				syncSemaphore.release();
+			}
+		}
+
 		if (client == null)
 		{
 			loadFromFile();
+			startWatcher();
 			return;
 		}
 
@@ -142,6 +163,7 @@ public class ConfigManager
 		{
 			log.debug("Unable to load configuration from client, using saved configuration from disk", ex);
 			loadFromFile();
+			startWatcher();
 			return;
 		}
 
@@ -149,6 +171,7 @@ public class ConfigManager
 		{
 			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();
+			startWatcher();
 			return;
 		}
 
@@ -181,12 +204,13 @@ public class ConfigManager
 		{
 			log.warn("Unable to update configuration on disk", ex);
 		}
+
+		startWatcher();
 	}
 
 	private synchronized void loadFromFile()
 	{
 		properties.clear();
-
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
 			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
@@ -249,6 +273,71 @@ public class ConfigManager
 		}
 	}
 
+	private synchronized void startWatcher()
+	{
+		if (noConfigSync)
+		{
+			return;
+		}
+
+		log.info("Starting file change config watcher for file {}", propertiesFile);
+
+		configWatcherTask = executor.scheduleAtFixedRate(new ConfigWatcher(propertiesFile, () ->
+		{
+			try
+			{
+				syncSemaphore.acquireUninterruptibly();
+
+				final Properties properties = new Properties();
+				try (FileInputStream in = new FileInputStream(propertiesFile))
+				{
+					properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+				}
+				catch (Exception e)
+				{
+					log.debug("Malformed properties, skipping update");
+					return;
+				}
+
+				final Map<String, String> copy = (Map) ImmutableMap.copyOf(this.properties);
+				copy.forEach((groupAndKey, value) ->
+				{
+					if (!properties.containsKey(groupAndKey))
+					{
+						final String[] split = groupAndKey.split("\\.", 2);
+						if (split.length != 2)
+						{
+							return;
+						}
+
+						final String groupName = split[0];
+						final String key = split[1];
+						unsetConfiguration(groupName, key);
+					}
+				});
+
+				properties.forEach((objGroupAndKey, objValue) ->
+				{
+					final String groupAndKey = String.valueOf(objGroupAndKey);
+					final String[] split = groupAndKey.split("\\.", 2);
+					if (split.length != 2)
+					{
+						return;
+					}
+
+					final String groupName = split[0];
+					final String key = split[1];
+					final String value = String.valueOf(objValue);
+					setConfiguration(groupName, key, value);
+				});
+			}
+			finally
+			{
+				syncSemaphore.release();
+			}
+		}), 5000, 5000, TimeUnit.MILLISECONDS);
+	}
+
 	public <T> T getConfig(Class<T> clazz)
 	{
 		if (!Modifier.isPublic(clazz.getModifiers()))
@@ -293,14 +382,14 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
-
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
 		if (Objects.equals(oldValue, value))
 		{
 			return;
 		}
+
+		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		synchronized (pendingChanges)
 		{
@@ -336,14 +425,14 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
-		log.debug("Unsetting configuration value for {}.{}", groupName, key);
-
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
 		if (oldValue == null)
 		{
 			return;
 		}
+
+		log.debug("Unsetting configuration value for {}.{}", groupName, key);
 
 		synchronized (pendingChanges)
 		{
