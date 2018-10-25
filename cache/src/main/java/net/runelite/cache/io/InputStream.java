@@ -157,6 +157,19 @@ public class InputStream extends java.io.InputStream
 		return peek < 128 ? this.readUnsignedByte() : this.readUnsignedShort() - 0x8000;
 	}
 
+	public int readUnsignedIntDumb()
+	{
+		int var1 = 0;
+
+		int var2;
+		for(var2 = this.readUnsignedShortSmart(); var2 == 32767; var2 = this.readUnsignedShortSmart()) {
+			var1 += 32767;
+		}
+
+		var1 += var2;
+		return var1;
+	}
+
 	public String readString()
 	{
 		StringBuilder sb = new StringBuilder();

@@ -24,8 +24,14 @@
  */
 package net.runelite.cache.util;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.runelite.http.api.xtea.XteaClient;
 import net.runelite.http.api.xtea.XteaKey;
@@ -40,11 +46,14 @@ public class XteaKeyManager
 
 	public void loadKeys()
 	{
-		XteaClient xteaClient = new XteaClient();
-
 		try
 		{
-			for (XteaKey key : xteaClient.get())
+			byte[] b = Files.readAllBytes(new File("../../xteas.json").toPath());
+			List<XteaKey> skeys = new Gson().fromJson(new String(b), new TypeToken<List<XteaKey>>()
+			{
+			}.getType());
+
+			for (XteaKey key : skeys)
 			{
 				keys.put(key.getRegion(), key.getKeys());
 			}
