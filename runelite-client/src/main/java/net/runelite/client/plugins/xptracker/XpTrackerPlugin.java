@@ -26,11 +26,14 @@
 package net.runelite.client.plugins.xptracker;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
+
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +67,15 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	private static final List<Skill> UNTRACKED = ImmutableList.of(
+		Skill.ATTACK,
+		Skill.STRENGTH,
+		Skill.DEFENCE,
+		Skill.HITPOINTS
+		// magic and ranged are left out because they actually have meaning to actions left
+		// specifically casts left (for runes) and shots left (for arrows / darts)
+	);
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -240,6 +252,13 @@ public class XpTrackerPlugin extends Plugin
 		if (xpTrackerConfig.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
 		{
 			return;
+		}
+
+		final XpStateSingle state = xpState.getSkill(skill);
+		state.setActionType(XpActionType.EXPERIENCE);
+
+		if (UNTRACKED.contains(skill)) {
+			state.setActionType(XpActionType.NOT_TRACKED);
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);

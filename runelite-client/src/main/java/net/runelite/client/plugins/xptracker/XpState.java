@@ -137,7 +137,7 @@ class XpState
 	}
 
 	@NonNull
-	private XpStateSingle getSkill(Skill skill)
+	XpStateSingle getSkill(Skill skill)
 	{
 		return xpSkills.computeIfAbsent(skill, (s) -> new XpStateSingle(s, -1));
 	}
