@@ -91,7 +91,6 @@ public class FairyRingPlugin extends Plugin
 
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
-	private boolean chatboxOpenLastTick = false;
 	private Collection<CodeWidgets> codes = null;
 
 	@Data
@@ -212,14 +211,12 @@ public class FairyRingPlugin extends Plugin
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
-		boolean chatboxOpen = chatboxPanelManager.getCurrentInput() == searchInput;
+		boolean chatboxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
 
-		if (!fairyRingWidgetOpen && chatboxOpen && chatboxOpenLastTick)
+		if (!fairyRingWidgetOpen && chatboxOpen)
 		{
 			chatboxPanelManager.close();
 		}
-
-		chatboxOpenLastTick = chatboxOpen && fairyRingWidgetOpen;
 	}
 
 	private void updateFilter(String filter)

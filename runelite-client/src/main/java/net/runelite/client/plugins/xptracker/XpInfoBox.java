@@ -62,6 +62,8 @@ class XpInfoBox extends JPanel
 		"<html>%s %s done<br/>"
 			+ "%s %s/hr<br/>"
 			+ "%s till goal lvl</html>";
+	private static final String HTML_MINIMAL_TOOL_TIP_TEMPLATE =
+		"<html>%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
@@ -197,7 +199,14 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			String actionsString = htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal());
+
+			// do not render actions if information is useless
+			if (xpSnapshotSingle.getActionType() == XpActionType.NOT_TRACKED)
+			{
+				actionsString = "";
+			}
+			actionsLeft.setText(actionsString);
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
@@ -207,13 +216,22 @@ class XpInfoBox extends JPanel
 				? "200M"
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
-			progressBar.setToolTipText(String.format(
-				HTML_TOOL_TIP_TEMPLATE,
-				xpSnapshotSingle.getActionsInSession(),
-				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getActionsPerHour(),
-				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getTimeTillGoal()));
+			if (xpSnapshotSingle.getActionType() != XpActionType.NOT_TRACKED)
+			{
+				progressBar.setToolTipText(String.format(
+					HTML_TOOL_TIP_TEMPLATE,
+					xpSnapshotSingle.getActionsInSession(),
+					xpSnapshotSingle.getActionType().getLabel(),
+					xpSnapshotSingle.getActionsPerHour(),
+					xpSnapshotSingle.getActionType().getLabel(),
+					xpSnapshotSingle.getTimeTillGoal()));
+			}
+			else
+			{
+				progressBar.setToolTipText(String.format(
+					HTML_MINIMAL_TOOL_TIP_TEMPLATE,
+					xpSnapshotSingle.getTimeTillGoal()));
+			}
 
 			progressBar.setDimmed(skillPaused);
 

@@ -31,7 +31,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum XpActionType
 {
-	EXPERIENCE("Actions");
+	EXPERIENCE("Actions"),
+	NOT_TRACKED(null);
 
 	private final String label;
 }
