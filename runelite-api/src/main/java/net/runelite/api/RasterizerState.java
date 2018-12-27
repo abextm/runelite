@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.api.Model;
-import net.runelite.api.NPCComposition;
-import net.runelite.mapping.Import;
+package net.runelite.api;
 
-public interface RSNPCComposition extends NPCComposition
+import lombok.Data;
+
+@Data
+public class RasterizerState
 {
-	@Import("name")
-	@Override
-	String getName();
-
-	@Import("models")
-	@Override
-	int[] getModels();
-
-	@Import("actions")
-	@Override
-	String[] getActions();
-
-	@Import("isClickable")
-	@Override
-	boolean isClickable();
-
-	@Import("isMinimapVisible")
-	@Override
-	boolean isMinimapVisable();
-
-	@Import("isVisible")
-	@Override
-	boolean isVisable();
-
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("combatLevel")
-	@Override
-	int getCombatLevel();
-	
-	@Import("configs")
-	@Override
-	int[] getConfigs();
-	
-	@Import("transform")
-	@Override
-	RSNPCComposition transform();
-
-	@Import("size")
-	@Override
-	int getSize();
-
-	@Import("headIcon")
-	int getRsOverheadIcon();
-
-	@Import("getModel")
-	Model getModel(RSSequence var1, int var2, RSSequence var3, int var4);
+	private int width;
+	private int height;
+	private int[] pixels;
+	private int[] drawRegion;
+	private int zoom;
+	private boolean gouraudLowRes;
 }

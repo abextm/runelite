@@ -136,4 +136,12 @@ public interface ItemComposition
 	 * default value.
 	 */
 	void resetShiftClickActionIndex();
+
+	int getZoom2d();
+	int getXan2d();
+	int getYan2d();
+	int getZan2d();
+	int getOffsetX2d();
+	int getOffsetY2d();
+	Model getModel(int count);
 }

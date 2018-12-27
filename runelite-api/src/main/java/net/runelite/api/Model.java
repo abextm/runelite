@@ -103,4 +103,6 @@ public interface Model extends Renderable
 	int getExtremeZ();
 
 	int getXYZMag();
+
+	void drawFrustum(int zero, int yan, int zan, int xan, int xo, int oy, int oy2);
 }

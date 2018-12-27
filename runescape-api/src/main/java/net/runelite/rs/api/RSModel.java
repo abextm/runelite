@@ -174,4 +174,8 @@ public interface RSModel extends RSRenderable, Model
 
 	float[][] getFaceTextureVCoordinates();
 	void setFaceTextureVCoordinates(float[][] rl$faceTextureVCoordinates);
+
+	@Import("drawFrustum")
+	@Override
+	void drawFrustum(int var1, int var2, int var3, int var4, int var5, int var6, int var7);
 }

@@ -29,22 +29,40 @@ import ch.qos.logback.classic.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import static java.lang.Math.min;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Model;
 import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.RasterizerState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
@@ -69,7 +87,7 @@ import org.slf4j.LoggerFactory;
 public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+		MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
 
 	@Inject
 	private Client client;
@@ -117,7 +135,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton validMovement;
 	private DevToolsButton lineOfSight;
 	private DevToolsButton cameraPosition;
-	private DevToolsButton worldMapLocation ;
+	private DevToolsButton worldMapLocation;
 	private DevToolsButton tileLocation;
 	private DevToolsButton interacting;
 	private DevToolsButton examine;
@@ -348,6 +366,101 @@ public class DevToolsPlugin extends Plugin
 
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
 			client.setMenuEntries(entries);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked e)
+	{
+		if (e.getMenuAction() == MenuAction.EXAMINE_NPC)
+		{
+			Actor r = client.getCachedNPCs()[e.getId()];
+			BufferedImage img = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_ARGB_PRE);
+			RasterizerState c = client.rasterizerSwitchToImage(img);
+			try
+			{
+				Model var21 = r.getModel();
+				int zoom2d = 4000;
+				int yan2d = 0;
+				int xan2d = 0;
+				int zan2d = 0;
+				int offsetX2d = 0;
+				int offsetY2d = 0;
+				int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
+				int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
+				var21.calculateBoundsCylinder();
+				var21.drawFrustum(0, yan2d, zan2d, xan2d, offsetX2d, var21.getModelHeight() / 2 + var17 + offsetY2d, var18 + offsetY2d);
+
+			}
+			finally
+			{
+				client.rasterizerRestoreState(c, img);
+			}
+			try
+			{
+				ImageIO.write(img, "png", new File("r:/" + r.getName() + ".png"));
+			}
+			catch (IOException ee)
+			{
+				ee.printStackTrace();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged e) throws Exception
+	{
+		if (e.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			double brightness = .6f;
+			client.setBrightness(brightness);
+			client.getTextureProvider().setBrightness(brightness);
+			LinkedBlockingQueue<Callable<Boolean>> todo = new LinkedBlockingQueue<>(16);
+			for (int i = 0; i < 7; i++)
+			{
+				new Thread(() -> {
+					for (; ; )
+					{
+						try
+						{
+							todo.take().call();
+						}
+						catch (Exception ee)
+						{
+							throw new RuntimeException(ee);
+						}
+					}
+				}).start();
+			}
+			for (Field f : ItemID.class.getFields())
+			{
+				if (!f.getName().endsWith("_ESSENCE_BLOCK")) continue;
+				String name = f.getName().toLowerCase();
+				int id = (int) f.get(null);
+				ItemComposition oc = client.getItemDefinition(id);
+				BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
+				RasterizerState c = client.rasterizerSwitchToImage(img);
+				try
+				{
+					Model var21 = oc.getModel(9999);
+					int zoom2d = (int) (oc.getZoom2d() * 1.5d);
+					int yan2d = oc.getYan2d();
+					int xan2d = oc.getXan2d();
+					int zan2d = oc.getZan2d();
+					int offsetX2d = oc.getOffsetX2d();
+					int offsetY2d = oc.getOffsetY2d();
+					int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
+					int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
+					var21.calculateBoundsCylinder();
+					var21.drawFrustum(0, yan2d, zan2d, xan2d, offsetX2d, var21.getModelHeight() / 2 + var17 + offsetY2d, var18 + offsetY2d);
+
+				}
+				finally
+				{
+					client.rasterizerRestoreState(c, img);
+				}
+				todo.put(() -> ImageIO.write(img, "png", new File("r:/items/" + name + ".png")));
+			}
 		}
 	}
 }

@@ -37,10 +37,13 @@ public abstract class Rasterizer2DMixin implements RSClient
 	@Shadow("clientInstance")
 	private static RSClient client;
 
+	@Shadow("rasterTargetAlpha")
+	private static boolean rasterTargetAlpha;
+
 	@Inject
 	private static void drawAlpha(int[] pixels, int index, int value, int alpha)
 	{
-		if (!client.isGpu() || pixels != client.getBufferProvider().getPixels())
+		if (!rasterTargetAlpha && (!client.isGpu() || pixels != client.getBufferProvider().getPixels()))
 		{
 			pixels[index] = value;
 			return;
@@ -67,7 +70,7 @@ public abstract class Rasterizer2DMixin implements RSClient
 		final int endY = client.getEndY();
 		final int[] pixels = client.getGraphicsPixels();
 
-		if (!client.isGpu())
+		if (!rasterTargetAlpha && !client.isGpu())
 		{
 			rs$raster2d6(var0, var1, var2, var3, var4, var5, var6, var7);
 			return;
@@ -146,7 +149,7 @@ public abstract class Rasterizer2DMixin implements RSClient
 		final int height = client.getGraphicsPixelsHeight();
 		final int[] pixels = client.getGraphicsPixels();
 
-		if (!client.isGpu())
+		if (!rasterTargetAlpha && !client.isGpu())
 		{
 			rs$raster2d7(var0, var1, var2, var3, var4, var5, var6, var7);
 			return;

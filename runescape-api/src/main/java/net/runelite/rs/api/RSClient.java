@@ -918,4 +918,29 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("endY")
 	int getEndY();
+
+	@Import("copyDrawRegion")
+	void rasterizerCopyDrawRegion(int[] drawRegion);
+
+	@Import("resetDrawRegion")
+	void rasterizerResetDrawRegion(int[] drawRegion);
+
+	@Import("setRasterBuffer")
+	void rasterizerSetRasterBuffer(int[] bitmap, int width, int height);
+
+	@Import("resetRasterClipping")
+	void rasterizerResetRasterClipping();
+
+	@Import("rasterizerSetMidpoint")
+	void rasterizerSetMidpoint(int x, int y);
+
+	@Import("rasterGouraudLowRes")
+	boolean rasterizerGetGouraudLowRes();
+
+	@Import("rasterGouraudLowRes")
+	void rasterizerSetGouraudLowRes(boolean lowRes);
+
+	@Import("setBrightness")
+	@Override
+	void setBrightness(double brightness);
 }

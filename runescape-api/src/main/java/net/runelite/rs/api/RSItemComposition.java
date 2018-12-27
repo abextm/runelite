@@ -25,6 +25,7 @@
 package net.runelite.rs.api;
 
 import net.runelite.api.ItemComposition;
+import net.runelite.api.Model;
 import net.runelite.mapping.Import;
 
 /**
@@ -89,4 +90,32 @@ public interface RSItemComposition extends ItemComposition
 	@Import("getShiftClickActionIndex")
 	@Override
 	int getShiftClickActionIndex();
+
+	@Import("zoom2d")
+	@Override
+	int getZoom2d();
+
+	@Import("xan2d")
+	@Override
+	int getXan2d();
+
+	@Import("yan2d")
+	@Override
+	int getYan2d();
+
+	@Import("zan2d")
+	@Override
+	int getZan2d();
+
+	@Import("offsetX2d")
+	@Override
+	int getOffsetX2d();
+
+	@Import("offsetY2d")
+	@Override
+	int getOffsetY2d();
+
+	@Import("getModel")
+	@Override
+	Model getModel(int count);
 }

@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -1568,4 +1569,11 @@ public interface Client extends GameEngine
 	int getRasterizer3D_clipMidY2();
 
 	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+
+	RasterizerState rasterizerSwitchToImage(BufferedImage image);
+	void rasterizerRestoreState(RasterizerState state, BufferedImage image);
+	SpritePixels rasterizerGetSpritePixels();
+	void rasterizerSetSpritePixels(SpritePixels raspx);
+
+	void setBrightness(double brightness);
 }
