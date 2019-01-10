@@ -13,8 +13,6 @@ LABEL5:
    load_int               11
    invoke                 677
    load_string            "Show items whose names contain the following text:"
-   load_string            "setSearchBankInputText"  ; load event name
-   runelite_callback     ; invoke callback
    load_int               10616876
    widget_put_text_widget
    load_string            ""
