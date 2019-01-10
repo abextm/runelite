@@ -24,9 +24,10 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.Sequence;
 import net.runelite.mapping.Import;
 
-public interface RSSequence
+public interface RSSequence extends Sequence
 {
 	@Import("stretches")
 	boolean getStretches();

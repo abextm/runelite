@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.Sequence;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
@@ -943,4 +944,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("setBrightness")
 	@Override
 	void setBrightness(double brightness);
+
+	@Import("getAnimation")
+	@Override
+	Sequence getAnimation(int id);
 }

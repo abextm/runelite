@@ -114,4 +114,7 @@ public interface NPCComposition
 	 * @return the overhead icon
 	 */
 	HeadIcon getOverheadIcon();
+
+	Model getModel(Sequence var1, int var2, Sequence var3, int var4);
+	int getIdleAnimation();
 }

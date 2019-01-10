@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -53,9 +54,12 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.RasterizerState;
+import net.runelite.api.Sequence;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -65,6 +69,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.api.model.Vertex;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -83,6 +88,7 @@ import org.slf4j.LoggerFactory;
 	tags = {"panel"},
 	developerPlugin = true
 )
+@Slf4j
 @Getter
 public class DevToolsPlugin extends Plugin
 {
@@ -431,10 +437,9 @@ public class DevToolsPlugin extends Plugin
 						}
 					}
 				}).start();
-			}
+			}/*
 			for (Field f : ItemID.class.getFields())
 			{
-				if (!f.getName().endsWith("_ESSENCE_BLOCK")) continue;
 				String name = f.getName().toLowerCase();
 				int id = (int) f.get(null);
 				ItemComposition oc = client.getItemDefinition(id);
@@ -460,6 +465,77 @@ public class DevToolsPlugin extends Plugin
 					client.rasterizerRestoreState(c, img);
 				}
 				todo.put(() -> ImageIO.write(img, "png", new File("r:/items/" + name + ".png")));
+			}*/
+
+			for (Field f : NpcID.class.getFields())
+			{
+				String name = f.getName().toLowerCase();
+				int id = (int) f.get(null);
+				NPCComposition nc = client.getNpcDefinition(id);
+				BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
+				RasterizerState c = client.rasterizerSwitchToImage(img);
+				try
+				{
+					Sequence anim = nc.getIdleAnimation() == -1 ? null : client.getAnimation(nc.getIdleAnimation());
+					Model var21 = nc.getModel(null, 0, anim, 0);
+
+					int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+					int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+					for (Vertex vx : var21.getVertices())
+					{
+						if (minX > vx.getX())
+						{
+							minX = vx.getX();
+						}
+						if (maxX < vx.getX())
+						{
+							maxX = vx.getX();
+						}
+						if (minY > vx.getY())
+						{
+							minY = vx.getY();
+						}
+						if (maxY < vx.getY())
+						{
+							maxY = vx.getY();
+						}
+						if (minZ > vx.getZ())
+						{
+							minZ = vx.getZ();
+						}
+						if (maxZ < vx.getZ())
+						{
+							maxZ = vx.getZ();
+						}
+					}
+
+					int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
+
+					//int zoom2d = (int) (5000 * 1.5d);
+					int yan2d = 128;
+					int xan2d = 128;
+					int zan2d = 0;
+					int offsetX2d = 0;
+					int offsetY2d = 0;
+					int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
+					int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
+
+					var21.calculateBoundsCylinder();
+					var21.drawFrustum(0,
+						yan2d, zan2d, xan2d,
+						0,
+						var17 - (minY + maxY) / 2,
+						var18);
+					todo.put(() -> ImageIO.write(img, "png", new File("r:/npcs/" + name + ".png")));
+				}
+				catch (Exception ex)
+				{
+					log.info("Cannot render {}@{}", id, nc.getIdleAnimation(), ex);
+				}
+				finally
+				{
+					client.rasterizerRestoreState(c, img);
+				}
 			}
 		}
 	}

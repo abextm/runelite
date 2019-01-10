@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import net.runelite.api.Model;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.Sequence;
 import net.runelite.mapping.Import;
 
 public interface RSNPCComposition extends NPCComposition
@@ -78,5 +79,10 @@ public interface RSNPCComposition extends NPCComposition
 	int getRsOverheadIcon();
 
 	@Import("getModel")
-	Model getModel(RSSequence var1, int var2, RSSequence var3, int var4);
+	@Override
+	Model getModel(Sequence var1, int var2, Sequence var3, int var4);
+
+	@Import("standingAnimation")
+	@Override
+	int getIdleAnimation();
 }

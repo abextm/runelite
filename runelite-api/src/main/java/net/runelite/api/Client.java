@@ -1576,4 +1576,5 @@ public interface Client extends GameEngine
 	void rasterizerSetSpritePixels(SpritePixels raspx);
 
 	void setBrightness(double brightness);
+	Sequence getAnimation(int id);
 }
