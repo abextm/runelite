@@ -24,6 +24,7 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.ModelData;
 import net.runelite.api.ObjectComposition;
 import net.runelite.mapping.Import;
 
@@ -56,4 +57,20 @@ public interface RSObjectComposition extends ObjectComposition
 	@Import("getImpostor")
 	@Override
 	RSObjectComposition getImpostor();
+
+	@Import("getModel")
+	@Override
+	RSModelData getModel(int type, int rotation);
+
+	@Import("ambient")
+	@Override
+	int getAmbient();
+
+	@Import("contrast")
+	@Override
+	int getContrast();
+
+	@Import("objectTypes")
+	@Override
+	int[] getObjectTypes();
 }

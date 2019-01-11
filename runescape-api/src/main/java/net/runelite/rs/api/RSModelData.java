@@ -24,9 +24,12 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.Model;
+import net.runelite.api.ModelData;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Import;
 
-public interface RSModelData extends RSRenderable
+public interface RSModelData extends RSRenderable, ModelData
 {
 	@Import("triangleFaceCount")
 	int getTriangleFaceCount();
@@ -66,4 +69,8 @@ public interface RSModelData extends RSRenderable
 
 	@Import("textureRenderTypes")
 	byte[] getTextureRenderTypes();
+
+	@Import("light")
+	@Override
+	Model light(int ambient, int contrast, int var3, int var4, int var5);
 }

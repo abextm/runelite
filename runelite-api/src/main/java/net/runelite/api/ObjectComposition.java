@@ -79,4 +79,10 @@ public interface ObjectComposition
 	 * @return the impostor
 	 */
 	ObjectComposition getImpostor();
+
+	ModelData getModel(int type, int rotation);
+
+	int getAmbient();
+	int getContrast();
+	int[] getObjectTypes();
 }

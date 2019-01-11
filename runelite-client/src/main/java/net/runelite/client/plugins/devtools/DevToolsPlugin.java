@@ -28,16 +28,19 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import com.sun.corba.se.spi.ior.ObjectId;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.min;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -53,9 +56,13 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
+import net.runelite.api.ModelData;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.RasterizerState;
@@ -333,6 +340,98 @@ public class DevToolsPlugin extends Plugin
 				player.getPlayerComposition().setHash();
 				break;
 			}
+			case "oops":
+			{
+				Player player = client.getLocalPlayer();
+				log.info("{}", player.getPlayerComposition().getEquipmentIds());
+				/**player.getPlayerComposition().getEquipmentIds()[0] = ItemID.MYSTIC_HAT_DUSK + 512;
+				 player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.MYSTIC_BOOTS_DUSK + 512;
+				 player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.MYSTIC_GLOVES_DUSK + 512;
+				 player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.MYSTIC_ROBE_BOTTOM_DUSK + 512;
+				 player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = ItemID.MYSTIC_ROBE_TOP_DUSK + 512;
+				 player.getPlayerComposition().setHash();*/
+				// that ^ doesn't really work right because you don't get a face
+				log.info("{}", player.getPlayerComposition().getEquipmentIds());
+				BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
+				RasterizerState c = client.rasterizerSwitchToImage(img);
+				try
+				{
+					Model var21 = client.getLocalPlayer().getModel();
+					int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+					int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+					for (Vertex vx : var21.getVertices())
+					{
+						if (minX > vx.getX())
+						{
+							minX = vx.getX();
+						}
+						if (maxX < vx.getX())
+						{
+							maxX = vx.getX();
+						}
+						if (minY > vx.getY())
+						{
+							minY = vx.getY();
+						}
+						if (maxY < vx.getY())
+						{
+							maxY = vx.getY();
+						}
+						if (minZ > vx.getZ())
+						{
+							minZ = vx.getZ();
+						}
+						if (maxZ < vx.getZ())
+						{
+							maxZ = vx.getZ();
+						}
+					}
+
+					int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
+
+					//int zoom2d = (int) (5000 * 1.5d);
+					int yan2d = 128;
+					int xan2d = 128;
+					int zan2d = 0;
+					int offsetX2d = 0;
+					int offsetY2d = 0;
+					int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
+					int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
+
+					var21.calculateBoundsCylinder();
+					var21.drawFrustum(0,
+						yan2d, zan2d, xan2d,
+						0,
+						var17 - (minY + maxY) / 2,
+						var18);
+					ImageIO.write(img, "png", new File("r:/oops.png"));
+				}
+				catch (Exception ex)
+				{
+					log.info("Cannot render", ex);
+				}
+				finally
+				{
+					client.rasterizerRestoreState(c, img);
+				}
+			}
+			break;
+			case "book":
+				String title = client.getWidget(27, 3).getText();
+				StringBuilder content = new StringBuilder();
+				for (int i = 33; i <= 62; i++)
+				{
+					content.append(client.getWidget(27, i).getText()).append("\n");
+				}
+				String finame = title + "_pg " + client.getWidget(27, 98).getText() + "_" + client.getWidget(27, 99).getText() + ".txt";
+				try
+				{
+					Files.write(new File("r:/" + finame).toPath(), content.toString().getBytes());
+				}
+				catch (IOException e)
+				{
+					log.warn("", e);
+				}
 		}
 	}
 
@@ -437,17 +536,20 @@ public class DevToolsPlugin extends Plugin
 						}
 					}
 				}).start();
-			}/*
-			for (Field f : ItemID.class.getFields())
+			}
+
+			for (Field f : NullItemID.class.getFields())
 			{
 				String name = f.getName().toLowerCase();
 				int id = (int) f.get(null);
+				if (id != 5092 && id != 22565 && id != 22802) continue;
+
 				ItemComposition oc = client.getItemDefinition(id);
 				BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
 				RasterizerState c = client.rasterizerSwitchToImage(img);
 				try
 				{
-					Model var21 = oc.getModel(9999);
+					Model var21 = oc.getModel(1);
 					int zoom2d = (int) (oc.getZoom2d() * 1.5d);
 					int yan2d = oc.getYan2d();
 					int xan2d = oc.getXan2d();
@@ -465,20 +567,19 @@ public class DevToolsPlugin extends Plugin
 					client.rasterizerRestoreState(c, img);
 				}
 				todo.put(() -> ImageIO.write(img, "png", new File("r:/items/" + name + ".png")));
-			}*/
-
+			}/**/
+/*
 			for (Field f : NpcID.class.getFields())
 			{
 				String name = f.getName().toLowerCase();
 				int id = (int) f.get(null);
-				NPCComposition nc = client.getNpcDefinition(id);
 				BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
 				RasterizerState c = client.rasterizerSwitchToImage(img);
 				try
 				{
+					NPCComposition nc = client.getNpcDefinition(id);
 					Sequence anim = nc.getIdleAnimation() == -1 ? null : client.getAnimation(nc.getIdleAnimation());
 					Model var21 = nc.getModel(null, 0, anim, 0);
-
 					int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
 					int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
 					for (Vertex vx : var21.getVertices())
@@ -526,17 +627,126 @@ public class DevToolsPlugin extends Plugin
 						0,
 						var17 - (minY + maxY) / 2,
 						var18);
-					todo.put(() -> ImageIO.write(img, "png", new File("r:/npcs/" + name + ".png")));
+					todo.put(() -> ImageIO.write(img, "png", new File("r:/objs/" + name + ".png")));
 				}
 				catch (Exception ex)
 				{
-					log.info("Cannot render {}@{}", id, nc.getIdleAnimation(), ex);
+					log.info("Cannot render {}", id, ex);
 				}
 				finally
 				{
 					client.rasterizerRestoreState(c, img);
 				}
 			}
+			/**/
+			/*
+			Stream.of(ObjectID.class, NullObjectID.class).map(Class::getFields).flatMap(Stream::of).forEach(f -> {
+				try
+				{
+					String name = f.getName().toLowerCase();
+					int id = (int) f.get(null);
+					ObjectComposition roc = client.getObjectDefinition(id);
+
+					int[] objids = roc.getImpostorIds();
+					
+					if (objids == null)
+					{
+						objids = new int[]{id};
+					}
+					for (int i = 0; i < objids.length; i++)
+					{
+						String name2 = roc.getImpostorIds() == null ? name : name + "_m" + i;
+						ObjectComposition oc = client.getObjectDefinition(id);
+
+						int[] types = oc.getObjectTypes();
+						if (types == null)
+						{
+							types = new int[]{10};
+						}
+						for (int type : types)
+						{
+							for (int rot : new int[]{
+								0, 1, 2, 3, 4, 5, 6, 7
+							})
+							{
+								String name3 = (oc.getObjectTypes() == null ? name2 : name2 + "_t" + type) + "_r" + rot;
+
+								BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
+								RasterizerState c = client.rasterizerSwitchToImage(img);
+								try
+								{
+									ModelData data = oc.getModel(type, rot);
+									if (data == null)
+									{
+										continue;
+									}
+									Model var21 = data.light(oc.getAmbient() + 64, oc.getContrast() * 25 + 768, -50, -10, -50);
+									int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+									int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+									for (Vertex vx : var21.getVertices())
+									{
+										if (minX > vx.getX())
+										{
+											minX = vx.getX();
+										}
+										if (maxX < vx.getX())
+										{
+											maxX = vx.getX();
+										}
+										if (minY > vx.getY())
+										{
+											minY = vx.getY();
+										}
+										if (maxY < vx.getY())
+										{
+											maxY = vx.getY();
+										}
+										if (minZ > vx.getZ())
+										{
+											minZ = vx.getZ();
+										}
+										if (maxZ < vx.getZ())
+										{
+											maxZ = vx.getZ();
+										}
+									}
+
+									int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
+
+									//int zoom2d = (int) (5000 * 1.5d);
+									int yan2d = 128;
+									int xan2d = 128;
+									int zan2d = 0;
+									int offsetX2d = 0;
+									int offsetY2d = 0;
+									int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
+									int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
+
+									var21.calculateBoundsCylinder();
+									var21.drawFrustum(0,
+										yan2d, zan2d, xan2d,
+										0,
+										var17 - (minY + maxY) / 2,
+										var18);
+									todo.put(() -> ImageIO.write(img, "png", new File("e:/objs/" + name3 + ".png")));
+								}
+								catch (Exception ex)
+								{
+									log.info("Cannot render {}", id, ex);
+								}
+								finally
+								{
+									client.rasterizerRestoreState(c, img);
+								}
+							}
+						}
+					}
+				}
+				catch (ReflectiveOperationException xe)
+				{
+					throw new RuntimeException(xe);
+				}
+			});/**/
 		}
 	}
 }
