@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +47,6 @@ public class RuneLiteProperties
 
 	private final Properties properties = new Properties();
 
-	@Inject
 	public RuneLiteProperties()
 	{
 		try (InputStream in = getClass().getResourceAsStream("runelite.properties"))

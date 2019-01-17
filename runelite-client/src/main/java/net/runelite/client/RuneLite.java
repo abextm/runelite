@@ -151,7 +151,7 @@ public class RuneLite
 		Locale.setDefault(Locale.ENGLISH);
 
 		final OptionParser parser = new OptionParser();
-		parser.accepts("developer-mode", "Enable developer tools");
+		parser.accepts("no-developer-mode", "Disable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
@@ -177,9 +177,10 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = options.has("developer-mode");
+		RuneLiteProperties properties = new RuneLiteProperties();
+		final boolean developerMode = properties.getVersion().endsWith("-SNAPSHOT") && !options.has("no-developer-mode");
 
-		if (developerMode && RuneLiteProperties.getLauncherVersion() == null)
+		if (developerMode)
 		{
 			boolean assertions = false;
 			assert assertions = true;
