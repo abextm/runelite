@@ -27,7 +27,7 @@ package net.runelite.client.plugins.timetracking.farming;
 import lombok.Value;
 
 @Value
-class PatchState
+public class PatchState
 {
 	private final Produce produce;
 	private final CropState cropState;

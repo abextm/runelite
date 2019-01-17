@@ -27,6 +27,7 @@ package net.runelite.client.plugins.devtools;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
 import com.sun.corba.se.spi.ior.ObjectId;
 import java.awt.image.BufferedImage;
@@ -35,7 +36,9 @@ import java.io.IOException;
 import static java.lang.Math.min;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,6 +63,7 @@ import net.runelite.api.ModelData;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullItemID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
@@ -82,6 +86,9 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.timetracking.farming.PatchImplementation;
+import net.runelite.client.plugins.timetracking.farming.PatchState;
+import net.runelite.client.plugins.timetracking.farming.Produce;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
@@ -512,6 +519,8 @@ public class DevToolsPlugin extends Plugin
 		}
 	}
 
+	int maxzoom2d = 0;
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged e) throws Exception
 	{
@@ -537,7 +546,7 @@ public class DevToolsPlugin extends Plugin
 					}
 				}).start();
 			}
-
+		/*
 			for (Field f : NullItemID.class.getFields())
 			{
 				String name = f.getName().toLowerCase();
@@ -639,25 +648,40 @@ public class DevToolsPlugin extends Plugin
 				}
 			}
 			/**/
-			/*
-			Stream.of(ObjectID.class, NullObjectID.class).map(Class::getFields).flatMap(Stream::of).forEach(f -> {
-				try
+			Map<PatchImplementation, Integer> vs = new HashMap<>();
+			vs.put(PatchImplementation.BELLADONNA, 7572);
+			vs.put(PatchImplementation.MUSHROOM, 8337);
+			vs.put(PatchImplementation.HESPORI, 34630);
+			vs.put(PatchImplementation.ALLOTMENT, 33694);
+			vs.put(PatchImplementation.HERB, 33979);
+			vs.put(PatchImplementation.FLOWER, 33649);
+			vs.put(PatchImplementation.BUSH, 34006);
+			vs.put(PatchImplementation.FRUIT_TREE, 34007);
+			vs.put(PatchImplementation.HOPS, 8173);
+			vs.put(PatchImplementation.TREE, 33732);
+			vs.put(PatchImplementation.HARDWOOD_TREE, 30481);
+			vs.put(PatchImplementation.SPIRIT_TREE, 33733);
+			vs.put(PatchImplementation.ANIMA, 33998);
+			vs.put(PatchImplementation.CACTUS, 33761);
+			vs.put(PatchImplementation.SEAWEED, 30500);
+			vs.put(PatchImplementation.CALQUAT, 7807);
+			vs.put(PatchImplementation.CELASTRUS, 34629);
+
+			vs.entrySet().forEach(f -> {
+				//try
 				{
-					String name = f.getName().toLowerCase();
-					int id = (int) f.get(null);
-					ObjectComposition roc = client.getObjectDefinition(id);
+					PatchImplementation impl = f.getKey();
+					ObjectComposition roc = client.getObjectDefinition(f.getValue());
 
 					int[] objids = roc.getImpostorIds();
-					
-					if (objids == null)
-					{
-						objids = new int[]{id};
-					}
+
 					for (int i = 0; i < objids.length; i++)
 					{
-						String name2 = roc.getImpostorIds() == null ? name : name + "_m" + i;
-						ObjectComposition oc = client.getObjectDefinition(id);
-
+						PatchState ps = impl.forVarbitValue(i);
+						if (ps == null || ps.getProduce() == Produce.WEEDS) continue;;
+						String name2 = impl.name() + "_" + i + "_" + ps.getProduce().getName() + "_" + ps.getCropState() + "_" + ps.getStage();
+						ObjectComposition oc = client.getObjectDefinition(objids[i]);
+/*
 						int[] types = oc.getObjectTypes();
 						if (types == null)
 						{
@@ -669,13 +693,13 @@ public class DevToolsPlugin extends Plugin
 								0, 1, 2, 3, 4, 5, 6, 7
 							})
 							{
-								String name3 = (oc.getObjectTypes() == null ? name2 : name2 + "_t" + type) + "_r" + rot;
+								String name3 = (oc.getObjectTypes() == null ? name2 : name2 + "_t" + type) + "_r" + rot;*/
 
-								BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
+								BufferedImage img = new BufferedImage(4096, 4096, BufferedImage.TYPE_INT_ARGB_PRE);
 								RasterizerState c = client.rasterizerSwitchToImage(img);
 								try
 								{
-									ModelData data = oc.getModel(type, rot);
+									ModelData data = oc.getModel(10, 0);
 									if (data == null)
 									{
 										continue;
@@ -711,10 +735,18 @@ public class DevToolsPlugin extends Plugin
 										}
 									}
 
-									int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
+									int zoom2d = 16000;
+									//int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
+
+									/*if (zoom2d > maxzoom2d)
+									{
+										maxzoom2d = zoom2d;
+										log.info("maxzoom2d{}", maxzoom2d);
+									}
+									if(true)continue;*/
 
 									//int zoom2d = (int) (5000 * 1.5d);
-									int yan2d = 128;
+									int yan2d = 196;
 									int xan2d = 128;
 									int zan2d = 0;
 									int offsetX2d = 0;
@@ -728,11 +760,11 @@ public class DevToolsPlugin extends Plugin
 										0,
 										var17 - (minY + maxY) / 2,
 										var18);
-									todo.put(() -> ImageIO.write(img, "png", new File("e:/objs/" + name3 + ".png")));
+									todo.put(() -> ImageIO.write(img, "png", new File("r:/objs/" + name2 + ".png")));
 								}
 								catch (Exception ex)
 								{
-									log.info("Cannot render {}", id, ex);
+									log.info("Cannot render {}", oc.getId(), ex);
 								}
 								finally
 								{
@@ -740,12 +772,12 @@ public class DevToolsPlugin extends Plugin
 								}
 							}
 						}
-					}
+					/*}
 				}
 				catch (ReflectiveOperationException xe)
 				{
 					throw new RuntimeException(xe);
-				}
+				}*/
 			});/**/
 		}
 	}

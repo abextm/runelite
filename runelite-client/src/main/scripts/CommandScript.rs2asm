@@ -236,10 +236,6 @@ LABEL182:
    if_icmpeq              LABEL186
    jump                   LABEL192
 LABEL186:
-   iload                  3
-   load_int               1
-   if_icmpeq              LABEL190
-   jump                   LABEL191
 LABEL190:
    invoke                 75
 LABEL191:
@@ -250,10 +246,6 @@ LABEL192:
    if_icmpeq              LABEL196
    jump                   LABEL202
 LABEL196:
-   iload                  3
-   load_int               1
-   if_icmpeq              LABEL200
-   jump                   LABEL201
 LABEL200:
    invoke                 76
 LABEL201:

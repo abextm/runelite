@@ -35,7 +35,7 @@ public enum PatchImplementation
 	BELLADONNA(Tab.SPECIAL, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -73,7 +73,7 @@ public enum PatchImplementation
 	MUSHROOM(Tab.SPECIAL, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -111,7 +111,7 @@ public enum PatchImplementation
 	HESPORI(Tab.SPECIAL, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -139,7 +139,7 @@ public enum PatchImplementation
 	ALLOTMENT(Tab.ALLOTMENT, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -472,7 +472,7 @@ public enum PatchImplementation
 	HERB(Tab.HERB, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -740,7 +740,7 @@ public enum PatchImplementation
 	FLOWER(Tab.FLOWER, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -1013,7 +1013,7 @@ public enum PatchImplementation
 	BUSH(Tab.BUSH, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -1246,7 +1246,7 @@ public enum PatchImplementation
 	FRUIT_TREE(Tab.FRUIT_TREE, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -1529,7 +1529,7 @@ public enum PatchImplementation
 	HOPS(Tab.HOPS, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -1832,7 +1832,7 @@ public enum PatchImplementation
 	TREE(Tab.TREE, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2115,7 +2115,7 @@ public enum PatchImplementation
 	HARDWOOD_TREE(Tab.TREE, "Hardwood Trees")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2198,7 +2198,7 @@ public enum PatchImplementation
 	REDWOOD(Tab.TREE, "Redwood Trees")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2246,7 +2246,7 @@ public enum PatchImplementation
 	SPIRIT_TREE(Tab.TREE, "Spirit Trees")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2294,7 +2294,7 @@ public enum PatchImplementation
 	ANIMA(Tab.SPECIAL, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2341,7 +2341,7 @@ public enum PatchImplementation
 	CACTUS(Tab.SPECIAL, "Cactus")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2414,7 +2414,7 @@ public enum PatchImplementation
 	SEAWEED(Tab.SPECIAL, "Seaweed")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2452,7 +2452,7 @@ public enum PatchImplementation
 	CALQUAT(Tab.FRUIT_TREE, "Calquat")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2495,7 +2495,7 @@ public enum PatchImplementation
 	CELASTRUS(Tab.FRUIT_TREE, "Celastrus")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 3)
 				{
@@ -2553,7 +2553,7 @@ public enum PatchImplementation
 	GRAPES(Tab.GRAPE, "")
 		{
 			@Override
-			PatchState forVarbitValue(int value)
+			public PatchState forVarbitValue(int value)
 			{
 				if (value >= 0 && value <= 1)
 				{
@@ -2576,7 +2576,7 @@ public enum PatchImplementation
 			}
 		};
 
-	abstract PatchState forVarbitValue(int value);
+	abstract public PatchState forVarbitValue(int value);
 
 	private final Tab tab;
 
