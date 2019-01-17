@@ -649,7 +649,7 @@ public class DevToolsPlugin extends Plugin
 			}
 			/**/
 			Map<PatchImplementation, Integer> vs = new HashMap<>();
-			vs.put(PatchImplementation.BELLADONNA, 7572);
+			/*vs.put(PatchImplementation.BELLADONNA, 7572);
 			vs.put(PatchImplementation.MUSHROOM, 8337);
 			vs.put(PatchImplementation.HESPORI, 34630);
 			vs.put(PatchImplementation.ALLOTMENT, 33694);
@@ -658,14 +658,14 @@ public class DevToolsPlugin extends Plugin
 			vs.put(PatchImplementation.BUSH, 34006);
 			vs.put(PatchImplementation.FRUIT_TREE, 34007);
 			vs.put(PatchImplementation.HOPS, 8173);
-			vs.put(PatchImplementation.TREE, 33732);
-			vs.put(PatchImplementation.HARDWOOD_TREE, 30481);
+			vs.put(PatchImplementation.TREE, 33732);*/
+			vs.put(PatchImplementation.HARDWOOD_TREE, 30481);/*
 			vs.put(PatchImplementation.SPIRIT_TREE, 33733);
 			vs.put(PatchImplementation.ANIMA, 33998);
 			vs.put(PatchImplementation.CACTUS, 33761);
 			vs.put(PatchImplementation.SEAWEED, 30500);
 			vs.put(PatchImplementation.CALQUAT, 7807);
-			vs.put(PatchImplementation.CELASTRUS, 34629);
+			vs.put(PatchImplementation.CELASTRUS, 34629);*/
 
 			vs.entrySet().forEach(f -> {
 				//try
@@ -695,7 +695,7 @@ public class DevToolsPlugin extends Plugin
 							{
 								String name3 = (oc.getObjectTypes() == null ? name2 : name2 + "_t" + type) + "_r" + rot;*/
 
-								BufferedImage img = new BufferedImage(4096, 4096, BufferedImage.TYPE_INT_ARGB_PRE);
+								BufferedImage img = new BufferedImage(409, 409, BufferedImage.TYPE_INT_ARGB_PRE);
 								RasterizerState c = client.rasterizerSwitchToImage(img);
 								try
 								{
@@ -746,15 +746,15 @@ public class DevToolsPlugin extends Plugin
 									if(true)continue;*/
 
 									//int zoom2d = (int) (5000 * 1.5d);
-									int yan2d = 196;
-									int xan2d = 128;
+									int yan2d = 0;
+									int xan2d = 0;
 									int zan2d = 0;
 									int offsetX2d = 0;
 									int offsetY2d = 0;
 									int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
 									int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
 
-									var21.calculateBoundsCylinder();
+									//var21.calculateBoundsCylinder();
 									var21.drawFrustum(0,
 										yan2d, zan2d, xan2d,
 										0,
