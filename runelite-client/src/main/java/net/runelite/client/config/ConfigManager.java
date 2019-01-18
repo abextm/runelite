@@ -52,7 +52,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -75,7 +74,6 @@ public class ConfigManager
 
 	private final EventBus eventBus;
 	private final ScheduledExecutorService executor;
-	private final Semaphore syncSemaphore = new Semaphore(1);
 	private boolean noConfigSync;
 
 	private AccountSession session;
@@ -130,20 +128,12 @@ public class ConfigManager
 		}
 	}
 
-	public void load()
+	public synchronized void load()
 	{
 		if (configWatcherTask != null)
 		{
-			try
-			{
-				syncSemaphore.acquireUninterruptibly();
-				configWatcherTask.cancel(true);
-				configWatcherTask = null;
-			}
-			finally
-			{
-				syncSemaphore.release();
-			}
+			configWatcherTask.cancel(true);
+			configWatcherTask = null;
 		}
 
 		if (client == null)
@@ -282,60 +272,7 @@ public class ConfigManager
 
 		log.info("Starting file change config watcher for file {}", propertiesFile);
 
-		configWatcherTask = executor.scheduleAtFixedRate(new ConfigWatcher(propertiesFile, () ->
-		{
-			try
-			{
-				syncSemaphore.acquireUninterruptibly();
-
-				final Properties properties = new Properties();
-				try (FileInputStream in = new FileInputStream(propertiesFile))
-				{
-					properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
-				}
-				catch (Exception e)
-				{
-					log.debug("Malformed properties, skipping update");
-					return;
-				}
-
-				final Map<String, String> copy = (Map) ImmutableMap.copyOf(this.properties);
-				copy.forEach((groupAndKey, value) ->
-				{
-					if (!properties.containsKey(groupAndKey))
-					{
-						final String[] split = groupAndKey.split("\\.", 2);
-						if (split.length != 2)
-						{
-							return;
-						}
-
-						final String groupName = split[0];
-						final String key = split[1];
-						unsetConfiguration(groupName, key);
-					}
-				});
-
-				properties.forEach((objGroupAndKey, objValue) ->
-				{
-					final String groupAndKey = String.valueOf(objGroupAndKey);
-					final String[] split = groupAndKey.split("\\.", 2);
-					if (split.length != 2)
-					{
-						return;
-					}
-
-					final String groupName = split[0];
-					final String key = split[1];
-					final String value = String.valueOf(objValue);
-					setConfiguration(groupName, key, value);
-				});
-			}
-			finally
-			{
-				syncSemaphore.release();
-			}
-		}), 5000, 5000, TimeUnit.MILLISECONDS);
+		configWatcherTask = executor.scheduleAtFixedRate(new ConfigWatcher(propertiesFile, this::loadFromFile), 5000, 5000, TimeUnit.MILLISECONDS);
 	}
 
 	public <T> T getConfig(Class<T> clazz)
