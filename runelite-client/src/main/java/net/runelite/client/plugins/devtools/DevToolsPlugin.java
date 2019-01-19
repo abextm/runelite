@@ -577,77 +577,96 @@ public class DevToolsPlugin extends Plugin
 				}
 				todo.put(() -> ImageIO.write(img, "png", new File("r:/items/" + name + ".png")));
 			}/**/
-/*
+
 			for (Field f : NpcID.class.getFields())
 			{
 				String name = f.getName().toLowerCase();
 				int id = (int) f.get(null);
-				BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
-				RasterizerState c = client.rasterizerSwitchToImage(img);
-				try
+				if (id != 4724 && id != 4725 && id != 4726 && id != 4727)
 				{
-					NPCComposition nc = client.getNpcDefinition(id);
-					Sequence anim = nc.getIdleAnimation() == -1 ? null : client.getAnimation(nc.getIdleAnimation());
-					Model var21 = nc.getModel(null, 0, anim, 0);
-					int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
-					int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
-					for (Vertex vx : var21.getVertices())
+					continue;
+				}
+
+				NPCComposition nc = client.getNpcDefinition(id);
+				Sequence anim = nc.getWalkingAnimation() == -1 ? null : client.getAnimation(nc.getWalkingAnimation());
+
+				int[] frames;
+				if (anim == null)
+				{
+					frames = new int[]{0};
+				}
+				else
+				{
+					frames = IntStream.range(0, anim.getFrameIDs().length).toArray();
+				}
+				for (int frame : frames)
+				{
+					BufferedImage img = new BufferedImage(1536, 1536, BufferedImage.TYPE_INT_ARGB_PRE);
+					RasterizerState c = client.rasterizerSwitchToImage(img);
+					try
 					{
-						if (minX > vx.getX())
+						Model var21 = nc.getModel(null, 0, anim, frame);
+						int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+						int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+						for (Vertex vx : var21.getVertices())
 						{
-							minX = vx.getX();
+							if (minX > vx.getX())
+							{
+								minX = vx.getX();
+							}
+							if (maxX < vx.getX())
+							{
+								maxX = vx.getX();
+							}
+							if (minY > vx.getY())
+							{
+								minY = vx.getY();
+							}
+							if (maxY < vx.getY())
+							{
+								maxY = vx.getY();
+							}
+							if (minZ > vx.getZ())
+							{
+								minZ = vx.getZ();
+							}
+							if (maxZ < vx.getZ())
+							{
+								maxZ = vx.getZ();
+							}
 						}
-						if (maxX < vx.getX())
-						{
-							maxX = vx.getX();
-						}
-						if (minY > vx.getY())
-						{
-							minY = vx.getY();
-						}
-						if (maxY < vx.getY())
-						{
-							maxY = vx.getY();
-						}
-						if (minZ > vx.getZ())
-						{
-							minZ = vx.getZ();
-						}
-						if (maxZ < vx.getZ())
-						{
-							maxZ = vx.getZ();
-						}
+
+						int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
+
+						//int zoom2d = (int) (5000 * 1.5d);
+						int yan2d = 128;
+						int xan2d = 128;
+						int zan2d = 0;
+						int offsetX2d = 0;
+						int offsetY2d = 0;
+						int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
+						int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
+
+						var21.calculateBoundsCylinder();
+						var21.drawFrustum(0,
+							yan2d, zan2d, xan2d,
+							0,
+							var17 - (minY + maxY) / 2,
+							var18);
+						todo.put(() -> ImageIO.write(img, "png", new File("r:/npcs/" + name + "_" + frame + ".png")));
 					}
-
-					int zoom2d = Math.max((maxX - minX), Math.max((maxY - minY), (maxZ - minZ))) * 24;
-
-					//int zoom2d = (int) (5000 * 1.5d);
-					int yan2d = 128;
-					int xan2d = 128;
-					int zan2d = 0;
-					int offsetX2d = 0;
-					int offsetY2d = 0;
-					int var17 = zoom2d * Perspective.SINE[xan2d] >> 16;
-					int var18 = zoom2d * Perspective.COSINE[xan2d] >> 16;
-
-					var21.calculateBoundsCylinder();
-					var21.drawFrustum(0,
-						yan2d, zan2d, xan2d,
-						0,
-						var17 - (minY + maxY) / 2,
-						var18);
-					todo.put(() -> ImageIO.write(img, "png", new File("r:/objs/" + name + ".png")));
-				}
-				catch (Exception ex)
-				{
-					log.info("Cannot render {}", id, ex);
-				}
-				finally
-				{
-					client.rasterizerRestoreState(c, img);
+					catch (Exception ex)
+					{
+						log.info("Cannot render {}", id, ex);
+					}
+					finally
+					{
+						client.rasterizerRestoreState(c, img);
+					}
 				}
 			}
 			/**/
+			/*
 			Map<PatchImplementation, Integer> vs = new HashMap<>();
 			/*vs.put(PatchImplementation.BELLADONNA, 7572);
 			vs.put(PatchImplementation.MUSHROOM, 8337);
@@ -658,14 +677,14 @@ public class DevToolsPlugin extends Plugin
 			vs.put(PatchImplementation.BUSH, 34006);
 			vs.put(PatchImplementation.FRUIT_TREE, 34007);
 			vs.put(PatchImplementation.HOPS, 8173);
-			vs.put(PatchImplementation.TREE, 33732);*/
+			vs.put(PatchImplementation.TREE, 33732);*//*
 			vs.put(PatchImplementation.HARDWOOD_TREE, 30481);/*
 			vs.put(PatchImplementation.SPIRIT_TREE, 33733);
 			vs.put(PatchImplementation.ANIMA, 33998);
 			vs.put(PatchImplementation.CACTUS, 33761);
 			vs.put(PatchImplementation.SEAWEED, 30500);
 			vs.put(PatchImplementation.CALQUAT, 7807);
-			vs.put(PatchImplementation.CELASTRUS, 34629);*/
+			vs.put(PatchImplementation.CELASTRUS, 34629);*//*
 
 			vs.entrySet().forEach(f -> {
 				//try
@@ -693,7 +712,7 @@ public class DevToolsPlugin extends Plugin
 								0, 1, 2, 3, 4, 5, 6, 7
 							})
 							{
-								String name3 = (oc.getObjectTypes() == null ? name2 : name2 + "_t" + type) + "_r" + rot;*/
+								String name3 = (oc.getObjectTypes() == null ? name2 : name2 + "_t" + type) + "_r" + rot;*//*
 
 								BufferedImage img = new BufferedImage(409, 409, BufferedImage.TYPE_INT_ARGB_PRE);
 								RasterizerState c = client.rasterizerSwitchToImage(img);
@@ -743,7 +762,7 @@ public class DevToolsPlugin extends Plugin
 										maxzoom2d = zoom2d;
 										log.info("maxzoom2d{}", maxzoom2d);
 									}
-									if(true)continue;*/
+									if(true)continue;*//*
 
 									//int zoom2d = (int) (5000 * 1.5d);
 									int yan2d = 0;
@@ -778,7 +797,7 @@ public class DevToolsPlugin extends Plugin
 				{
 					throw new RuntimeException(xe);
 				}*/
-			});/**/
+			/*});/**/
 		}
 	}
 }

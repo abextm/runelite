@@ -45,6 +45,7 @@ public interface RSSequence extends Sequence
 	int[] getInterleaveLeave();
 
 	@Import("frameIDs")
+	@Override
 	int[] getFrameIDs();
 
 	@Import("frameLengths")

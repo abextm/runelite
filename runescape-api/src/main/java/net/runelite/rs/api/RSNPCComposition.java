@@ -85,4 +85,8 @@ public interface RSNPCComposition extends NPCComposition
 	@Import("standingAnimation")
 	@Override
 	int getIdleAnimation();
+
+	@Import("walkingAnimation")
+	@Override
+	int getWalkingAnimation();
 }
