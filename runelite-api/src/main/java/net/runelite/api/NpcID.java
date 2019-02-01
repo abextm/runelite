@@ -6894,8 +6894,6 @@ public final class NpcID
 	public static final int TEKTON_ENRAGED = 7543;
 	public static final int TEKTON_ENRAGED_7544 = 7544;
 	public static final int TEKTON_7545 = 7545;
-	public static final int SCAVENGER_RUNT = 7546;
-	public static final int SCAVENGER_RUNT_7547 = 7547;
 	public static final int SCAVENGER_BEAST = 7548;
 	public static final int SCAVENGER_BEAST_7549 = 7549;
 	public static final int GREAT_OLM_RIGHT_CLAW = 7550;
@@ -7467,14 +7465,14 @@ public final class NpcID
 	public static final int GROWTHLING = 8194;
 	public static final int BRYOPHYTA = 8195;
 	public static final int PUPPADILE = 8196;
-	public static final int TEKTONNE = 8197;
+	public static final int TEKTINY = 8197;
 	public static final int VANGUARD_8198 = 8198;
-	public static final int MINI_NISTIRIO = 8199;
+	public static final int VASA_MINIRIO = 8199;
 	public static final int VESPINA = 8200;
 	public static final int PUPPADILE_8201 = 8201;
-	public static final int TEKTINY = 8202;
+	public static final int TEKTINY_8202 = 8202;
 	public static final int VANGUARD_8203 = 8203;
-	public static final int VASA_MINIRIO = 8204;
+	public static final int VASA_MINIRIO_8204 = 8204;
 	public static final int VESPINA_8205 = 8205;
 	public static final int GARTH_8206 = 8206;
 	public static final int GARTH_8207 = 8207;
