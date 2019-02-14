@@ -1033,8 +1033,6 @@ public final class NpcID
 	public static final int ANGRY_BEAR = 1060;
 	public static final int ANGRY_UNICORN = 1061;
 	public static final int ANGRY_GIANT_RAT = 1062;
-	public static final int ANGRY_GIANT_RAT_1063 = 1063;
-	public static final int ANGRY_GIANT_RAT_1064 = 1064;
 	public static final int ANGRY_GOBLIN = 1065;
 	public static final int FEAR_REAPER = 1066;
 	public static final int CONFUSION_BEAST = 1067;
@@ -2685,7 +2683,6 @@ public final class NpcID
 	public static final int BAT = 2827;
 	public static final int DRYAD = 2828;
 	public static final int FAIRY_2829 = 2829;
-	public static final int LEPRECHAUN = 2830;
 	public static final int LIZARD_MAN = 2831;
 	public static final int ORC = 2832;
 	public static final int TROLL_2833 = 2833;
