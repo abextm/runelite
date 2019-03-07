@@ -157,8 +157,6 @@ LABEL140:
    sload                  2
    load_int               10616889
    widget_put_text_widget
-   load_string            "setChatboxInput"
-   runelite_callback     
    load_int               3
    load_int               16
    load_int               1

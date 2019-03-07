@@ -146,11 +146,6 @@ LABEL98:
 LABEL101:
    049                    360
    049                    359
-   load_string            "privateMessage" ; load event name
-   load_int               0                ; whether or not to skip
-   runelite_callback     ; invoke callback
-   load_int               1
-   if_icmpeq              LABEL104         ; if skipped, do not message
    privmsg               
 LABEL104:
    get_gamecycle         
