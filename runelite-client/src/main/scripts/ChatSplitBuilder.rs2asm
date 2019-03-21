@@ -353,18 +353,7 @@ LABEL311:
    iload                  14
    invoke                 91
    iconst                 1
-   if_icmpeq              CHAT_FILTER       ; Jump to our new label instead
-   jump                   LABEL475
-CHAT_FILTER:
-   sload                  0                 ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  15                ; Load the messageType
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 0                 ; Override the message with our filtered message
-   if_icmpeq              LABEL327          ; Check if we are building this message
+   if_icmpeq              LABEL327
    jump                   LABEL475
 LABEL327:
    iload                  15
@@ -378,8 +367,6 @@ LABEL330:
    sconst                 "From "
    sload                  1
    sconst                 ":"
-   sconst                 "privateChatSplitFrom"
-   runelite_callback     
    join_string            3
    sload                  0
    iload                  9
@@ -402,8 +389,6 @@ LABEL351:
    sconst                 "To "
    sload                  1
    sconst                 ":"
-   sconst                 "privateChatSplitTo"
-   runelite_callback     
    join_string            3
    sload                  0
    iload                  9
