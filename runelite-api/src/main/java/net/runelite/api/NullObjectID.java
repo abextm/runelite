@@ -16105,7 +16105,9 @@ public final class NullObjectID
 	public static final int NULL_34650 = 34650;
 	public static final int NULL_34651 = 34651;
 	public static final int NULL_34652 = 34652;
+	public static final int NULL_34657 = 34657;
 	public static final int NULL_34662 = 34662;
+	public static final int NULL_34673 = 34673;
 	public static final int NULL_34678 = 34678;
 	public static final int NULL_34679 = 34679;
 	public static final int NULL_34680 = 34680;
