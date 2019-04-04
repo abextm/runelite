@@ -1141,8 +1141,6 @@ public final class ObjectID
 	public static final int TOMB_DOLMEN = 2235;
 	public static final int CLIMBING_ROCKS = 2236;
 	public static final int PALM_TREE = 2237;
-	public static final int HILLSIDE_ENTRANCE = 2238;
-	public static final int HILLSIDE_ENTRANCE_2239 = 2239;
 	public static final int CARVED_DOORS = 2240;
 	public static final int CARVED_DOORS_2241 = 2241;
 	public static final int TOMB_EXIT = 2242;
@@ -2323,7 +2321,7 @@ public final class ObjectID
 	public static final int BRONZE_CHEST_4131 = 4131;
 	public static final int WOODEN_DOORS = 4132;
 	public static final int WOODEN_DOORS_4133 = 4133;
-	public static final int HILLSIDE_ENTRANCE_4134 = 4134;
+	public static final int HILLSIDE_ENTRANCE = 4134;
 	public static final int HILLSIDE_ENTRANCE_4135 = 4135;
 	public static final int COUNTER_4138 = 4138;
 	public static final int SHIPS_LADDER_4139 = 4139;
@@ -13894,6 +13892,7 @@ public final class ObjectID
 	public static final int TABLE_26202 = 26202;
 	public static final int TABLE_26203 = 26203;
 	public static final int DOOR_26205 = 26205;
+	public static final int SEED_VAULT = 26206;
 	public static final int LARGE_DOOR_26207 = 26207;
 	public static final int WOODEN_BENCH_26210 = 26210;
 	public static final int OAK_BENCH_26211 = 26211;
@@ -18539,6 +18538,7 @@ public final class ObjectID
 	public static final int ALCHEMICAL_TOPIARY = 34654;
 	public static final int MYSTERIOUS_PIPE = 34655;
 	public static final int CHEMICAL_WASTE_PIPE = 34656;
+	public static final int HILLSIDE_ENTRANCE_34658 = 34658;
 	public static final int THE_SHEARED_RAM = 34659;
 	public static final int BRIMSTONE_CHEST = 34660;
 	public static final int BRIMSTONE_CHEST_34661 = 34661;
@@ -18552,6 +18552,7 @@ public final class ObjectID
 	public static final int GANGPLANK_34670 = 34670;
 	public static final int GANGPLANK_34671 = 34671;
 	public static final int GANGPLANK_34672 = 34672;
+	public static final int HILLSIDE_ENTRANCE_34674 = 34674;
 	public static final int VERZIK_VITUR_DISPLAY = 34677;
 	public static final int MAKING_FRIENDS_WITH_MY_ARM_DISPLAY = 34681;
 	public static final int FIRE_34682 = 34682;
