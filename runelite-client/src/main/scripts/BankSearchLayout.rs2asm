@@ -646,8 +646,7 @@ LABEL593:
    if_icmpeq              LABEL597
    jump                   LABEL638
 LABEL597:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   lowercase             ; instead get the var directly and lowercase it
+   invoke                 280
    sstore                 0
    sload                  0
    string_length         
@@ -672,10 +671,6 @@ LABEL615:
    tostring              
    sconst                 " found)"
    join_string            3
-   iload                  21                             ; load number of matches
-   sconst                 "setSearchBankInputTextFound"  ; load event name
-   runelite_callback     ; invoke callback
-   pop_int               ; pop number of matches
    iconst                 10616876
    if_settext            
 LABEL622:
@@ -694,16 +689,12 @@ LABEL623:
    jump                   LABEL637
 LABEL634:
    sconst                 "Show items whose names contain the following text:"
-   sconst                 "setSearchBankInputText"  ; load event name
-   runelite_callback     ; invoke callback
    iconst                 10616876
    if_settext            
 LABEL637:
    jump                   LABEL641
 LABEL638:
    sconst                 "The Bank of Gielinor"
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  6
    if_settext            
 LABEL641:
@@ -855,8 +846,6 @@ LABEL765:
    get_varbit             4150
    enum                  
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  6
    if_settext            
    jump                   LABEL781
@@ -865,8 +854,6 @@ LABEL775:
    get_varbit             4150
    tostring              
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  6
    if_settext            
 LABEL781:
