@@ -1,7 +1,7 @@
 .id                 277
-.int_stack_count    13
+.int_stack_count    17
 .string_stack_count 0
-.int_var_count      31
+.int_var_count      36
 .string_var_count   1
    get_varbit             5102
    iconst                 1
@@ -749,8 +749,7 @@ LABEL684:
    if_icmpeq              LABEL688
    jump                   LABEL729
 LABEL688:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   invoke                 280; instead get the var directly and lowercase it
+   invoke                 280
    sstore                 0
    sload                  0
    string_length         
@@ -775,10 +774,6 @@ LABEL706:
    tostring              
    sconst                 " found)"
    join_string            3
-   iload                  21                             ; load number of matches
-   sconst                 "setSearchBankInputTextFound"  ; load event name
-   runelite_callback     ; invoke callback
-   pop_int               ; pop number of matches
    iconst                 10616876
    if_settext            
 LABEL713:
@@ -797,16 +792,12 @@ LABEL714:
    jump                   LABEL728
 LABEL725:
    sconst                 "Show items whose names contain the following text:"
-   sconst                 "setSearchBankInputText"  ; load event name
-   runelite_callback     ; invoke callback
    iconst                 10616876
    if_settext            
 LABEL728:
    jump                   LABEL732
 LABEL729:
    sconst                 "The Bank of Gielinor"
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  6
    if_settext            
 LABEL732:
@@ -962,8 +953,6 @@ LABEL860:
    get_varbit             4150
    enum                  
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  6
    if_settext            
    jump                   LABEL876
@@ -972,8 +961,6 @@ LABEL870:
    get_varbit             4150
    tostring              
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  6
    if_settext            
 LABEL876:
