@@ -38,5 +38,9 @@ LABEL2:
    iload                  10
    iload                  11
    iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
    invoke                 277
    return                
