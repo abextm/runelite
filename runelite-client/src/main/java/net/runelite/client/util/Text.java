@@ -30,6 +30,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.text.WordUtils;
 
@@ -38,7 +39,7 @@ import org.apache.commons.text.WordUtils;
  */
 public class Text
 {
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Pattern TAG_REGEXP = Pattern.compile("<([^>]*)>");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -76,13 +77,36 @@ public class Text
 	 */
 	public static String removeTags(String str)
 	{
-		return TAG_REGEXP.matcher(str).replaceAll("");
+		Matcher m = TAG_REGEXP.matcher(str);
+		if (!m.find())
+		{
+			return str;
+		}
+		StringBuffer sb = new StringBuffer();
+		do
+		{
+			String tag = m.group(1);
+			switch (tag)
+			{
+				case "gt":
+					m.appendReplacement(sb, ">");
+					break;
+				case "lt":
+					m.appendReplacement(sb, "<");
+					break;
+				default:
+					m.appendReplacement(sb, "");
+			}
+		}
+		while (m.find());
+		m.appendTail(sb);
+		return sb.toString();
 	}
 
 	/**
 	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
-	 * @param str The string to standardize
 	 *
+	 * @param str The string to standardize
 	 * @return The given `str` that is standardized
 	 */
 	public static String standardize(String str)
