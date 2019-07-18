@@ -206,6 +206,4 @@ LABEL166:
    istore                 5
    jump                   LABEL123
 LABEL171:
-   sconst                 "questProgressUpdated"
-   runelite_callback     
    return                
