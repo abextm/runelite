@@ -15295,7 +15295,6 @@ public final class ObjectID
 	public static final int SHRINE = 29088;
 	public static final int LADDER_29089 = 29089;
 	public static final int MYSTERIOUS_RUINS_29090 = 29090;
-	public static final int VENDING_SHRINE = 29091;
 	public static final int LADDER_29092 = 29092;
 	public static final int MYSTERIOUS_RUINS_29094 = 29094;
 	public static final int MYSTERIOUS_RUINS_29095 = 29095;
