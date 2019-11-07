@@ -183,20 +183,7 @@ LABEL157:
    iload                  12
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER       ; Jump to our new label instead
-   jump                   LABEL641
-CHAT_FILTER:
-   sload                  11                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  10                ; Load the messageType
-   iload                  9                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 11                ; Override the message with our filtered message
-   if_icmpeq              LABEL172          ; Check if we are building this message
+   if_icmpeq              LABEL172
    jump                   LABEL675
 LABEL172:
    iload                  10
@@ -229,14 +216,9 @@ LABEL183:
       91: LABEL207
    jump                   LABEL426
 LABEL186:
-   sload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ":"
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sload                  9
    sconst                 ":"
-   join_string            2                 ; We need to append an extra string since we added the timestamp
+   join_string            2
    sload                  1
    sload                  11
    sconst                 "</col>"
@@ -256,14 +238,9 @@ LABEL186:
    istore                 6
    jump                   LABEL440
 LABEL207:
-   sload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ":"
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sload                  9
    sconst                 ":"
-   join_string            2                 ; We need to append an extra string since we added the timestamp
+   join_string            2
    sload                  3
    sload                  11
    sconst                 "</col>"
@@ -283,17 +260,10 @@ LABEL207:
    istore                 6
    jump                   LABEL440
 LABEL228:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 "From "
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sconst                 "From "
    sload                  9
    sconst                 ":"
-   sconst                 "privateChatFrom"
-   runelite_callback     
-   join_string            3                 ; We need to append an extra string since we added the timestamp
+   join_string            3
    sload                  2
    sload                  11
    sconst                 "</col>"
@@ -313,15 +283,10 @@ LABEL228:
    istore                 6
    jump                   LABEL440
 LABEL250:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ""
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sload                  7
    sload                  11
    sconst                 "</col>"
-   join_string            3                 ; We need to append an extra string since we added the timestamp
+   join_string            3
    iload                  7
    iload                  8
    iconst                 10616890
@@ -337,15 +302,10 @@ LABEL250:
    istore                 6
    jump                   LABEL440
 LABEL268:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ""
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sload                  2
    sload                  11
    sconst                 "</col>"
-   join_string            3                 ; We need to append an extra string since we added the timestamp
+   join_string            3
    iload                  7
    iload                  8
    iconst                 10616890
@@ -378,17 +338,10 @@ LABEL289:
 LABEL300:
    jump                   LABEL440
 LABEL301:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 "To "
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sconst                 "To "
    sload                  9
    sconst                 ":"
-   sconst                 "privateChatTo"
-   runelite_callback     
-   join_string            3                 ; We need to append an extra string since we added the timestamp
+   join_string            3
    sload                  2
    sload                  11
    sconst                 "</col>"
@@ -408,15 +361,10 @@ LABEL301:
    istore                 6
    jump                   LABEL440
 LABEL323:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ""
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sload                  8
    sload                  11
    sconst                 "</col>"
-   join_string            3                 ; We need to append an extra string since we added the timestamp
+   join_string            3
    iload                  7
    iload                  8
    iconst                 10616890
@@ -432,11 +380,6 @@ LABEL323:
    istore                 6
    jump                   LABEL440
 LABEL341:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 "["
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               
    sconst                 "["
    sload                  5
    sload                  10
@@ -444,7 +387,7 @@ LABEL341:
    sconst                 "] "
    sload                  9
    sconst                 ":"
-   join_string            7                 ; We need to append an extra string since we added the timestamp
+   join_string            7
    sload                  6
    sload                  11
    sconst                 "</col>"
