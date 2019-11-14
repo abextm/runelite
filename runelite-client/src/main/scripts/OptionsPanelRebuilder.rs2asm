@@ -276,29 +276,21 @@ LABEL253:
    viewport_clampfov     
    get_varc_int           73
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    if_icmpge              LABEL262
    jump                   LABEL278
 LABEL262:
    get_varc_int           73
    iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    if_icmple              LABEL266
    jump                   LABEL278
 LABEL266:
    get_varc_int           74
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    if_icmpge              LABEL270
    jump                   LABEL278
 LABEL270:
    get_varc_int           74
    iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    if_icmple              LABEL274
    jump                   LABEL278
 LABEL274:
