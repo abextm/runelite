@@ -3,12 +3,6 @@
 .string_stack_count 0
 .int_var_count      2
 .string_var_count   0
-   iload                  0 ; stat
-   iload                  1 ; xp
-   sconst                 "fakeXpDrop"
-   runelite_callback
-   pop_int
-   pop_int
    iconst                 105
    iconst                 83
    iconst                 681
