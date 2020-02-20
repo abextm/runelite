@@ -62,7 +62,7 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  6
-   iconst                 10551326
+   iconst                 10551327
    enum                  
    if_getheight          
    add                   
@@ -419,7 +419,7 @@ LABEL362:
 LABEL365:
    iload                  7
    iload                  12                 ; Load the id of the messageNode
-   sconst                 ""                 ; Push a container for the timestamp
+   sconst                 "From "                 ; Push a container for the timestamp
    sconst                 "addTimestamp"     ; Push event name
    runelite_callback     ; Invoke callback
    pop_int               ; Pop the id of the messageNode
@@ -428,7 +428,7 @@ LABEL365:
    sconst                 ":"
    sconst                 "privateChatSplitFrom"
    runelite_callback     
-   join_string            4                  ; Add the timestamp to the message
+   join_string            3                  ; Add the timestamp to the message
    sload                  0
    iload                  9
    iload                  10
@@ -448,7 +448,7 @@ LABEL365:
 LABEL386:
    iload                  7
    iload                  12                 ; Load the id of the messageNode
-   sconst                 ""                 ; Push container for the timestamp
+   sconst                 "To "                 ; Push container for the timestamp
    sconst                 "addTimestamp"     ; Push event name
    runelite_callback     ; Invoke callback
    pop_int               ; Pop the id of the messageNode
@@ -457,7 +457,7 @@ LABEL386:
    sconst                 ":"
    sconst                 "privateChatSplitTo"
    runelite_callback     
-   join_string            4                  ; Add the timestamp to the message
+   join_string            3                  ; Add the timestamp to the message
    sload                  0
    iload                  9
    iload                  10
