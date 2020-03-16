@@ -225,26 +225,18 @@ public class DpsCounterPlugin extends Plugin
 	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
-		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
-			event.getEntry().getTarget().equals("DPS counter"))
+		if (event.getEntry() == DpsOverlay.RESET_ENTRY)
 		{
-			String option = event.getEntry().getOption();
-			if (option.equals("Reset"))
-			{
-				members.clear();
-				total.reset();
-			}
-			else if (option.equals("Pause"))
-			{
-				if (total.isPaused())
-				{
-					unpause();
-				}
-				else
-				{
-					pause();
-				}
-			}
+			members.clear();
+			total.reset();
+		}
+		else if (event.getEntry() == DpsOverlay.UNPAUSE_ENTRY)
+		{
+			unpause();
+		}
+		else if (event.getEntry() == DpsOverlay.PAUSE_ENTRY)
+		{
+			pause();
 		}
 	}
 
@@ -278,6 +270,8 @@ public class DpsCounterPlugin extends Plugin
 			dpsMember.pause();
 		}
 		total.pause();
+
+		dpsOverlay.setPaused(true);
 	}
 
 	private void unpause()
@@ -294,5 +288,7 @@ public class DpsCounterPlugin extends Plugin
 			dpsMember.unpause();
 		}
 		total.unpause();
+
+		dpsOverlay.setPaused(false);
 	}
 }

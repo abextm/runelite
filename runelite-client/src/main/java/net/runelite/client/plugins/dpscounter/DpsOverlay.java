@@ -50,6 +50,10 @@ class DpsOverlay extends Overlay
 	private static final DecimalFormat DPS_FORMAT = new DecimalFormat("#0.0");
 	private static final int PANEL_WIDTH_OFFSET = 10; // assumes 8 for panel component border + 2px between left and right
 
+	static final OverlayMenuEntry RESET_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "DPS counter");
+	static final OverlayMenuEntry PAUSE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter");
+	static final OverlayMenuEntry UNPAUSE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Unpause", "DPS counter");
+
 	private final DpsCounterPlugin dpsCounterPlugin;
 	private final DpsConfig dpsConfig;
 	private final PartyService partyService;
@@ -60,7 +64,7 @@ class DpsOverlay extends Overlay
 
 	@Inject
 	DpsOverlay(DpsCounterPlugin dpsCounterPlugin, DpsConfig dpsConfig, PartyService partyService, Client client,
-			   TooltipManager tooltipManager)
+		TooltipManager tooltipManager)
 	{
 		super(dpsCounterPlugin);
 		this.dpsCounterPlugin = dpsCounterPlugin;
@@ -68,8 +72,8 @@ class DpsOverlay extends Overlay
 		this.partyService = partyService;
 		this.client = client;
 		this.tooltipManager = tooltipManager;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "DPS counter"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter"));
+		getMenuEntries().add(RESET_ENTRY);
+		setPaused(false);
 	}
 
 	@Override
@@ -147,5 +151,16 @@ class DpsOverlay extends Overlay
 		}
 
 		return panelComponent.render(graphics);
+	}
+
+	void setPaused(boolean paused)
+	{
+		OverlayMenuEntry remove = paused ? PAUSE_ENTRY : UNPAUSE_ENTRY;
+		OverlayMenuEntry add = paused ? UNPAUSE_ENTRY : PAUSE_ENTRY;
+		for (; getMenuEntries().remove(remove); ) ;
+		if (!getMenuEntries().contains(add))
+		{
+			getMenuEntries().add(add);
+		}
 	}
 }
