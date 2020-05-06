@@ -68,50 +68,51 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
 
 // calculate the number of faces with a lower adjusted priority than
 // the given adjusted priority
-int count_prio_offset(int priority) {
+int count_prio_offset(SHARED_ARGS int priority) {
   int total = 0;
   switch (priority) {
     case 17:
-      total += totalMappedNum[16];
+      total += SHARED(totalMappedNum)[16];
     case 16:
-      total += totalMappedNum[15];
+      total += SHARED(totalMappedNum)[15];
     case 15:
-      total += totalMappedNum[14];
+      total += SHARED(totalMappedNum)[14];
     case 14:
-      total += totalMappedNum[13];
+      total += SHARED(totalMappedNum)[13];
     case 13:
-      total += totalMappedNum[12];
+      total += SHARED(totalMappedNum)[12];
     case 12:
-      total += totalMappedNum[11];
+      total += SHARED(totalMappedNum)[11];
     case 11:
-      total += totalMappedNum[10];
+      total += SHARED(totalMappedNum)[10];
     case 10:
-      total += totalMappedNum[9];
+      total += SHARED(totalMappedNum)[9];
     case 9:
-      total += totalMappedNum[8];
+      total += SHARED(totalMappedNum)[8];
     case 8:
-      total += totalMappedNum[7];
+      total += SHARED(totalMappedNum)[7];
     case 7:
-      total += totalMappedNum[6];
+      total += SHARED(totalMappedNum)[6];
     case 6:
-      total += totalMappedNum[5];
+      total += SHARED(totalMappedNum)[5];
     case 5:
-      total += totalMappedNum[4];
+      total += SHARED(totalMappedNum)[4];
     case 4:
-      total += totalMappedNum[3];
+      total += SHARED(totalMappedNum)[3];
     case 3:
-      total += totalMappedNum[2];
+      total += SHARED(totalMappedNum)[2];
     case 2:
-      total += totalMappedNum[1];
+      total += SHARED(totalMappedNum)[1];
     case 1:
-      total += totalMappedNum[0];
+      total += SHARED(totalMappedNum)[0];
     case 0:
+    default:
       return total;
   }
 }
 
-void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
-    out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
+void get_face(GLOBAL_ARGS uint localId, modelinfo minfo,
+    OUTARG(int, prio), OUTARG(int, dis), OUTARG(ivec4, o1), OUTARG(ivec4, o2), OUTARG(ivec4, o3)) {
   int size = minfo.size;
 
   if (localId < size) {
@@ -136,9 +137,9 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
     }
 
     // rotate for model orientation
-    ivec4 thisrvA = rotate(thisA, orientation);
-    ivec4 thisrvB = rotate(thisB, orientation);
-    ivec4 thisrvC = rotate(thisC, orientation);
+    ivec4 thisrvA = rotate_int(PASS_GLOBALS thisA, orientation);
+    ivec4 thisrvB = rotate_int(PASS_GLOBALS thisB, orientation);
+    ivec4 thisrvC = rotate_int(PASS_GLOBALS thisC, orientation);
 
     // calculate distance to face
     int thisPriority = (thisA.w >> 16) & 0xff;// all vertices on the face have the same priority
@@ -146,40 +147,40 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
     if (radius == 0) {
       thisDistance = 0;
     } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
+      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, UNIFORM(cameraYaw), UNIFORM(cameraPitch)) + radius;
     }
 
-    o1 = thisrvA;
-    o2 = thisrvB;
-    o3 = thisrvC;
+    OUTACCESS(o1) = thisrvA;
+    OUTACCESS(o2) = thisrvB;
+    OUTACCESS(o3) = thisrvC;
 
-    prio = thisPriority;
-    dis = thisDistance;
+    OUTACCESS(prio) = thisPriority;
+    OUTACCESS(dis) = thisDistance;
   } else {
-    o1 = ivec4(0);
-    o2 = ivec4(0);
-    o3 = ivec4(0);
-    prio = 0;
-    dis = 0;
+    OUTACCESS(o1) = NEWVEC(ivec4)(0);
+    OUTACCESS(o2) = NEWVEC(ivec4)(0);
+    OUTACCESS(o3) = NEWVEC(ivec4)(0);
+    OUTACCESS(prio) = 0;
+    OUTACCESS(dis) = 0;
   }
 }
 
-void add_face_prio_distance(uint localId, modelinfo minfo, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC, int thisPriority, int thisDistance, ivec4 pos) {
+void add_face_prio_distance(GLOBAL_ARGS SHARED_ARGS uint localId, modelinfo minfo, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC, int thisPriority, int thisDistance, ivec4 pos) {
   if (localId < minfo.size) {
     // if the face is not culled, it is calculated into priority distance averages
-    if (face_visible(thisrvA, thisrvB, thisrvC, pos)) {
-      atomicAdd(totalNum[thisPriority], 1);
-      atomicAdd(totalDistance[thisPriority], thisDistance);
+    if (face_visible(PASS_GLOBALS thisrvA, thisrvB, thisrvC, pos)) {
+      atomicAdd(SHARED(totalNum)[thisPriority], 1);
+      atomicAdd(SHARED(totalDistance)[thisPriority], thisDistance);
 
       // calculate minimum distance to any face of priority 10 for positioning the 11 faces later
       if (thisPriority == 10) {
-        atomicMin(min10, thisDistance);
+        atomicMin(SHARED(min10), thisDistance);
       }
     }
   }
 }
 
-int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisDistance, out int prio) {
+int map_face_priority(SHARED_ARGS uint localId, modelinfo minfo, int thisPriority, int thisDistance, OUTARG(int, prio)) {
   int size = minfo.size;
 
   // Compute average distances for 0/2, 3/4, and 6/8
@@ -189,41 +190,41 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
     int avg2 = 0;
     int avg3 = 0;
 
-    if (totalNum[1] > 0 || totalNum[2] > 0) {
-      avg1 = (totalDistance[1] + totalDistance[2]) / (totalNum[1] + totalNum[2]);
+    if (SHARED(totalNum)[1] > 0 || SHARED(totalNum)[2] > 0) {
+      avg1 = (SHARED(totalDistance)[1] + SHARED(totalDistance)[2]) / (SHARED(totalNum)[1] + SHARED(totalNum)[2]);
     }
 
-    if (totalNum[3] > 0 || totalNum[4] > 0) {
-      avg2 = (totalDistance[3] + totalDistance[4]) / (totalNum[3] + totalNum[4]);
+    if (SHARED(totalNum)[3] > 0 || SHARED(totalNum)[4] > 0) {
+      avg2 = (SHARED(totalDistance)[3] + SHARED(totalDistance)[4]) / (SHARED(totalNum)[3] + SHARED(totalNum)[4]);
     }
 
-    if (totalNum[6] > 0 || totalNum[8] > 0) {
-      avg3 = (totalDistance[6] + totalDistance[8]) / (totalNum[6] + totalNum[8]);
+    if (SHARED(totalNum)[6] > 0 || SHARED(totalNum)[8] > 0) {
+      avg3 = (SHARED(totalDistance)[6] + SHARED(totalDistance)[8]) / (SHARED(totalNum)[6] + SHARED(totalNum)[8]);
     }
 
-    int adjPrio = priority_map(thisPriority, thisDistance, min10, avg1, avg2, avg3);
-    int prioIdx = atomicAdd(totalMappedNum[adjPrio], 1);
+    int adjPrio = priority_map(thisPriority, thisDistance, SHARED(min10), avg1, avg2, avg3);
+    int prioIdx = atomicAdd(SHARED(totalMappedNum)[adjPrio], 1);
 
-    prio = adjPrio;
+    OUTACCESS(prio) = adjPrio;
     return prioIdx;
   }
 
-  prio = 0;
+  OUTACCESS(prio) = 0;
   return 0;
 }
 
-void insert_dfs(uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
+void insert_dfs(SHARED_ARGS uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
   int size = minfo.size;
 
   if (localId < size) {
     // calculate base offset into dfs based on number of faces with a lower priority
-    int baseOff = count_prio_offset(adjPrio);
+    int baseOff = count_prio_offset(PASS_SHARED adjPrio);
     // store into face array offset array by unique index
-    dfs[baseOff + prioIdx] = (int(localId) << 16) | distance;
+    SHARED(dfs)[baseOff + prioIdx] = (NEWVEC(int)(localId) << 16) | distance;
   }
 }
 
-void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
+void sort_and_insert(GLOBAL_ARGS SHARED_ARGS uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
   /* compute face distance */
   int size = minfo.size;
 
@@ -231,10 +232,10 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     int outOffset = minfo.idx;
     int uvOffset = minfo.uvOffset;
     int flags = minfo.flags;
-    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+    ivec4 pos = NEWVEC(ivec4)(minfo.x, minfo.y, minfo.z, 0);
 
-    const int priorityOffset = count_prio_offset(thisPriority);
-    const int numOfPriority = totalMappedNum[thisPriority];
+    const int priorityOffset = count_prio_offset(PASS_SHARED thisPriority);
+    const int numOfPriority = SHARED(totalMappedNum)[thisPriority];
     int start = priorityOffset; // index of first face with this priority
     int end = priorityOffset + numOfPriority; // index of last face with this priority
     int myOffset = priorityOffset;
@@ -242,7 +243,7 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     // we only have to order faces against others of the same priority
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {
-      int d1 = dfs[i];
+      int d1 = SHARED(dfs)[i];
       int theirId = d1 >> 16;
       int theirDistance = d1 & 0xffff;
 
@@ -261,9 +262,9 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
     if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
+      uvout[outOffset + myOffset * 3]     = NEWVEC(vec4)(0, 0, 0, 0);
+      uvout[outOffset + myOffset * 3 + 1] = NEWVEC(vec4)(0, 0, 0, 0);
+      uvout[outOffset + myOffset * 3 + 2] = NEWVEC(vec4)(0, 0, 0, 0);
     } else if (flags >= 0) {
       uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
       uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];

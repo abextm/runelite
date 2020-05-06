@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,27 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include prelude
+#define GL
 
-/*
- * Convert a vertex to screen space
- */
-vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
-
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
-
-  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
-  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
-
-  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
-  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
-
-  float x = rotatedX * zoom / var12 + centerX;
-  float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
-
-  return NEWVEC(vec3)(x, y, z);
-}
+#define NEWVEC(x) x
+#define SHARED_START
+#define SHARED_END
+#define SHARED(x) x
+#define SHARED_ARGS
+#define PASS_SHARED
+#define OUTPASS(x) x
+#define OUTACCESS(x) x
+#define OUTARG(type, name) out type name

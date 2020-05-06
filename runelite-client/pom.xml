@@ -158,6 +158,22 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.jogamp.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>${jogl.version}</version>
+			<systemPath>/home/abex/code/jogamp/jocl/build/jar/jocl.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-linux-amd64</classifier>
+			<systemPath>/home/abex/code/jogamp/jocl/build/jar/jocl-natives-linux-amd64.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>archive-patcher</artifactId>
 			<version>1.0</version>

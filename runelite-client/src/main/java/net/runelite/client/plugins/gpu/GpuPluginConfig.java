@@ -103,8 +103,8 @@ public interface GpuPluginConfig extends Config
 		description = "Offloads face sorting to GPU, enabling extended draw distance. Requires plugin restart.",
 		position = 6
 	)
-	default boolean useComputeShaders()
+	default FaceSortingEngine useComputeShaders()
 	{
-		return true;
+		return FaceSortingEngine.COMPUTE_SHADERS;
 	}
 }

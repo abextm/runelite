@@ -24,6 +24,7 @@
  */
 
 #version 330
+#include prelude.glsl
 
 #define PI 3.1415926535897932384626433832795f
 #define UNIT PI / 1024.0f

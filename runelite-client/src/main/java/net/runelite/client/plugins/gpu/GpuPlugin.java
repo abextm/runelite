@@ -28,6 +28,16 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
+import com.jogamp.opencl.CLBuffer;
+import com.jogamp.opencl.CLCommandQueue;
+import com.jogamp.opencl.CLDevice;
+import com.jogamp.opencl.CLException;
+import com.jogamp.opencl.CLKernel;
+import com.jogamp.opencl.CLMemory;
+import com.jogamp.opencl.CLPlatform;
+import com.jogamp.opencl.gl.CLGLBuffer;
+import com.jogamp.opencl.gl.CLGLContext;
+import com.jogamp.opencl.gl.CLGLObject;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLCapabilities;
@@ -48,6 +58,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Comparator;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import jogamp.nativewindow.SurfaceScaleUtils;
@@ -106,6 +118,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	// This is the maximum number of triangles the compute shaders support
 	private static final int MAX_TRIANGLE = 4096;
 	private static final int SMALL_TRIANGLE_COUNT = 512;
+
+	private static final int VAR_KERNEL_FACE_STRIDE = 8;
+
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	private static final int DEFAULT_DISTANCE = 25;
 	static final int MAX_DISTANCE = 90;
@@ -132,13 +147,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Inject
 	private PluginManager pluginManager;
 
-	private boolean useComputeShaders;
+	private FaceSortingEngine faceSortingEngine;
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
 	private GL4 gl;
 	private GLContext glContext;
 	private GLDrawable glDrawable;
+
+	private CLGLContext clContext;
+	private CLCommandQueue clQueue;
 
 	static final String LINUX_VERSION_HEADER =
 		"#version 420\n" +
@@ -155,6 +173,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	static final Shader COMPUTE_PROGRAM = new Shader()
 		.add(GL4.GL_COMPUTE_SHADER, "comp.glsl");
 
+	static final Shader COMPUTE_VARIABLE_KERNEL = new Shader()
+		.add(GL4.GL_COMPUTE_SHADER, "comp_var.cl");
+
 	static final Shader SMALL_COMPUTE_PROGRAM = new Shader()
 		.add(GL4.GL_COMPUTE_SHADER, "comp_small.glsl");
 
@@ -170,6 +191,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int glSmallComputeProgram;
 	private int glUnorderedComputeProgram;
 	private int glUiProgram;
+
+	private CLKernel clKernelVar;
+	private CLKernel clUnorderedKernel;
 
 	private int vaoHandle;
 
@@ -194,6 +218,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int tmpModelBufferUnorderedId;
 	private int tmpOutBufferId; // target vertex buffer for compute shaders
 	private int tmpOutUvBufferId; // target uv buffer for compute shaders
+
+	CLBuffer<?> emptyBuffer;
+	CLGLBuffer<?> bufferCL;
+	CLGLBuffer<?> uvBufferCL;
+	CLGLBuffer<?> uniformBufferCL;
 
 	private int textureArrayId;
 
@@ -289,7 +318,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				}
 
 				// OSX supports up to OpenGL 4.1, however 4.3 is required for compute shaders
-				useComputeShaders = config.useComputeShaders() && OSType.getOSType() != OSType.MacOS;
+				faceSortingEngine = config.useComputeShaders();
+				if (OSType.getOSType() == OSType.MacOS && faceSortingEngine == FaceSortingEngine.COMPUTE_SHADERS)
+				{
+					faceSortingEngine = FaceSortingEngine.OPEN_CL;
+				}
 
 				canvas.setIgnoreRepaint(true);
 
@@ -300,12 +333,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
 
-				if (log.isDebugEnabled())
+				if (log.isTraceEnabled())
 				{
 					System.setProperty("jogl.debug", "true");
 				}
 
 				GLProfile.initSingleton();
+
+				if (faceSortingEngine == FaceSortingEngine.OPEN_CL)
+				{
+					if (!CLPlatform.isAvailable())
+					{
+						log.warn("Cannot use OpenCL; switching to CPU mode");
+						faceSortingEngine = FaceSortingEngine.CPU;
+					}
+				}
 
 				invokeOnMainThread(() ->
 				{
@@ -359,6 +401,27 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 						// Suppress warning messages which flood the log on NVIDIA systems.
 						gl.getContext().glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_OTHER,
 							gl.GL_DEBUG_SEVERITY_NOTIFICATION, 0, null, 0, false);
+					}
+
+					if (faceSortingEngine == FaceSortingEngine.OPEN_CL)
+					{
+						clContext = CLGLContext.create(glContext, CLDevice.Type.GPU);
+						CLDevice clDevice = Stream.of(clContext.getDevices())
+							.filter(CLDevice::isGLMemorySharingSupported)
+							.max(Comparator.comparing(f -> f.getMaxClockFrequency() * f.getMaxComputeUnits()))
+							.orElse(null);
+						if (clDevice == null)
+						{
+							clContext.release();
+							clContext = null;
+							faceSortingEngine = FaceSortingEngine.CPU;
+							log.warn("Cannot find OpenCL device; switching to cpu");
+						}
+						else
+						{
+							clQueue = clDevice.createCommandQueue();
+						}
+						emptyBuffer = clContext.createBuffer(1024 * 1024, CLMemory.Mem.READ_WRITE);
 					}
 
 					initVao();
@@ -431,6 +494,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			invokeOnMainThread(() ->
 			{
+				if (clContext != null)
+				{
+					clContext.release();
+					clContext = null;
+					clQueue = null;
+				}
+
 				if (gl != null)
 				{
 					if (textureArrayId != -1)
@@ -504,9 +574,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		Template template = new Template();
 		template.add(key ->
 		{
-			if ("version_header".equals(key))
+			if ("header".equals(key))
 			{
-				return versionHeader;
+				return versionHeader + template.load("prelude.glsl");
+			}
+			if ("prelude".equals(key))
+			{
+				return template.load("prelude.glsl");
 			}
 			return null;
 		});
@@ -515,11 +589,26 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glProgram = PROGRAM.compile(gl, template);
 		glUiProgram = UI_PROGRAM.compile(gl, template);
 
-		if (useComputeShaders)
+		if (faceSortingEngine == FaceSortingEngine.COMPUTE_SHADERS)
 		{
 			glComputeProgram = COMPUTE_PROGRAM.compile(gl, template);
 			glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(gl, template);
 			glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(gl, template);
+		}
+		else if (faceSortingEngine == FaceSortingEngine.OPEN_CL)
+		{
+			Template clTemplate = new Template();
+			clTemplate.add(key ->
+			{
+				if ("header".equals(key) || "prelude".equals(key))
+				{
+					return clTemplate.load("prelude.cl");
+				}
+				return null;
+			});
+			clTemplate.addInclude(GpuPlugin.class);
+			clKernelVar = COMPUTE_VARIABLE_KERNEL.compile(clContext, clTemplate);
+			clUnorderedKernel = UNORDERED_COMPUTE_PROGRAM.compile(clContext, clTemplate);
 		}
 
 		initUniforms();
@@ -563,6 +652,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUiProgram);
 		glUiProgram = -1;
+
+		clUnorderedKernel = null;
+		clKernelVar = null;
 	}
 
 	private void initVao()
@@ -680,6 +772,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDeleteBuffer(gl, tmpOutUvBufferId);
 			tmpOutUvBufferId = -1;
 		}
+
+		bufferCL = null;
+		uvBufferCL = null;
+		uniformBufferCL = null;
 	}
 
 	private void initInterfaceTexture()
@@ -716,6 +812,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_DYNAMIC_DRAW);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
+		if (faceSortingEngine == FaceSortingEngine.OPEN_CL)
+		{
+			uniformBufferCL = clContext.createFromGLBuffer(uniformBufferId, 0, CLGLBuffer.Mem.READ_ONLY);
+		}
 	}
 
 	private void initAAFbo(int width, int height, int aaSamples)
@@ -799,10 +899,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Override
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							SceneTilePaint paint, int tileZ, int tileX, int tileY,
-							int zoom, int centerX, int centerY)
+		SceneTilePaint paint, int tileZ, int tileX, int tileY,
+		int zoom, int centerX, int centerY)
 	{
-		if (!useComputeShaders)
+		if (faceSortingEngine == FaceSortingEngine.CPU)
 		{
 			targetBufferOffset += sceneUploader.upload(paint,
 				tileZ, tileX, tileY,
@@ -836,10 +936,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Override
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							SceneTileModel model, int tileZ, int tileX, int tileY,
-							int zoom, int centerX, int centerY)
+		SceneTileModel model, int tileZ, int tileX, int tileY,
+		int zoom, int centerX, int centerY)
 	{
-		if (!useComputeShaders)
+		if (faceSortingEngine == FaceSortingEngine.CPU)
 		{
 			targetBufferOffset += sceneUploader.upload(model,
 				tileX, tileY,
@@ -1038,7 +1138,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final TextureProvider textureProvider = client.getTextureProvider();
 		if (textureProvider != null)
 		{
-			if (useComputeShaders)
+			if (faceSortingEngine == FaceSortingEngine.COMPUTE_SHADERS)
 			{
 				gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
 				gl.glUniformBlockBinding(glComputeProgram, uniBlockLarge, 0);
@@ -1089,6 +1189,55 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				gl.glMemoryBarrier(gl.GL_SHADER_STORAGE_BARRIER_BIT);
 			}
+			else if (faceSortingEngine == FaceSortingEngine.OPEN_CL && this.bufferCL != null && this.uvBufferCL != null)
+			{
+				gl.glFinish();
+
+				CLBuffer<?>[] buffers = new CLBuffer<?>[7];
+				int buffer = 0;
+
+				try
+				{
+					CLBuffer<?> tmpBufferCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpBufferId, CLGLBuffer.Mem.READ_ONLY);
+					CLBuffer<?> tmpOutBufferCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpOutBufferId, CLGLBuffer.Mem.READ_WRITE);
+					CLBuffer<?> tmpOutUvBufferCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpOutUvBufferId, CLGLBuffer.Mem.READ_WRITE);
+					CLBuffer<?> tmpUvBufferCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpUvBufferId, CLGLBuffer.Mem.READ_ONLY);
+					clQueue.putAcquireGLObjects(bufferCL, uvBufferCL, uniformBufferCL, null, null);
+
+					if (unorderedModels > 0)
+					{
+						CLBuffer<?> tmpModelBufferUnorderedCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpModelBufferUnorderedId, CLGLBuffer.Mem.READ_ONLY);
+						clUnorderedKernel.setArgs(tmpModelBufferUnorderedCL, bufferCL, tmpBufferCL, tmpOutBufferCL, tmpOutUvBufferCL, uvBufferCL, tmpUvBufferCL, uniformBufferCL);
+						clQueue.put1DRangeKernel(clUnorderedKernel, 0, unorderedModels * 6, 6);
+					}
+					if (smallModels > 0)
+					{
+						CLBuffer<?> tmpModelBufferSmallCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpModelBufferSmallId, CLGLBuffer.Mem.READ_ONLY);
+						enqueueVarShader(512,tmpModelBufferSmallCL, smallModels, tmpBufferCL, tmpOutBufferCL, tmpOutUvBufferCL, tmpUvBufferCL);
+					}
+					if (largeModels > 0)
+					{
+						CLBuffer<?> tmpModelBufferCL = buffers[buffer++] = enqueueAcquireGLBuffer(tmpModelBufferId, CLGLBuffer.Mem.READ_ONLY);
+						enqueueVarShader(4096,tmpModelBufferCL, largeModels, tmpBufferCL, tmpOutBufferCL, tmpOutUvBufferCL, tmpUvBufferCL);
+					}
+				}
+				catch (CLException e)
+				{
+					log.warn("error during CL", e);
+				}
+				finally
+				{
+					clQueue.putReleaseGLObjects(bufferCL, uvBufferCL, uniformBufferCL, null, null);
+					for (CLBuffer<?> b : buffers)
+					{
+						if (b != null)
+						{
+							enqueueReleaseGLBuffer(b);
+						}
+					}
+				}
+				clQueue.finish();//TODO:
+			}
 
 			if (textureArrayId == -1)
 			{
@@ -1110,18 +1259,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				renderCanvasHeight = dim.height;
 
 				double scaleFactorY = dim.getHeight() / canvasHeight;
-				double scaleFactorX = dim.getWidth()  / canvasWidth;
+				double scaleFactorX = dim.getWidth() / canvasWidth;
 
 				// Pad the viewport a little because having ints for our viewport dimensions can introduce off-by-one errors.
 				final int padding = 1;
 
 				// Ceil the sizes because even if the size is 599.1 we want to treat it as size 600 (i.e. render to the x=599 pixel).
 				renderViewportHeight = (int) Math.ceil(scaleFactorY * (renderViewportHeight)) + padding * 2;
-				renderViewportWidth  = (int) Math.ceil(scaleFactorX * (renderViewportWidth )) + padding * 2;
+				renderViewportWidth = (int) Math.ceil(scaleFactorX * (renderViewportWidth)) + padding * 2;
 
 				// Floor the offsets because even if the offset is 4.9, we want to render to the x=4 pixel anyway.
-				renderHeightOff      = (int) Math.floor(scaleFactorY * (renderHeightOff)) - padding;
-				renderWidthOff       = (int) Math.floor(scaleFactorX * (renderWidthOff )) - padding;
+				renderHeightOff = (int) Math.floor(scaleFactorY * (renderHeightOff)) - padding;
+				renderWidthOff = (int) Math.floor(scaleFactorX * (renderWidthOff)) - padding;
 			}
 
 			glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
@@ -1172,11 +1321,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// When using compute shaders, draw using the output buffer of the compute. Otherwise
 			// only use the temporary buffers, which will contain the full scene.
 			gl.glEnableVertexAttribArray(0);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, useComputeShaders ? tmpOutBufferId : tmpBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, faceSortingEngine != FaceSortingEngine.CPU ? tmpOutBufferId : tmpBufferId);
 			gl.glVertexAttribIPointer(0, 4, gl.GL_INT, 0, 0);
 
 			gl.glEnableVertexAttribArray(1);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, useComputeShaders ? tmpOutUvBufferId : tmpUvBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, faceSortingEngine != FaceSortingEngine.CPU ? tmpOutUvBufferId : tmpUvBufferId);
 			gl.glVertexAttribPointer(1, 4, gl.GL_FLOAT, false, 0, 0);
 
 			gl.glDrawArrays(gl.GL_TRIANGLES, 0, targetBufferOffset);
@@ -1290,13 +1439,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private Image screenshot()
 	{
-		int width  = client.getCanvasWidth();
+		int width = client.getCanvasWidth();
 		int height = client.getCanvasHeight();
 
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();
-			width  = dim.width;
+			width = dim.width;
 			height = dim.height;
 		}
 
@@ -1334,7 +1483,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (!useComputeShaders || gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (faceSortingEngine == FaceSortingEngine.CPU || gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -1365,6 +1514,62 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		vertexBuffer.clear();
 		uvBuffer.clear();
+
+		if (faceSortingEngine == FaceSortingEngine.OPEN_CL)
+		{
+			if (bufferCL != null)
+			{
+				bufferCL.release();
+				bufferCL = null;
+			}
+			bufferCL = clContext.createFromGLBuffer(bufferId, 0, CLGLBuffer.Mem.READ_ONLY);
+
+			if (uvBufferCL != null)
+			{
+				uvBufferCL.release();
+				uvBufferCL = null;
+			}
+			uvBufferCL = clContext.createFromGLBuffer(uvBufferId, 0, CLGLBuffer.Mem.READ_ONLY);
+		}
+	}
+
+
+	private CLBuffer<?> enqueueAcquireGLBuffer(int glid, CLMemory.Mem... flags)
+	{
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, glid);
+
+		int[] size = new int[1];
+		gl.glGetBufferParameteriv(gl.GL_ARRAY_BUFFER, gl.GL_BUFFER_SIZE, size, 0);
+		if (size[0] <= 0)
+		{
+			// the nvidia driver says its out of host memory if you try to acquire a zero size gl buffer
+			return emptyBuffer;
+		}
+
+		CLGLBuffer<?> buf = clContext.createFromGLBuffer(glid, size[0], flags);
+		clQueue.putAcquireGLObject(buf);
+		return buf;
+	}
+
+	private void enqueueReleaseGLBuffer(CLBuffer<?> buf)
+	{
+		if (buf instanceof CLGLBuffer<?>)
+		{
+			clQueue.putReleaseGLObject((CLGLObject) buf);
+		}
+		if (buf != emptyBuffer)
+		{
+			buf.release();
+		}
+	}
+
+	private void enqueueVarShader(int size, CLBuffer<?> tmpModelBufferCL, int numModels, CLBuffer<?> tmpBufferCL, CLBuffer<?> tmpOutBufferCL, CLBuffer<?> tmpOutUvBufferCL, CLBuffer<?> tmpUvBufferCL)
+	{
+		size /= VAR_KERNEL_FACE_STRIDE;
+		clKernelVar.rewind();
+		clKernelVar.putNullArg((12 + 12 + 18 + 1 + (size * VAR_KERNEL_FACE_STRIDE)) * 4);
+		clKernelVar.putArgs(tmpModelBufferCL, bufferCL, tmpBufferCL, tmpOutBufferCL, tmpOutUvBufferCL, uvBufferCL, tmpUvBufferCL, uniformBufferCL);
+		clQueue.put1DRangeKernel(clKernelVar, 0, numModels * size, size);
 	}
 
 	/**
@@ -1426,7 +1631,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
 	{
-		if (!useComputeShaders)
+		if (faceSortingEngine == FaceSortingEngine.CPU)
 		{
 			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
 			if (model != null)
@@ -1596,7 +1801,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int getDrawDistance()
 	{
-		final int limit = useComputeShaders ? MAX_DISTANCE : DEFAULT_DISTANCE;
+		final int limit = faceSortingEngine != FaceSortingEngine.CPU ? MAX_DISTANCE : DEFAULT_DISTANCE;
 		return Ints.constrainToRange(config.drawDistance(), 0, limit);
 	}
 

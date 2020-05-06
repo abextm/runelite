@@ -22,18 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include header
 
-#include version_header
+#ifdef GL
+  layout(local_size_x = 6) in;
+#endif
 
 #include comp_common.glsl
 
-layout(local_size_x = 6) in;
-
 #include common.glsl
 
+#ifdef CL
+__kernel void main(KERNEL_ARGS) {
+  uint groupId = get_group_id(0);
+  uint localId = get_local_id(0);
+#else
 void main() {
   uint groupId = gl_WorkGroupID.x;
   uint localId = gl_LocalInvocationID.x;
+#endif
   modelinfo minfo = ol[groupId];
 
   int offset = minfo.offset;
@@ -42,7 +49,7 @@ void main() {
   int uvOffset = minfo.uvOffset;
   int flags = minfo.flags;
   int orientation = flags & 0x7ff;
-  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+  ivec4 pos = NEWVEC(ivec4)(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId >= size) {
     return;
@@ -62,21 +69,20 @@ void main() {
     thisC = tempvb[offset + ssboOffset * 3 + 2];
   }
 
-  ivec4 thisrvA = rotate(thisA, orientation);
-  ivec4 thisrvB = rotate(thisB, orientation);
-  ivec4 thisrvC = rotate(thisC, orientation);
+  ivec4 thisrvA = rotate_int(PASS_GLOBALS thisA, orientation);
+  ivec4 thisrvB = rotate_int(PASS_GLOBALS thisB, orientation);
+  ivec4 thisrvC = rotate_int(PASS_GLOBALS thisC, orientation);
 
   uint myOffset = localId;
-
   // position vertices in scene and write to out buffer
   vout[outOffset + myOffset * 3]     = pos + thisrvA;
   vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
   vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
   if (uvOffset < 0) {
-    uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
-    uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-    uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
+    uvout[outOffset + myOffset * 3]     = NEWVEC(vec4)(0, 0, 0, 0);
+    uvout[outOffset + myOffset * 3 + 1] = NEWVEC(vec4)(0, 0, 0, 0);
+    uvout[outOffset + myOffset * 3 + 2] = NEWVEC(vec4)(0, 0, 0, 0);
   } else if (flags >= 0) {
     uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
     uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];

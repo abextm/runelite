@@ -28,27 +28,27 @@
 /*
  * Rotate a vertex by a given orientation in JAU
  */
-ivec4 rotate(ivec4 vertex, int orientation) {
-  ivec2 sinCos = sinCosTable[orientation];
+ivec4 rotate_int(GLOBAL_ARGS ivec4 vertex, int orientation) {
+  ivec4 sinCos = UNIFORM(sinCosTable)[orientation];
   int s = sinCos.x;
   int c = sinCos.y;
-  int x = vertex.z * s + vertex.x * c >> 16;
-  int z = vertex.z * c - vertex.x * s >> 16;
-  return ivec4(x, vertex.y, z, vertex.w);
+  int x = ((vertex.z * s) + (vertex.x * c)) >> 16;
+  int z = ((vertex.z * c) - (vertex.x * s)) >> 16;
+  return NEWVEC(ivec4)(x, vertex.y, z, vertex.w);
 }
 
 /*
  * Calculate the distance to a vertex given the camera angle
  */
-int distance(ivec4 vertex, int cameraYaw, int cameraPitch) {
-  int yawSin = int(65536.0f * sin(cameraYaw * UNIT));
-  int yawCos = int(65536.0f * cos(cameraYaw * UNIT));
+int distance_to_camera(ivec4 vertex, int cameraYaw, int cameraPitch) {
+  int yawSin = NEWVEC(int)(65536.0f * sin(cameraYaw * UNIT));
+  int yawCos = NEWVEC(int)(65536.0f * cos(cameraYaw * UNIT));
 
-  int pitchSin = int(65536.0f * sin(cameraPitch * UNIT));
-  int pitchCos = int(65536.0f * cos(cameraPitch * UNIT));
+  int pitchSin = NEWVEC(int)(65536.0f * sin(cameraPitch * UNIT));
+  int pitchCos = NEWVEC(int)(65536.0f * cos(cameraPitch * UNIT));
 
-  int j = vertex.z * yawCos - vertex.x * yawSin >> 16;
-  int l = vertex.y * pitchSin + j * pitchCos >> 16;
+  int j = ((vertex.z * yawCos) - (vertex.x * yawSin)) >> 16;
+  int l = ((vertex.y * pitchSin) + (j * pitchCos)) >> 16;
 
   return l;
 }
@@ -57,9 +57,9 @@ int distance(ivec4 vertex, int cameraYaw, int cameraPitch) {
  * Calculate the distance to a face
  */
 int face_distance(ivec4 vA, ivec4 vB, ivec4 vC, int cameraYaw, int cameraPitch) {
-  int dvA = distance(vA, cameraYaw, cameraPitch);
-  int dvB = distance(vB, cameraYaw, cameraPitch);
-  int dvC = distance(vC, cameraYaw, cameraPitch);
+  int dvA = distance_to_camera(vA, cameraYaw, cameraPitch);
+  int dvB = distance_to_camera(vB, cameraYaw, cameraPitch);
+  int dvC = distance_to_camera(vC, cameraYaw, cameraPitch);
   int faceDistance = (dvA + dvB + dvC) / 3;
   return faceDistance;
 }
@@ -67,16 +67,16 @@ int face_distance(ivec4 vA, ivec4 vB, ivec4 vC, int cameraYaw, int cameraPitch) 
 /*
  * Test if a face is visible (not backward facing)
  */
-bool face_visible(ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position) {
+bool face_visible(GLOBAL_ARGS ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position) {
   // Move model to scene location, and account for camera offset
-  ivec4 cameraPos = ivec4(cameraX, cameraY, cameraZ, 0);
+  ivec4 cameraPos = NEWVEC(ivec4)(UNIFORM(cameraX), UNIFORM(cameraY), UNIFORM(cameraZ), 0);
   vA += position - cameraPos;
   vB += position - cameraPos;
   vC += position - cameraPos;
 
-  vec3 sA = toScreen(vA.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
-  vec3 sB = toScreen(vB.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
-  vec3 sC = toScreen(vC.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  vec3 sA = toScreen(vA.xyz, UNIFORM(cameraYaw), UNIFORM(cameraPitch), UNIFORM(centerX), UNIFORM(centerY), UNIFORM(zoom));
+  vec3 sB = toScreen(vB.xyz, UNIFORM(cameraYaw), UNIFORM(cameraPitch), UNIFORM(centerX), UNIFORM(centerY), UNIFORM(zoom));
+  vec3 sC = toScreen(vC.xyz, UNIFORM(cameraYaw), UNIFORM(cameraPitch), UNIFORM(centerX), UNIFORM(centerY), UNIFORM(zoom));
 
   return (sA.x - sB.x) * (sC.y - sB.y) - (sC.x - sB.x) * (sA.y - sB.y) > 0;
 }

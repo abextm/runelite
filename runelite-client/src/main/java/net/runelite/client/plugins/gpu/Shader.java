@@ -26,7 +26,13 @@
 package net.runelite.client.plugins.gpu;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.io.Files;
+import com.jogamp.opencl.CLContext;
+import com.jogamp.opencl.CLKernel;
+import com.jogamp.opencl.CLProgram;
 import com.jogamp.opengl.GL4;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -72,6 +78,14 @@ public class Shader
 				Unit unit = units.get(i);
 				int shader = gl.glCreateShader(unit.type);
 				String source = template.load(unit.filename);
+				try
+				{
+					Files.write(source.getBytes(), new File("/tmp/rlout/" + unit.filename + ".glsl"));
+				}
+				catch (IOException e)
+				{
+					throw new RuntimeException(e);
+				}
 				gl.glShaderSource(shader, 1, new String[]{source}, null);
 				gl.glCompileShader(shader);
 
@@ -119,5 +133,24 @@ public class Shader
 		}
 
 		return program;
+	}
+
+	public CLKernel compile(CLContext clContext, Template template)
+	{
+		assert units.size() == 1;
+		Unit unit = units.get(0);
+		assert unit.getType() == GL4.GL_COMPUTE_SHADER;
+		String src = template.load(unit.filename);
+		try
+		{
+			Files.write(src.getBytes(), new File("/tmp/rlout/" + unit.filename + ".cl"));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		CLProgram prog = clContext.createProgram(src);
+		prog.build();
+		return prog.createCLKernel("main");
 	}
 }

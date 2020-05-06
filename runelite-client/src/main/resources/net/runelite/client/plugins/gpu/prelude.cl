@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,27 +23,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include prelude
+#define CL
 
-/*
- * Convert a vertex to screen space
- */
-vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
+#define NEWVEC(x) (x)
 
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
+#define ivec2 int2
+#define ivec3 int3
+#define ivec4 int4
 
-  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
-  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
+#define vec2 float2
+#define vec3 float3
+#define vec4 float4
 
-  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
-  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
+#define shared
+#define SHARED_START struct shared_t {
+#define SHARED_END }; 
+#define SHARED_SETUP SHARED_SPACE struct shared_t _shared;  SHARED_SPACE struct shared_t *_shared_ptr = &_shared;
+#define SHARED(x) _shared_ptr->x
+#define SHARED_ARGS SHARED_SPACE struct shared_t *_shared_ptr, 
+#define PASS_SHARED _shared_ptr, 
 
-  float x = rotatedX * zoom / var12 + centerX;
-  float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
+#define OUTPASS(x) &x
+#define OUTACCESS(x) (*x)
+#define OUTARG(type, name) type *name
 
-  return NEWVEC(vec3)(x, y, z);
-}
+#define atomicAdd(p, v) atomic_add(&(p), v)
+#define atomicMin(p, v) atomic_min(&(p), v)
+
+#define memoryBarrierShared()
+#define barrier() barrier(CLK_GLOBAL_MEM_FENCE)

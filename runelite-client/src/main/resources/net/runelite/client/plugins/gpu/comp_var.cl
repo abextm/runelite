@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +28,7 @@
 #define SHARED_SPACE __local
 
 #ifdef GL
-  layout(local_size_x = 512) in;
+  #error CL Only
 #endif
 
 SHARED_START
@@ -37,24 +38,29 @@ shared int totalDistance[12]; // sum of distances to faces of a given priority
 shared int totalMappedNum[18]; // number of faces with a given adjusted priority
 
 shared int min10; // minimum distance to a face of priority 10
-shared int dfs[512]; // packed face id and distance
+shared int dfs[0]; // packed face id and distance
 SHARED_END
+
+#define FACE_STRIDE 8
 
 #include comp_common.glsl
 
 #include common.glsl
 #include priority_render.glsl
 
-#ifdef __OPENCL_VERSION__
-__kernel void main(KERNEL_ARGS) {
+typedef struct {
+  ivec4 v1;
+  ivec4 v2;
+  ivec4 v3;
+  int prio;
+  int dist;
+  int prioAdj;
+  int idx;
+} facedata;
+
+__kernel void main(SHARED_ARGS KERNEL_ARGS) {
   uint groupId = get_group_id(0);
-  uint localId = get_local_id(0);
-  SHARED_SETUP
-#else
-void main() {
-  uint groupId = gl_WorkGroupID.x;
-  uint localId = gl_LocalInvocationID.x;
-#endif
+  uint localId = get_local_id(0) * FACE_STRIDE;
   modelinfo minfo = ol[groupId];
   ivec4 pos = NEWVEC(ivec4)(minfo.x, minfo.y, minfo.z, 0);
 
@@ -69,29 +75,37 @@ void main() {
     }
   }
 
-  int prio1, dis1;
-  ivec4 vA1, vA2, vA3;
+  facedata faces[FACE_STRIDE];
 
-  get_face(PASS_GLOBALS localId, minfo, OUTPASS(prio1), OUTPASS(dis1), OUTPASS(vA1), OUTPASS(vA2), OUTPASS(vA3));
-
-  memoryBarrierShared();
-  barrier();
-
-  add_face_prio_distance(PASS_GLOBALS PASS_SHARED localId, minfo, vA1, vA2, vA3, prio1, dis1, pos);
+  for(uint i = 0; i < FACE_STRIDE; i++) {
+    get_face(PASS_GLOBALS localId + i, minfo, &faces[i].prio, &faces[i].dist, &faces[i].v1, &faces[i].v2, &faces[i].v3);
+  }
 
   memoryBarrierShared();
   barrier();
 
-  int prio1Adj;
-  int idx1 = map_face_priority(PASS_SHARED localId, minfo, prio1, dis1, OUTPASS(prio1Adj));
+  for(uint i = 0; i < FACE_STRIDE; i++) {
+    add_face_prio_distance(PASS_GLOBALS PASS_SHARED localId + i, minfo, faces[i].v1, faces[i].v2, faces[i].v3, faces[i].prio, faces[i].dist, pos);
+  }
 
   memoryBarrierShared();
   barrier();
 
-  insert_dfs(PASS_SHARED localId, minfo, prio1Adj, dis1, idx1);
+  for(uint i = 0; i < FACE_STRIDE; i++) {
+    faces[i].idx = map_face_priority(PASS_SHARED localId + i, minfo, faces[i].prio, faces[i].dist, &faces[i].prioAdj);
+  }
 
   memoryBarrierShared();
   barrier();
 
-  sort_and_insert(PASS_GLOBALS PASS_SHARED localId, minfo, prio1Adj, dis1, vA1, vA2, vA3);
+  for(uint i = 0; i < FACE_STRIDE; i++) {
+    insert_dfs(PASS_SHARED localId + i, minfo, faces[i].prioAdj, faces[i].dist, faces[i].idx);
+  }
+
+  memoryBarrierShared();
+  barrier();
+
+  for(uint i = 0; i < FACE_STRIDE; i++) {
+    sort_and_insert(PASS_GLOBALS PASS_SHARED localId + i, minfo, faces[i].prioAdj, faces[i].dist, faces[i].v1, faces[i].v2, faces[i].v3);
+  }
 }
