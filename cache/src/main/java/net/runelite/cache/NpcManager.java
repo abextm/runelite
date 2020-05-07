@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.exporters.NpcExporter;
 import net.runelite.cache.definitions.loaders.NpcLoader;
@@ -97,14 +98,19 @@ public class NpcManager
 		java.mkdirs();
 		try (IDClass ids = IDClass.create(java, "NpcID"))
 		{
-			for (NpcDefinition def : npcs.values())
+			try (IDClass nulls = IDClass.create(java, "NullNpcID"))
 			{
-				if (def.name.equalsIgnoreCase("NULL"))
+				for (NpcDefinition def : npcs.values())
 				{
-					continue;
+					if (def.name.equalsIgnoreCase("NULL"))
+					{
+						nulls.add(def.name, def.id);
+					}
+					else
+					{
+						ids.add(def.name, def.id);
+					}
 				}
-
-				ids.add(def.name, def.id);
 			}
 		}
 	}
