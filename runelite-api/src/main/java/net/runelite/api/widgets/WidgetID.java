@@ -472,8 +472,8 @@ public class WidgetID
 		static final int TITLE = 44;
 		static final int FULL_INPUT = 45;
 		static final int GE_SEARCH_RESULTS = 53;
-		static final int MESSAGES = 55;
-		static final int TRANSPARENT_BACKGROUND_LINES = 56;
+		static final int MESSAGES = 56;
+		static final int TRANSPARENT_BACKGROUND_LINES = 57;
 		static final int INPUT = 58;
 		static final int MESSAGE_LINES = 59;
 		static final int FIRST_MESSAGE = 60;
