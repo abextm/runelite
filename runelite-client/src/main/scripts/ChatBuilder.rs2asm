@@ -187,21 +187,8 @@ LABEL161:
    iload                  14
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER
+   if_icmpeq              LABEL176
    jump                   LABEL710
-CHAT_FILTER:
-   sload                  11                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  10                ; Load the messageType
-   iload                  9                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 11                ; Override the message with our filtered message
-   if_icmpeq              LABEL176          ; Check if we are building this message
-   jump                   LABEL710          ; continue to next message, skipping this
 LABEL176:
    iload                  10
    sload                  9
@@ -233,14 +220,9 @@ LABEL187:
       91: LABEL211
    jump                   LABEL431
 LABEL190:
-   sload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ":"
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sload                  9
    sconst                 ":"
-   join_string            2                 ; + 1 for timestamp
+   join_string            2
    sload                  1
    sload                  11
    sconst                 "</col>"
@@ -260,14 +242,9 @@ LABEL190:
    istore                 6
    jump                   LABEL445
 LABEL211:
-   sload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ":"
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sload                  9
    sconst                 ":"
-   join_string            2                 ; + 1 for timestamp
+   join_string            2
    sload                  3
    sload                  11
    sconst                 "</col>"
@@ -287,17 +264,10 @@ LABEL211:
    istore                 6
    jump                   LABEL445
 LABEL232:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 "From "
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sconst                 "From "
    sload                  9
    sconst                 ":"
-   sconst                 "privateChatFrom"
-   runelite_callback     ; for prepending color tags
-   join_string            3                 ; + 1 for timestamp
+   join_string            3
    sload                  2
    sload                  11
    sconst                 "</col>"
@@ -317,15 +287,10 @@ LABEL232:
    istore                 6
    jump                   LABEL445
 LABEL254:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ""
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sload                  7
    sload                  11
    sconst                 "</col>"
-   join_string            3                 ; + 1 for timestamp
+   join_string            3
    iload                  7
    iload                  8
    iconst                 10616891
@@ -341,15 +306,10 @@ LABEL254:
    istore                 6
    jump                   LABEL445
 LABEL272:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ""
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sload                  2
    sload                  11
    sconst                 "</col>"
-   join_string            3                 ; + 1 for timestamp
+   join_string            3
    iload                  7
    iload                  8
    iconst                 10616891
@@ -382,17 +342,10 @@ LABEL293:
 LABEL304:
    jump                   LABEL445
 LABEL305:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 "To "
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sconst                 "To "
    sload                  9
    sconst                 ":"
-   sconst                 "privateChatTo"
-   runelite_callback     ; for chat recolors
-   join_string            3                 ; + 1 for timestamp
+   join_string            3
    sload                  2
    sload                  11
    sconst                 "</col>"
@@ -412,15 +365,10 @@ LABEL305:
    istore                 6
    jump                   LABEL445
 LABEL327:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 ""
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sload                  8
    sload                  11
    sconst                 "</col>"
-   join_string            3                 ; + 1 for time stamp
+   join_string            3
    iload                  7
    iload                  8
    iconst                 10616891
@@ -436,11 +384,6 @@ LABEL327:
    istore                 6
    jump                   LABEL445
 LABEL345:
-   iload                  9                 ; The id of the messageNode of the message being built
-   sconst                 "["
-   sconst                 "addTimestamp"
-   runelite_callback     
-   pop_int               ; pop message id
    sconst                 "["
    sload                  5
    sload                  10
@@ -448,7 +391,7 @@ LABEL345:
    sconst                 "] "
    sload                  9
    sconst                 ":"
-   join_string            7                 ; + 1 for timestamp
+   join_string            7
    sload                  6
    sload                  11
    sconst                 "</col>"
