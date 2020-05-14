@@ -3,18 +3,6 @@
 .string_stack_count 0
 .int_var_count      35
 .string_var_count   1
-; callback "beforeBankLayout"
-;   Fired before the bank starts its layout
-;	Used by the TabInterface to hide fake bank items for tag tabs
-;
-; callback "setBankScroll"
-;	Fired before bank is calculated
-;   Used by the TabInterface to show fake bank items for tag tabs
-;
-; callback "isTabMenuActive"
-;	Used by the TabInterface to skip setting the bank title
-   sconst                 "beforeBankLayout"
-   runelite_callback
    get_varbit             5102
    iconst                 1
    if_icmpeq              LABEL4
@@ -397,15 +385,6 @@ LABEL339:
    sub                   
    istore                 29
 LABEL343:
-   iconst                 0               	; Scroll height variable
-   iconst                 0               	; Compare variable
-   iconst                 0               	;
-   sconst                 "setBankScroll"   ; Show fake bank items for tag tabs
-   runelite_callback                        ; If tag tab menu search isn't active
-   if_icmpeq              CONTINUE_SEARCH 	; continue to normal bank search
-   istore 				  27              	; Load scroll height into variable
-   jump                   GetTabRange     	; Skip normal bank layout
-CONTINUE_SEARCH:
    iload                  30
    iload                  29
    iconst                 1
@@ -758,8 +737,7 @@ LABEL672:
    if_icmpeq              LABEL676
    jump                   LABEL717
 LABEL676:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   lowercase             ; instead get the var directly and lowercase it
+   invoke                 280
    sstore                 0
    sload                  0
    string_length         
@@ -784,10 +762,6 @@ LABEL694:
    tostring              
    sconst                 " found)"
    join_string            3
-   iload                  26                             ; load number of matches
-   sconst                 "setSearchBankInputTextFound"  ; load event name
-   runelite_callback     ; invoke callback
-   pop_int               ; pop number of matches
    iconst                 10616876
    if_settext            
 LABEL701:
@@ -806,16 +780,12 @@ LABEL702:
    jump                   LABEL716
 LABEL713:
    sconst                 "Show items whose names contain the following text:"
-   sconst                 "setSearchBankInputText"  ; load event name
-   runelite_callback     ; invoke callback
    iconst                 10616876
    if_settext            
 LABEL716:
    jump                   LABEL720
 LABEL717:
    sconst                 "The Bank of Gielinor"
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
 LABEL720:
@@ -843,12 +813,12 @@ LABEL740:
    invoke                 514
    iconst                 1
    if_icmpeq              LABEL744
-   jump                   GetTabRange
+   jump                   LABEL747
 LABEL744:
    iconst                 1
    iconst                 1
    invoke                 299
-GetTabRange:
+LABEL747:
    iconst                 -1
    istore                 31
    iconst                 -1
@@ -865,7 +835,7 @@ LABEL759:
    iload                  19
    iconst                 816
    if_icmplt              LABEL763
-   jump                   SetTitle
+   jump                   LABEL843
 LABEL763:
    iload                  2
    iload                  19
@@ -957,17 +927,12 @@ LABEL838:
    add                   
    istore                 19
    jump                   LABEL759
-SetTitle:
-   iconst                 0              		; Compare variable
-   iconst                 0                   	;
-   sconst                 "isTabMenuActive"   	; Check if tag tab menu
-   runelite_callback                     		; is active and skip setting
-   if_icmpne              FinishBuilding       	; the bank title if it is
+LABEL843:
    get_varbit             4170
    iconst                 2
-   if_icmpeq              SetTitleRomanNumeral
-   jump                   SetTitleNumber
-SetTitleRomanNumeral:
+   if_icmpeq              LABEL847
+   jump                   LABEL857
+LABEL847:
    sconst                 "Tab "
    iconst                 105
    iconst                 115
@@ -975,21 +940,17 @@ SetTitleRomanNumeral:
    get_varbit             4150
    enum                  
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
-   jump                   FinishBuilding
-SetTitleNumber:
+   jump                   LABEL863
+LABEL857:
    sconst                 "Tab "
    get_varbit             4150
    tostring              
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
-FinishBuilding:
+LABEL863:
    iload                  0
    iload                  1
    iload                  2
