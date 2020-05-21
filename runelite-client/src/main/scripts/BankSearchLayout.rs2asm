@@ -3,18 +3,6 @@
 .string_stack_count 0
 .int_var_count      36
 .string_var_count   1
-; callback "beforeBankLayout"
-;   Fired before the bank starts its layout
-;	Used by the TabInterface to hide fake bank items for tag tabs
-;
-; callback "setBankScroll"
-;	Fired before bank is calculated
-;   Used by the TabInterface to show fake bank items for tag tabs
-;
-; callback "isTabMenuActive"
-;	Used by the TabInterface to skip setting the bank title
-   sconst                 "beforeBankLayout"
-   runelite_callback     
    get_varbit             5102
    iconst                 1
    if_icmpeq              LABEL4
@@ -406,15 +394,6 @@ LABEL348:
    sub                   
    istore                 30
 LABEL352:
-   iconst                 0               	; Scroll height variable
-   iconst                 0               	; Compare variable
-   iconst                 0               	;
-   sconst                 "setBankScroll"   ; Show fake bank items for tag tabs
-   runelite_callback     ; If tag tab menu search isn't active
-   if_icmpeq              CONTINUE_SEARCH 	; continue to normal bank search
-   istore                 27                ; Load scroll height into variable
-   jump                   GetTabRange     	; Skip normal bank layout
-CONTINUE_SEARCH:
    iload                  31
    iload                  30
    iconst                 1
@@ -767,8 +746,7 @@ LABEL681:
    if_icmpeq              LABEL685
    jump                   LABEL726
 LABEL685:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   invoke                 280; instead get the var directly and lowercase it
+   invoke                 280
    sstore                 0
    sload                  0
    string_length         
@@ -793,10 +771,6 @@ LABEL703:
    tostring              
    sconst                 " found)"
    join_string            3
-   iload                  27                             ; load number of matches
-   sconst                 "setSearchBankInputTextFound"  ; load event name
-   runelite_callback     ; invoke callback
-   pop_int               ; pop number of matches
    iconst                 10616876
    if_settext            
 LABEL710:
@@ -815,16 +789,12 @@ LABEL711:
    jump                   LABEL725
 LABEL722:
    sconst                 "Show items whose names contain the following text:"
-   sconst                 "setSearchBankInputText"  ; load event name
-   runelite_callback     ; invoke callback
    iconst                 10616876
    if_settext            
 LABEL725:
    jump                   LABEL729
 LABEL726:
    sconst                 "The Bank of Gielinor"
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
 LABEL729:
@@ -858,7 +828,6 @@ LABEL754:
    iconst                 1
    iconst                 1
    invoke                 299
-GetTabRange:
 LABEL757:
    iconst                 -1
    istore                 32
@@ -968,12 +937,6 @@ LABEL848:
    add                   
    istore                 20
    jump                   LABEL769
-SetTitle:
-   iconst                 0                  ; Compare variable
-   iconst                 0                  ;
-   sconst                 "isTabMenuActive"
-   runelite_callback     ; skip setting the bank title if the tag tab menu is active
-   if_icmpne              FinishBuilding
 LABEL853:
    get_varbit             4170
    iconst                 2
@@ -987,8 +950,6 @@ LABEL857:
    get_varbit             4150
    enum                  
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
    jump                   LABEL873
@@ -997,11 +958,8 @@ LABEL867:
    get_varbit             4150
    tostring              
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
-FinishBuilding:
 LABEL873:
    iload                  0
    iload                  1
