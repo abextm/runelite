@@ -117,7 +117,7 @@ public final class ScriptID
 	 * <li> String Item Name </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 2, string = 1)
+	@ScriptArguments(integer = 1, string = 1)
 	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
 
 	/**
@@ -207,7 +207,7 @@ public final class ScriptID
 	/**
 	 * Builds the items kept on death widget
 	 */
-	@ScriptArguments(integer = 4, string = 2)
+	@ScriptArguments()
 	public static final int DEATH_KEEP_BUILD = 1601;
 
 	/**
