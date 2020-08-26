@@ -372,20 +372,7 @@ LABEL328:
    iload                  14
    invoke                 91
    iconst                 1
-   if_icmpeq              CHAT_FILTER       ; Jump to our new label instead
-   jump                   LABEL510
-CHAT_FILTER:
-   sload                  0                 ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  17                ; Load the messageType
-   iload                  12                ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 0                 ; Override the message with our filtered message
-   if_icmpeq              LABEL344          ; Check if we are building this message
+   if_icmpeq              LABEL344
    jump                   LABEL492
 LABEL344:
    iload                  17
@@ -396,17 +383,10 @@ LABEL344:
    jump                   LABEL389
 LABEL347:
    iload                  7
-   iload                  12                 ; Load the id of the messageNode
-   sconst                 "From "                 ; Push a container for the timestamp
-   sconst                 "addTimestamp"     ; Push event name
-   runelite_callback     ; Invoke callback
-   pop_int               ; Pop the id of the messageNode
    sconst                 "From "
    sload                  1
    sconst                 ":"
-   sconst                 "privateChatSplitFrom"
-   runelite_callback     
-   join_string            3                  ; Add the timestamp to the message
+   join_string            3
    sload                  0
    iload                  9
    iload                  10
@@ -425,17 +405,10 @@ LABEL347:
    jump                   LABEL424
 LABEL368:
    iload                  7
-   iload                  12                 ; Load the id of the messageNode
-   sconst                 "To "                 ; Push container for the timestamp
-   sconst                 "addTimestamp"     ; Push event name
-   runelite_callback     ; Invoke callback
-   pop_int               ; Pop the id of the messageNode
    sconst                 "To "
    sload                  1
    sconst                 ":"
-   sconst                 "privateChatSplitTo"
-   runelite_callback     
-   join_string            3                  ; Add the timestamp to the message
+   join_string            3
    sload                  0
    iload                  9
    iload                  10
@@ -454,13 +427,7 @@ LABEL368:
    jump                   LABEL424
 LABEL389:
    iload                  7
-   iload                  12                 ; Load the id of the messageNode
-   sconst                 ""                 ; Push a container for the timestamp
-   sconst                 "addTimestamp"     ; Push event name
-   runelite_callback     ; Invoke callback
-   pop_int               ; Pop the id of the messageNode
-   sload                  0                  ; Load the log in/out message
-   join_string            2                  ; Add the timestamp to the message
+   sload                  0
    iload                  9
    iload                  10
    iconst                 10682368
