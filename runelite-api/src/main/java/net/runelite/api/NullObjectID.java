@@ -9383,7 +9383,6 @@ public final class NullObjectID
 	public static final int NULL_20841 = 20841;
 	public static final int NULL_20842 = 20842;
 	public static final int NULL_20857 = 20857;
-	public static final int NULL_20858 = 20858;
 	public static final int NULL_20859 = 20859;
 	public static final int NULL_20860 = 20860;
 	public static final int NULL_20861 = 20861;
