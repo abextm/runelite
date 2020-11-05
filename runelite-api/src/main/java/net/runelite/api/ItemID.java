@@ -11518,7 +11518,7 @@ public final class ItemID
 	public static final int TRAILBLAZER_TROPHY = 25040;
 	public static final int TRAILBLAZER_DRAGON_TROPHY = 25042;
 	public static final int TRAILBLAZER_RUNE_TROPHY = 25044;
-	public static final int TWISTED_ADAMANT_TROPHY_25046 = 25046;
+	public static final int TRAILBLAZER_ADAMANT_TROPHY = 25046;
 	public static final int TRAILBLAZER_MITHRIL_TROPHY = 25048;
 	public static final int TRAILBLAZER_STEEL_TROPHY = 25050;
 	public static final int TRAILBLAZER_IRON_TROPHY = 25052;
