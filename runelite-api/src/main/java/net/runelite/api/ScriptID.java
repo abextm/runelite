@@ -190,7 +190,7 @@ public final class ScriptID
 	 * <li>String Players in-game name</li>
 	 * </ul>
 	 */
-	@ScriptArguments(string = 1)
+	@ScriptArguments(integer = 3, string = 1)
 	public static final int FRIENDS_CHAT_SEND_KICK = 215;
 
 	/**
