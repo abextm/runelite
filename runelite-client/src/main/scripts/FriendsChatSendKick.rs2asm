@@ -1,34 +1,111 @@
 .id                 215
-.int_stack_count    0
+.int_stack_count    3
 .string_stack_count 1
-.int_var_count      0
+.int_var_count      3
 .string_var_count   1
 ; callback "confirmFriendsChatKick"
 ; 	Used by the friends chat plugin to show a chatbox panel confirming the requested kick
 ;	Also requires the "confirmKicks" option of FriendsChatConfig to be enabled
-   invoke                 1942
+   iload                  1
    iconst                 1
-   if_icmpeq              LABEL4
-   jump                   CONFIRM_KICK  ; Jump to our new label instead
-LABEL4:
-   sconst                 "You can't kick players from your team during Wilderness Wars."
-   mes
-   return
-LABEL7:
-   sconst                 "-Attempting to kick player from friends chat..."
-   iconst                 2
-   invoke                 96
-   sload                  0
-   clan_kickuser
+   add                   
+   istore                 1
+   iload                  1
+   iconst                 20
+   mod                   
+   iconst                 0
+   if_icmpeq              LABEL10
    jump                   LABEL73
+LABEL10:
+   iload                  2
+   iconst                 1
+   if_icmpeq              LABEL14
+   jump                   LABEL23
+LABEL14:
+   iconst                 2
+   istore                 2
+   sconst                 "Opening the "
+   sload                  0
+   sconst                 " store, please wait."
+   join_string            3
+   iconst                 15007745
+   if_settext            
+   jump                   LABEL44
+LABEL23:
+   iload                  2
+   iconst                 2
+   if_icmpeq              LABEL27
+   jump                   LABEL36
+LABEL27:
+   iconst                 3
+   istore                 2
+   sconst                 "Opening the "
+   sload                  0
+   sconst                 " store, please wait.."
+   join_string            3
+   iconst                 15007745
+   if_settext            
+   jump                   LABEL44
+LABEL36:
+   iconst                 1
+   istore                 2
+   sconst                 "Opening the "
+   sload                  0
+   sconst                 " store, please wait..."
+   join_string            3
+   iconst                 15007745
+   if_settext            
+LABEL44:
+   sload                  0
+   iload                  0
+   invoke                 452
+   iconst                 1
+   if_icmpeq              LABEL50
+   jump                   LABEL51  ; Jump to our new label instead
+LABEL50:
+   return                
+LABEL51:
+   iload                  1
+   iconst                 500
+   if_icmpge              LABEL55
+   jump                   LABEL73
+LABEL55:
+   iconst                 -1
+   sconst                 ""
+   iconst                 15007745
+   if_setontimer         
+   sconst                 "Timed out while opening the "
+   sload                  0
+   sconst                 " store, please try again."
+   join_string            3
+   iconst                 15007745
+   if_settext            
+   sconst                 "Click"
+   sconst                 "Tap"
+   invoke                 1971
+   sconst                 " here to continue"
+   join_string            2
+   iconst                 15007746
+   if_settext            
+   return                
 LABEL73:
-   return
+   iconst                 215
+   sload                  0
+   iload                  0
+   iload                  1
+   iload                  2
+   sconst                 "siii"
+   iconst                 15007745
+   if_setontimer         
+   jump                   LABEL73
+LABEL51:
+   return                
 CONFIRM_KICK:
    sload                  0             ; Username we are trying to kick
    iconst                 0             ; Modified if we are confirming the kick inside the plugin
    sconst                 "confirmFriendsChatKick"
-   runelite_callback
-   pop_string                           ; Pop username
+   runelite_callback     
+   pop_string            ; Pop username
    iconst                 0             ; Compare against zero
    if_icmpgt              LABEL73       ; Early return for chatbox panel confirmation
-   jump                   LABEL7
+   jump                   LABEL51
