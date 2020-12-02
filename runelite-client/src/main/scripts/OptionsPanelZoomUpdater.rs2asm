@@ -3,24 +3,12 @@
 .string_stack_count 0
 .int_var_count      6
 .string_var_count   0
-; locals
-; 0 resizableZoomRange
-; 1 fixedZoomRange
-; 2 bar size
    iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
    istore                 0
    iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
    istore                 1
    iconst                 17104910
@@ -45,13 +33,7 @@
 LABEL27:
    get_varc_int           74
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
-   iload                  0
-   sconst                 "zoomExpToLin"
-   runelite_callback     
-   pop_int               
    iload                  2
    multiply              
    iload                  0
@@ -61,13 +43,7 @@ LABEL27:
 LABEL36:
    get_varc_int           73
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
-   iload                  0
-   sconst                 "zoomExpToLin"
-   runelite_callback     
-   pop_int               
    iload                  2
    multiply              
    iload                  1
