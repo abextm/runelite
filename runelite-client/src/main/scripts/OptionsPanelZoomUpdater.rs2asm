@@ -23,9 +23,9 @@
    runelite_callback     
    sub                   
    istore                 1
-   iconst                 17104910
+   iconst                 7602230
    if_getwidth           
-   iconst                 17104911
+   iconst                 7602231
    if_getwidth           
    sub                   
    istore                 2
@@ -48,7 +48,7 @@ LABEL27:
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
-   iload                  0
+   iload                  2
    sconst                 "zoomExpToLin"
    runelite_callback     
    pop_int               
@@ -64,7 +64,7 @@ LABEL36:
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
-   iload                  0
+   iload                  2
    sconst                 "zoomExpToLin"
    runelite_callback     
    pop_int               
@@ -78,6 +78,6 @@ LABEL44:
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 17104911
+   iconst                 7602231
    if_setposition        
    return                
