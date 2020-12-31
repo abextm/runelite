@@ -703,6 +703,7 @@ public class Perspective
 			m.getTrianglesY(),
 			m.getTrianglesZ()
 		};
+		byte[] transparency = m.getTriangleTransparencies();
 
 		int vpX1 = client.getViewportXOffset();
 		int vpY1 = client.getViewportXOffset();
@@ -714,6 +715,11 @@ public class Perspective
 		nextTri:
 		for (int tri = 0; tri < m.getTrianglesCount(); tri++)
 		{
+			if (transparency != null && transparency[tri] == (byte) 255)
+			{
+				continue;
+			}
+
 			int
 				minX = Integer.MAX_VALUE,
 				minY = Integer.MAX_VALUE,
