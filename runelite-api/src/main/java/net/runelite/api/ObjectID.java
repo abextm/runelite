@@ -923,6 +923,7 @@ public final class ObjectID
 	public static final int SAILS = 1779;
 	public static final int SAILS_1780 = 1780;
 	public static final int FLOUR_BIN = 1782;
+	public static final int WALL_1796 = 1796;
 	public static final int WATERFALL_ROCKS = 1797;
 	public static final int DOOR_1804 = 1804;
 	public static final int DOOR_1805 = 1805;
@@ -20737,7 +20738,6 @@ public final class ObjectID
 	public static final int BARREL_40590 = 40590;
 	public static final int TREE_40715 = 40715;
 	public static final int TREE_40716 = 40716;
-	public static final int FENCE_40723 = 40723;
 	public static final int ANVIL_40725 = 40725;
 	public static final int FIRE_40728 = 40728;
 	public static final int TENT_40731 = 40731;
@@ -20749,8 +20749,9 @@ public final class ObjectID
 	public static final int OPENING_40737 = 40737;
 	public static final int BONES_40738 = 40738;
 	public static final int CHEST_40739 = 40739;
-	public static final int CHEST_40741 = 40741;
-	public static final int LOCKED_CHEST_40742 = 40742;
+	public static final int CHEST_40740 = 40740;
+	public static final int DARK_CHEST = 40742;
+	public static final int DARK_CHEST_40743 = 40743;
 	public static final int BARREL_40744 = 40744;
 	public static final int LADDER_40745 = 40745;
 	public static final int LADDER_40746 = 40746;
