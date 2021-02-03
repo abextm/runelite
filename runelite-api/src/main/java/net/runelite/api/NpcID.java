@@ -8922,7 +8922,10 @@ public final class NpcID
 	public static final int DUCK_10546 = 10546;
 	public static final int DUCK_10547 = 10547;
 	public static final int CHICKEN_10556 = 10556;
+	public static final int ANCIENT_GHOST = 10557;
+	public static final int ANCIENT_GHOST_10558 = 10558;
 	public static final int SCRUBFOOT = 10559;
+	public static final int GARL = 10560;
 	public static final int RED_FIREFLIES = 10561;
 	public static final int GREEN_FIREFLIES = 10564;
 	public static final int GOBLIN_10566 = 10566;
