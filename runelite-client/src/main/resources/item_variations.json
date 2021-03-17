@@ -184,8 +184,7 @@
   ],
   "unicorn horn": [
     237,
-    1487,
-    25514
+    1487
   ],
   "wine of zamorak": [
     245,
@@ -5971,7 +5970,7 @@
     8347,
     8642
   ],
-  "wooden telescope": [
+  "oak telescope": [
     8348,
     8644
   ],
@@ -7536,7 +7535,8 @@
   "soft clay pack": [
     12009,
     12010,
-    24851
+    24851,
+    25533
   ],
   "black wizard robe": [
     12449,
@@ -8264,7 +8264,8 @@
   ],
   "bag of gems": [
     19473,
-    24853
+    24853,
+    25537
   ],
   "heavy ballista": [
     19481,
@@ -9645,6 +9646,10 @@
     25242,
     25243
   ],
+  "essence pack": [
+    25280,
+    25535
+  ],
   "gnome child icon": [
     25319,
     25338
@@ -9677,5 +9682,13 @@
   "gold coffin": [
     25467,
     25473
+  ],
+  "celestial ring": [
+    25539,
+    25541
+  ],
+  "celestial signet": [
+    25543,
+    25545
   ]
 }
