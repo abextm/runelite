@@ -26,9 +26,9 @@ package net.runelite.http.service.config;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.runelite.http.api.config.Configuration;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class ConfigController
 	}
 
 	@GetMapping
-	public Configuration get(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public Map<String, String> get(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = authFilter.handle(request, response);
 
@@ -72,7 +72,7 @@ public class ConfigController
 	public List<String> patch(
 		HttpServletRequest request,
 		HttpServletResponse response,
-		@RequestBody Configuration changes
+		@RequestBody Map<String, String> changes
 	) throws IOException
 	{
 		SessionEntry session = authFilter.handle(request, response);

@@ -95,8 +95,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
-import net.runelite.http.api.config.ConfigEntry;
-import net.runelite.http.api.config.Configuration;
 import okhttp3.OkHttpClient;
 
 @Singleton
@@ -206,8 +204,7 @@ public class ConfigManager
 			return;
 		}
 
-		Configuration configuration;
-
+		Map<String, String> configuration;
 		try
 		{
 			configuration = configClient.get();
@@ -219,7 +216,7 @@ public class ConfigManager
 			return;
 		}
 
-		if (configuration.getConfig() == null || configuration.getConfig().isEmpty())
+		if (configuration == null || configuration.isEmpty())
 		{
 			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();
@@ -227,10 +224,7 @@ public class ConfigManager
 		}
 
 		Properties newProperties = new Properties();
-		for (ConfigEntry entry : configuration.getConfig())
-		{
-			newProperties.setProperty(entry.getKey(), entry.getValue());
-		}
+		newProperties.putAll(configuration);
 
 		log.debug("Loading in config from server");
 		swapProperties(newProperties, false);
@@ -897,11 +891,7 @@ public class ConfigManager
 
 			if (configClient != null)
 			{
-				Configuration patch = new Configuration(pendingChanges.entrySet().stream()
-					.map(e -> new ConfigEntry(e.getKey(), e.getValue()))
-					.collect(Collectors.toList()));
-
-				future = configClient.patch(patch);
+				future = configClient.patch(pendingChanges);
 			}
 
 			pendingChanges.clear();

@@ -26,10 +26,12 @@ package net.runelite.http.api.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
@@ -49,12 +51,14 @@ import okhttp3.Response;
 public class ConfigClient
 {
 	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
-	private static final Gson GSON = RuneLiteAPI.GSON;
+	private static final Gson GSON = RuneLiteAPI.GSON.newBuilder()
+		.serializeNulls()
+		.create();
 
 	private final OkHttpClient client;
 	private final UUID uuid;
 
-	public Configuration get() throws IOException
+	public Map<String, String> get() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
@@ -69,8 +73,15 @@ public class ConfigClient
 
 		try (Response response = client.newCall(request).execute())
 		{
+			if (response.code() != 200)
+			{
+				throw new IOException("unable to get config: " + response.code());
+			}
+
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Configuration.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<Map<String, String>>()
+			{
+			}.getType());
 		}
 		catch (JsonParseException ex)
 		{
@@ -116,7 +127,7 @@ public class ConfigClient
 		return future;
 	}
 
-	public CompletableFuture<Void> patch(Configuration configuration)
+	public CompletableFuture<Void> patch(Map<String, String> changeSet)
 	{
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -127,10 +138,13 @@ public class ConfigClient
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.patch(RequestBody.create(RuneLiteAPI.JSON, GSON.toJson(configuration)))
+			.patch(RequestBody.create(RuneLiteAPI.JSON, GSON.toJson(changeSet)))
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
+
+		// changeSet is still owned by the caller and can be modified by the caller after we return
+		int changeSetSize = changeSet.size();
 
 		client.newCall(request).enqueue(new Callback()
 		{
@@ -155,51 +169,13 @@ public class ConfigClient
 					{
 					}
 
-					log.warn("failed to synchronize some of {} configuration values: {}", configuration.getConfig().size(), body);
+					log.warn("failed to synchronize some of {} configuration values: {}", changeSetSize, body);
 				}
 				else
 				{
-					log.debug("Synchronized {} configuration values", configuration.getConfig().size());
+					log.debug("Synchronized {} configuration values", changeSetSize);
 				}
 				response.close();
-				future.complete(null);
-			}
-		});
-
-		return future;
-	}
-
-	public CompletableFuture<Void> unset(String key)
-	{
-		CompletableFuture<Void> future = new CompletableFuture<>();
-
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
-			.addPathSegment(key)
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.delete()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Unable to unset configuration item", e);
-				future.completeExceptionally(e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Unset configuration value '{}'", key);
 				future.complete(null);
 			}
 		});

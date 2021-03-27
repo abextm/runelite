@@ -26,6 +26,7 @@ package net.runelite.http.service.config;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -49,8 +50,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.config.ConfigEntry;
-import net.runelite.http.api.config.Configuration;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,26 +88,27 @@ public class ConfigService
 		return mongoCollection.find(eq("_userId", userId)).first();
 	}
 
-	public Configuration get(int userId)
+	public Map<String, String> get(int userId)
 	{
 		Map<String, Object> configMap = getConfig(userId);
 
 		if (configMap == null || configMap.isEmpty())
 		{
-			return new Configuration(Collections.emptyList());
+			return Collections.emptyMap();
 		}
 
-		List<ConfigEntry> config = new ArrayList<>();
+		ImmutableMap.Builder<String, String> out = ImmutableMap.builder();
 
-		for (String group : configMap.keySet())
+		for (Map.Entry<String, Object> e : configMap.entrySet())
 		{
+			String group = e.getKey();
 			// Reserved keys
 			if (group.startsWith("_") || group.startsWith("$"))
 			{
 				continue;
 			}
 
-			Map<String, Object> groupMap = (Map) configMap.get(group);
+			Map<String, Object> groupMap = (Map<String, Object>) e.getValue();
 
 			for (Map.Entry<String, Object> entry : groupMap.entrySet())
 			{
@@ -124,21 +124,19 @@ public class ConfigService
 					continue;
 				}
 
-				ConfigEntry configEntry = new ConfigEntry();
-				configEntry.setKey(group + "." + key.replace(':', '.'));
-				configEntry.setValue(value.toString());
-				config.add(configEntry);
+				String fullKey = group + "." + key.replace(':', '.');
+				out.put(fullKey, value.toString());
 			}
 		}
 
-		return new Configuration(config);
+		return out.build();
 	}
 
-	public List<String> patch(int userID, Configuration config)
+	public List<String> patch(int userID, Map<String, String> config)
 	{
 		List<String> failures = new ArrayList<>();
-		List<Bson> sets = new ArrayList<>(config.getConfig().size());
-		for (ConfigEntry entry : config.getConfig())
+		List<Bson> sets = new ArrayList<>(config.size());
+		for (Map.Entry<String, String> entry : config.entrySet())
 		{
 			Bson s = setForKV(entry.getKey(), entry.getValue());
 			if (s == null)
