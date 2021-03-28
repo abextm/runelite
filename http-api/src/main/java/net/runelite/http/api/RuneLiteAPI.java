@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import net.runelite.http.api.gson.ColorTypeAdapter;
 import net.runelite.http.api.gson.InstantTypeAdapter;
 import net.runelite.http.api.gson.IllegalReflectionExclusion;
+import net.runelite.http.api.util.GZIPInterceptor;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -101,6 +102,7 @@ public class RuneLiteAPI
 					return chain.proceed(userAgentRequest);
 				}
 			})
+			.addNetworkInterceptor(new GZIPInterceptor())
 			.build();
 
 		GsonBuilder gsonBuilder = new GsonBuilder();

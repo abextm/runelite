@@ -37,6 +37,7 @@ import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.util.GZIPInterceptor;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -140,6 +141,7 @@ public class ConfigClient
 		Request request = new Request.Builder()
 			.patch(RequestBody.create(RuneLiteAPI.JSON, GSON.toJson(changeSet)))
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
+			.tag(GZIPInterceptor.TAG)
 			.url(url)
 			.build();
 
