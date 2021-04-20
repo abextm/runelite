@@ -21188,6 +21188,14 @@ public final class ObjectID
 	public static final int FISHING_ROD_41330 = 41330;
 	public static final int CRATES_41332 = 41332;
 	public static final int WATER_41333 = 41333;
+	public static final int BROKEN_RAIL = 41398;
+	public static final int BROKEN_RAIL_41399 = 41399;
+	public static final int RAIL = 41400;
+	public static final int BROKEN_RAIL_41402 = 41402;
+	public static final int BROKEN_RAIL_41403 = 41403;
+	public static final int BAILING_BUCKETS = 41408;
+	public static final int HAMMERS_41409 = 41409;
+	public static final int AXES = 41410;
 	public static final int STASH_CHART = 41434;
 	public static final int REWARDS_CHEST_41435 = 41435;
 	public static final int REWARDS_CHEST_41436 = 41436;
@@ -21224,7 +21232,6 @@ public final class ObjectID
 	public static final int MINE_CART_41511 = 41511;
 	public static final int MINE_CART_41512 = 41512;
 	public static final int VAULT_DOOR = 41537;
-	public static final int TRAP_41538 = 41538;
 	public static final int SECURITY_BARRIER = 41539;
 	public static final int SECURITY_BARRIER_41540 = 41540;
 	public static final int SIMPLE_LOCKBOX = 41541;
@@ -21243,7 +21250,7 @@ public final class ObjectID
 	public static final int SMALL_ROCK_41563 = 41563;
 	public static final int ROCK_41564 = 41564;
 	public static final int CHARM_OF_FISHING = 41571;
-	public static final int CHARM_OF_PREPERATION = 41572;
+	public static final int CHARM_OF_PREPARATION = 41572;
 	public static final int CHARM_OF_DEFENCE = 41573;
 	public static final int CHARM_OF_MINING = 41574;
 	public static final int CHARM_OF_BOOST = 41575;

@@ -20196,6 +20196,11 @@ public final class NullObjectID
 	public static final int NULL_41395 = 41395;
 	public static final int NULL_41396 = 41396;
 	public static final int NULL_41397 = 41397;
+	public static final int NULL_41401 = 41401;
+	public static final int NULL_41404 = 41404;
+	public static final int NULL_41405 = 41405;
+	public static final int NULL_41406 = 41406;
+	public static final int NULL_41407 = 41407;
 	public static final int NULL_41437 = 41437;
 	public static final int NULL_41461 = 41461;
 	public static final int NULL_41462 = 41462;
