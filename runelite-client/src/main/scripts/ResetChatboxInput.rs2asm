@@ -3,8 +3,6 @@
 .string_stack_count 0
 .int_var_count      3
 .string_var_count   0
-   sconst                 "resetChatboxInput"
-   runelite_callback     
    iconst                 1
    iconst                 10616872
    if_sethide            

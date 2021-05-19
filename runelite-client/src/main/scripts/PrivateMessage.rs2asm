@@ -149,11 +149,6 @@ LABEL101:
 LABEL104:
    get_varc_string        360
    get_varc_string        359
-   sconst                 "privateMessage" ; load event name
-   iconst                 0                ; whether or not to skip
-   runelite_callback     ; invoke callback
-   iconst                 1
-   if_icmpeq              LABEL107         ; if skipped, do not message
    chat_sendprivate      
 LABEL107:
    clientclock           
