@@ -43,11 +43,6 @@ LABEL29:
    iload                  1
    string_indexof_char   
    iconst                 -1
-   if_icmpeq              LABEL55
-   iconst                 0                 ; Modified to enable clanchat input
-   sconst                 "friendsChatInput"
-   runelite_callback     
-   iconst                 1
    if_icmpne              LABEL37
    jump                   LABEL42
 LABEL37:
@@ -70,7 +65,7 @@ LABEL48:
    iconst                 0
    string_indexof_string 
    iconst                 0
-   if_icmpeq              LABEL55           ; Compare to 1
+   if_icmpeq              LABEL55
    jump                   LABEL60
 LABEL55:
    iload                  2
@@ -475,8 +470,6 @@ LABEL371:
    compare               
    iconst                 0
    if_icmpeq              LABEL383
-   sconst                 "runeliteCommand" ; load callback name
-   runelite_callback     ; invoke callback
    jump                   LABEL386
 LABEL383:
    get_varc_string        335
@@ -621,15 +614,7 @@ LABEL490:
    iload                  0
    iload                  1
    invoke                 74
-   iconst                 1                 ; check if we're ignoring input
-   iconst                 0                 ;
-   sconst                 "blockChatInput"  ;
-   runelite_callback     ;
-   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL496          ; jump over SKIPSETVARC
-SKIPSETVARC:
-   pop_string            ; pop message
 LABEL496:
    invoke                 223
    return                
