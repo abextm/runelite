@@ -41,8 +41,7 @@ import okhttp3.Response;
 class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 {
 	private final OkHttpClient okHttpClient;
-
-	private CompletableFuture<RuntimeConfig> configFuture;
+	private final CompletableFuture<RuntimeConfig> configFuture;
 
 	public RuntimeConfigLoader(OkHttpClient okHttpClient)
 	{
@@ -82,7 +81,7 @@ class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 			@Override
 			public void onResponse(Call call, Response response)
 			{
-				try
+				try // NOPMD: UseTryWithResources
 				{
 					future.complete(RuneLiteAPI.GSON.fromJson(new InputStreamReader(response.body().byteStream()), RuntimeConfig.class));
 				}
