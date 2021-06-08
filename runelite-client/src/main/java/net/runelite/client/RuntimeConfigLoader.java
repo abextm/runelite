@@ -26,6 +26,7 @@ package net.runelite.client;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
@@ -83,7 +84,7 @@ class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 			{
 				try // NOPMD: UseTryWithResources
 				{
-					future.complete(RuneLiteAPI.GSON.fromJson(new InputStreamReader(response.body().byteStream()), RuntimeConfig.class));
+					future.complete(RuneLiteAPI.GSON.fromJson(new InputStreamReader(response.body().byteStream(), StandardCharsets.UTF_8), RuntimeConfig.class));
 				}
 				catch (Throwable ex)
 				{
