@@ -27,9 +27,12 @@ package net.runelite.client;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
+import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -66,10 +69,41 @@ class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 
 	private CompletableFuture<RuntimeConfig> fetch()
 	{
+		CompletableFuture<RuntimeConfig> future = new CompletableFuture<>();
+
+		String prop = System.getProperty("runelite.rtconf");
+		if (!Strings.isNullOrEmpty(prop))
+		{
+			try
+			{
+				log.info("Using local runtime config");
+
+				String strConf = new String(Files.readAllBytes(Paths.get(prop)), StandardCharsets.UTF_8);
+				RuntimeConfig conf = RuneLiteAPI.GSON.fromJson(strConf, RuntimeConfig.class);
+				future.complete(conf);
+
+				String strOut = RuneLiteAPI.GSON.newBuilder()
+					.setPrettyPrinting()
+					.create()
+					.toJson(conf);
+				long missingKeys = strConf.chars().filter(i -> i == ':').count() - strOut.chars().filter(i -> i == ':').count();
+				if (missingKeys != 0)
+				{
+					log.warn("{}", strOut);
+					throw new RuntimeException("local runtime config has " + missingKeys + " unused key(s)");
+				}
+
+				return future;
+			}
+			catch (IOException e)
+			{
+				throw new RuntimeException("failed to load override runtime config", e);
+			}
+		}
+
 		Request request = new Request.Builder()
 			.url(RuneLiteProperties.getRuneLiteConfig())
 			.build();
-		CompletableFuture<RuntimeConfig> future = new CompletableFuture<>();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
