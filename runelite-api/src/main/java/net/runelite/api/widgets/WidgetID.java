@@ -185,10 +185,10 @@ public class WidgetID
 
 	static class DialogNPC
 	{
-		static final int HEAD_MODEL = 1;
-		static final int NAME = 2;
-		static final int CONTINUE = 3;
-		static final int TEXT = 4;
+		static final int HEAD_MODEL = 2;
+		static final int NAME = 3;
+		static final int CONTINUE = 4;
+		static final int TEXT = 5;
 	}
 
 	static class LogoutPanel
@@ -782,17 +782,17 @@ public class WidgetID
 
 	static class AncientSpellBook
 	{
-		static final int EDGEVILLE_HOME_TELEPORT = 99;
+		static final int EDGEVILLE_HOME_TELEPORT = 105;
 	}
 
 	static class LunarSpellBook
 	{
-		static final int LUNAR_HOME_TELEPORT = 100;
+		static final int LUNAR_HOME_TELEPORT = 106;
 	}
 
 	static class ArceuusSpellBook
 	{
-		static final int ARCEUUS_HOME_TELEPORT = 144;
+		static final int ARCEUUS_HOME_TELEPORT = 150;
 	}
 
 	static class Pvp
