@@ -350,21 +350,8 @@ LABEL319:
    iload                  15
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER
+   if_icmpeq              LABEL334
    jump                   LABEL1355
-CHAT_FILTER:
-   sload                  15                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  11                ; Load the messageType
-   iload                  10                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 15                ; Override the message with our filtered message
-   if_icmpeq              LABEL334          ; Check if we are building this message
-   jump                   LABEL1355          ; continue to next message, skipping this
 LABEL334:
    iload                  11
    sload                  13
@@ -378,10 +365,6 @@ LABEL334:
    if_icmpeq              LABEL345
    jump                   LABEL1355
 LABEL345:
-   iload                  10 ; message uid
-   sconst                 "chatMessageBuilding"
-   runelite_callback     
-   pop_int                   ; pop uid
    iload                  11
    switch                
       1: LABEL348
@@ -454,8 +437,6 @@ LABEL390:
    sload                  13
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    sload                  5
    sload                  15
    sconst                 "</col>"
@@ -534,8 +515,6 @@ LABEL463:
    sload                  13
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    sload                  5
    sload                  15
    sconst                 "</col>"
