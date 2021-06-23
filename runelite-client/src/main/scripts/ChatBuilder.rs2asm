@@ -357,21 +357,8 @@ LABEL323:
    iload                  15
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER
+   if_icmpeq              LABEL340
    jump                   LABEL1411
-CHAT_FILTER:
-   sload                  15                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  11                ; Load the messageType
-   iload                  10                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 15                ; Override the message with our filtered message
-   if_icmpeq              LABEL340          ; Check if we are building this message
-   jump                   LABEL1411          ; continue to next message, skipping this
 LABEL340:
    iload                  11
    sload                  13
@@ -387,10 +374,6 @@ LABEL340:
    if_icmpeq              LABEL353
    jump                   LABEL1411
 LABEL353:
-   iload                  11 ; message uid
-   sconst                 "chatMessageBuilding"
-   runelite_callback     
-   pop_int                   ; pop uid
    iload                  11
    switch                
       1: LABEL356
@@ -468,8 +451,6 @@ LABEL402:
    sload                  13
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    invoke                 4742
    sload                  5
    sload                  15
@@ -554,8 +535,6 @@ LABEL481:
    sload                  13
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    invoke                 4742
    sload                  5
    sload                  15
