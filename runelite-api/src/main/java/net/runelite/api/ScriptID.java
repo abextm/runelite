@@ -86,7 +86,7 @@ public final class ScriptID
 	 * <li> int (boolean) Restore to chat view </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 2)
+	@ScriptArguments(integer = 3)
 	public static final int MESSAGE_LAYER_CLOSE = 299;
 
 	/**
