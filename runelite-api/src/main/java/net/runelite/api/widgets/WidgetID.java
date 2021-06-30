@@ -839,10 +839,10 @@ public class WidgetID
 
 	static class SettingsSide
 	{
-		static final int CAMERA_ZOOM_SLIDER_TRACK = 61;
-		static final int MUSIC_SLIDER = 14;
-		static final int SOUND_EFFECT_SLIDER = 18;
-		static final int AREA_SOUND_SLIDER = 22;
+		static final int CAMERA_ZOOM_SLIDER_TRACK = 98;
+		static final int MUSIC_SLIDER = 12;
+		static final int SOUND_EFFECT_SLIDER = 23;
+		static final int AREA_SOUND_SLIDER = 25;
 	}
 
 	static class Settings
