@@ -270,16 +270,6 @@ LABEL222:
    istore                 5
    istore                 6
 LABEL226:
-   iload                  5                    ; prefix length
-   iload                  5                    ; chat type
-   sconst                 "preChatSendpublic"
-   runelite_callback     
-   istore                 5                    ; chat type
-   istore                 6                    ; prefix length
-   get_varc_string        335                  ; load input string
-   string_length                               ; get length
-   iconst                 0                    ; load 0
-   if_icmpeq              LABEL420             ; if (%varcstring355 == 0) jump to script223 call
    iload                  5
    iconst                 44
    if_icmpeq              LABEL230
@@ -480,8 +470,6 @@ LABEL371:
    compare               
    iconst                 0
    if_icmpeq              LABEL383
-   sconst                 "runeliteCommand" ; load callback name
-   runelite_callback     ; invoke callback
    jump                   LABEL386
 LABEL383:
    get_varc_string        335
@@ -626,15 +614,7 @@ LABEL490:
    iload                  0
    iload                  1
    invoke                 74
-   iconst                 1                 ; check if we're ignoring input
-   iconst                 0                 ;
-   sconst                 "blockChatInput"  ;
-   runelite_callback     ;
-   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL496          ; jump over SKIPSETVARC
-SKIPSETVARC:
-   pop_string            ; pop message
 LABEL496:
    invoke                 223
    return                
