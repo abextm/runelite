@@ -62,7 +62,7 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  6
-   iconst                 10551333
+   iconst                 10551334
    enum                  
    if_getheight          
    add                   
@@ -412,7 +412,7 @@ CHAT_FILTER:
    if_icmpeq              LABEL368          ; Check if we are building this message
    jump                   LABEL550
 LABEL368:
-   iload                  12 ; message uid
+   iload                  18 ; message uid
    sconst                 "chatMessageBuilding"
    runelite_callback     
    pop_int               
@@ -427,7 +427,7 @@ LABEL371:
    iload                  7
    sload                  2
    sload                  5
-   sconst                 "splitPrivChatUsernameColor"
+   sconst                 "From "
    runelite_callback     
    sconst                 "From "
    sload                  1
@@ -458,7 +458,7 @@ LABEL399:
    iload                  7
    sload                  2
    sload                  5
-   sconst                 "splitPrivChatUsernameColor"
+   sconst                 "To "
    runelite_callback     
    sconst                 "To "
    sload                  1
