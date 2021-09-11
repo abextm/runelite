@@ -26,6 +26,7 @@
  */
 package net.runelite.client.rs;
 
+import abex.os.debug.Profiler;
 import com.google.archivepatcher.applier.FileByFileV1DeltaApplier;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
@@ -56,7 +57,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 import javax.annotation.Nonnull;
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileSystemView;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
@@ -117,6 +120,21 @@ public class ClientLoader implements Supplier<Applet>
 
 	private Object doLoad()
 	{
+		Profiler.init();
+		Profiler.start(new Thread[]{Thread.currentThread()}, 6 * 1024 * 1024, 500);
+
+		new Thread(() -> {
+			try
+			{
+				Thread.sleep(10000);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			doStop();
+		});
+
 		if (updateCheckMode == NONE)
 		{
 			return null;
@@ -133,7 +151,7 @@ public class ClientLoader implements Supplier<Applet>
 			ClassLoader classLoader;
 			try (FileChannel lockfile = FileChannel.open(LOCK_FILE.toPath(),
 				StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
-				FileLock flock = lockfile.lock())
+			     FileLock flock = lockfile.lock())
 			{
 				SplashScreen.stage(.05, null, "Downloading Old School RuneScape");
 				try
@@ -183,6 +201,37 @@ public class ClientLoader implements Supplier<Applet>
 
 			SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
 			return e;
+		}
+		finally
+		{
+			doStop();
+		}
+	}
+
+	private void doStop()
+	{
+		try
+		{
+			byte[] data;
+			synchronized (this)
+			{
+				data = Profiler.stop(new byte[0]);
+			}
+			if (data == null)
+			{
+				return;
+			}
+			JFileChooser fc = new JFileChooser();
+			fc.setDialogTitle("Save profile");
+			fc.setSelectedFile(new File(FileSystemView.getFileSystemView().getDefaultDirectory(), "profile.rlp"));
+			if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+			{
+				java.nio.file.Files.write(fc.getSelectedFile().toPath(), data);
+			}
+		}
+		catch (Exception e)
+		{
+			log.warn("stop profiler", e);
 		}
 	}
 
