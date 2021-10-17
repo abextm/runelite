@@ -107,7 +107,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
-					<argLine>-Xmx2048m</argLine>
+					<argLine>-Xmx8g</argLine>
 					<systemProperties>
 						<cache.tmpdir>${cache.tmpdir}</cache.tmpdir>
 					</systemProperties>

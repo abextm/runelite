@@ -45,6 +45,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.ByteString;
 
 @Slf4j
 public class XteaClient
@@ -104,11 +105,16 @@ public class XteaClient
 			.addPathSegment("xtea")
 			.build();
 
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
+		Request.Builder request = new Request.Builder()
+			.url(url);
 
-		try (Response response = client.newCall(request).execute())
+		String auth = System.getenv("XTEA_AUTH");
+		if (auth != null)
+		{
+			request.header("Authorization", "Basic " + ByteString.of(auth.getBytes(StandardCharsets.UTF_8)).base64());
+		}
+
+		try (Response response = client.newCall(request.build()).execute())
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF

@@ -26,9 +26,20 @@ package net.runelite.cache;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageOutputStream;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.fs.flat.FlatStorage;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
 import net.runelite.cache.util.XteaKeyManager;
@@ -36,13 +47,10 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class MapImageDumperTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(MapImageDumperTest.class);
-
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
@@ -51,17 +59,19 @@ public class MapImageDumperTest
 	public void dumpMap() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+			outDir = new File("/tmp");
 
-		try (Store store = new Store(base))
+		try (Store store = new Store(new FlatStorage(new File("/home/abex/code/osrs-cache/"))))
 		{
 			store.load();
 
 			XteaKeyManager keyManager = new XteaKeyManager();
-			keyManager.loadKeys(null);
+			keyManager.loadKeys(new FileInputStream("/home/abex/xteas.json"));
 
-			MapImageDumper dumper = new MapImageDumper(store, keyManager);
-			dumper.load();
+			MapImageDumper dumper = new MapImageDumper(store, keyManager)
+				.setBrightness(.75)
+				.setTransparency(true)
+				.load();
 
 			for (int i = 0; i < Region.Z; ++i)
 			{
@@ -69,8 +79,11 @@ public class MapImageDumperTest
 
 				File imageFile = new File(outDir, "img-" + i + ".png");
 
-				ImageIO.write(image, "png", imageFile);
-				logger.info("Wrote image {}", imageFile);
+				try (OutputStream os = new FileOutputStream(imageFile))
+				{
+					write(os, image, 2);
+				}
+				log.info("Wrote image {}", imageFile);
 			}
 		}
 	}
@@ -80,14 +93,16 @@ public class MapImageDumperTest
 	public void dumpRegions() throws Exception
 	{
 		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+			outDir = new File("/tmp/map");
 
-		try (Store store = new Store(base))
+		outDir.mkdirs();
+
+		try (Store store = new Store(new FlatStorage(new File("/home/abex/code/osrs-cache/"))))
 		{
 			store.load();
 
 			XteaKeyManager keyManager = new XteaKeyManager();
-			keyManager.loadKeys(null);
+			keyManager.loadKeys(new FileInputStream("/home/abex/xteas.json"));
 
 			RegionLoader regionLoader = new RegionLoader(store, keyManager);
 			regionLoader.loadRegions();
@@ -101,6 +116,44 @@ public class MapImageDumperTest
 				File imageFile = new File(outDir, "img-" + z + "-" + region.getRegionID() + ".png");
 				BufferedImage image = dumper.drawRegion(region, z);
 				ImageIO.write(image, "png", imageFile);
+			}
+		}
+	}
+
+	public static void setDeflateLevel(ImageWriteParam param, int deflateLevel)
+	{
+		try
+		{
+			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			param.setCompressionQuality(1f - (deflateLevel / 9f)); // works like jpeg quality, but is actually applied to zlib, so 0 is 9
+		}
+		catch (RuntimeException e)
+		{
+			log.info("cannot set compression", e);
+		}
+	}
+
+	public static void write(OutputStream os, BufferedImage bimg, int deflateLevel) throws IOException
+	{
+		ImageWriter pngWriter = null;
+		try (ImageOutputStream ios = ImageIO.createImageOutputStream(os))
+		{
+			pngWriter = ImageIO.getImageWritersByFormatName("png").next();
+			pngWriter.setOutput(ios);
+
+			ImageWriteParam param = pngWriter.getDefaultWriteParam();
+			setDeflateLevel(param, deflateLevel);
+			IIOMetadata meta = pngWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(bimg), param);
+
+			IIOImage iimg = new IIOImage(bimg, null, meta);
+
+			pngWriter.write(null, iimg, param);
+		}
+		finally
+		{
+			if (pngWriter != null)
+			{
+				pngWriter.dispose();
 			}
 		}
 	}
