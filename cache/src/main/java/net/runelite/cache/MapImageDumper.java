@@ -717,19 +717,8 @@ public class MapImageDumper
 								continue;
 							}
 
-							int hash = (localY << 7) + localX + (location.getId() << 14) + 0x4000_0000;
-							if (object.getWallOrDoor() == 0)
-							{
-								hash -= Integer.MIN_VALUE;
-							}
-
-							if ((hash >> 29 & 3) != 2)
-							{
-								continue;
-							}
-
 							int rgb = 0xFFEE_EEEE;
-							if (hash > 0)
+							if (object.getWallOrDoor() != 0)
 							{
 								rgb = 0xFFEE_0000;
 							}
