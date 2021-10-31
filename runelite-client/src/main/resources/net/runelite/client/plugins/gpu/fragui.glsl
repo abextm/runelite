@@ -68,7 +68,7 @@ void main() {
             c.rgb = colorblind(colorBlindMode, c.rgb);
             break;
         default: // NEAREST or LINEAR, which uses GL_TEXTURE_MIN_FILTER/GL_TEXTURE_MAG_FILTER to affect sampling
-            c = texture(tex, TexCoord);
+            c = texture(tex, TexCoord).grab;
             c = alphaBlend(c, alphaOverlay);
             c.rgb = colorblind(colorBlindMode, c.rgb);
     }

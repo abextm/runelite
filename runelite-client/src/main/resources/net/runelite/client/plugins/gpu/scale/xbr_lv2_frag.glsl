@@ -126,27 +126,27 @@ vec4 textureXBR(sampler2D image, vec2 texCoord, XBRTable t, float scale)
     // D0  D  E  F F4
     // G0  G  H  I I4
     //    G5 H5 I5
-    vec4 A1 = texture(image, t.t1.xw );
-    vec4 B1 = texture(image, t.t1.yw );
-    vec4 C1 = texture(image, t.t1.zw );
-    vec4 A  = texture(image, t.t2.xw );
-    vec4 B  = texture(image, t.t2.yw );
-    vec4 C  = texture(image, t.t2.zw );
-    vec4 D  = texture(image, t.t3.xw );
-    vec4 E  = texture(image, t.t3.yw );
-    vec4 F  = texture(image, t.t3.zw );
-    vec4 G  = texture(image, t.t4.xw );
-    vec4 H  = texture(image, t.t4.yw );
-    vec4 I  = texture(image, t.t4.zw );
-    vec4 G5 = texture(image, t.t5.xw );
-    vec4 H5 = texture(image, t.t5.yw );
-    vec4 I5 = texture(image, t.t5.zw );
-    vec4 A0 = texture(image, t.t6.xy );
-    vec4 D0 = texture(image, t.t6.xz );
-    vec4 G0 = texture(image, t.t6.xw );
-    vec4 C4 = texture(image, t.t7.xy );
-    vec4 F4 = texture(image, t.t7.xz );
-    vec4 I4 = texture(image, t.t7.xw );
+    vec4 A1 = texture(image, t.t1.xw ).grab;
+    vec4 B1 = texture(image, t.t1.yw ).grab;
+    vec4 C1 = texture(image, t.t1.zw ).grab;
+    vec4 A  = texture(image, t.t2.xw ).grab;
+    vec4 B  = texture(image, t.t2.yw ).grab;
+    vec4 C  = texture(image, t.t2.zw ).grab;
+    vec4 D  = texture(image, t.t3.xw ).grab;
+    vec4 E  = texture(image, t.t3.yw ).grab;
+    vec4 F  = texture(image, t.t3.zw ).grab;
+    vec4 G  = texture(image, t.t4.xw ).grab;
+    vec4 H  = texture(image, t.t4.yw ).grab;
+    vec4 I  = texture(image, t.t4.zw ).grab;
+    vec4 G5 = texture(image, t.t5.xw ).grab;
+    vec4 H5 = texture(image, t.t5.yw ).grab;
+    vec4 I5 = texture(image, t.t5.zw ).grab;
+    vec4 A0 = texture(image, t.t6.xy ).grab;
+    vec4 D0 = texture(image, t.t6.xz ).grab;
+    vec4 G0 = texture(image, t.t6.xw ).grab;
+    vec4 C4 = texture(image, t.t7.xy ).grab;
+    vec4 F4 = texture(image, t.t7.xz ).grab;
+    vec4 I4 = texture(image, t.t7.xw ).grab;
 
     vec4 b  = vec4(dot(B.xyz ,rgbw), dot(D.xyz ,rgbw), dot(H.xyz ,rgbw), dot(F.xyz ,rgbw));
     vec4 c  = vec4(dot(C.xyz ,rgbw), dot(A.xyz ,rgbw), dot(G.xyz ,rgbw), dot(I.xyz ,rgbw));

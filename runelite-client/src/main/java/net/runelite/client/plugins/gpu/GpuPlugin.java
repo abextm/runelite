@@ -1314,17 +1314,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glEnable(gl.GL_BLEND);
 
-		vertexBuffer.clear(); // reuse vertex buffer for interface
-		vertexBuffer.ensureCapacity(pixels.length);
-
-		IntBuffer interfaceBuffer = vertexBuffer.getBuffer();
-		interfaceBuffer.put(pixels);
-		vertexBuffer.flip();
-
 		gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
-		gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
+		gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8, IntBuffer.wrap(bufferProvider.getPixels()));
 
 		// Use the texture bound in the first pass
 		final UIScalingMode uiScalingMode = config.uiScalingMode();
