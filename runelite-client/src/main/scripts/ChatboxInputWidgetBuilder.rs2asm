@@ -273,8 +273,6 @@ LABEL234:
    sload                  2
    iconst                 10616887
    if_settext            
-   sconst                 "setChatboxInput"
-   runelite_callback     
    iconst                 3
    iconst                 16
    iconst                 1
