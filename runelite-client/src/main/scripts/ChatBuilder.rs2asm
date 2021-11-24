@@ -343,9 +343,9 @@ LABEL319:
    jump                   LABEL1598
 LABEL323:
    iload                  10
-   chat_gethistoryex_byuid
+   5031                  
    istore                 21
-   sstore                 18                ; timestamp
+   sstore                 18
    istore                 15
    sstore                 15
    sstore                 14
@@ -358,21 +358,8 @@ LABEL323:
    sload                  15
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER
+   if_icmpeq              LABEL341
    jump                   LABEL1594
-CHAT_FILTER:
-   sload                  15                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  11                ; Load the messageType
-   iload                  10                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 15                ; Override the message with our filtered message
-   if_icmpeq              LABEL341          ; Check if we are building this message
-   jump                   LABEL1594          ; continue to next message, skipping this
 LABEL341:
    iload                  11
    sload                  13
@@ -389,12 +376,6 @@ LABEL341:
    if_icmpeq              LABEL355
    jump                   LABEL1594
 LABEL355:
-   iload                  10 ; message uid
-   sload                  18 ; message timestamp
-   sconst                 "chatMessageBuilding"
-   runelite_callback     
-   pop_int                   ; pop uid
-   sstore                 18 ; message timestamp
    iload                  11
    switch                
       1: LABEL358
@@ -474,8 +455,6 @@ LABEL404:
    sload                  13
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    invoke                 4742
    sload                  5
    sload                  15
@@ -560,8 +539,6 @@ LABEL483:
    sload                  13
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    invoke                 4742
    sload                  5
    sload                  15
