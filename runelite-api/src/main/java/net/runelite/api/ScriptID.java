@@ -45,7 +45,7 @@ public final class ScriptID
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 1, string = 1)
-	public static final int CHATBOX_INPUT = 96;
+	public static final int CHATBOX_INPUT = -1;
 
 	/**
 	 * Rebuilds the chatbox and the pmbox
