@@ -1,3 +1,4 @@
+; lost script
 .id                 96
 .int_stack_count    1
 .string_stack_count 1

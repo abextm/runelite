@@ -9,7 +9,7 @@
    invoke                 1942
    iconst                 1
    if_icmpeq              LABEL4
-   jump                   CONFIRM_KICK  ; Jump to our new label instead
+   jump                   LABEL7  ; Jump to our new label instead
    jump                   LABEL7
 LABEL4:
    sconst                 "You can't kick players from your team during Wilderness Wars."
@@ -18,7 +18,10 @@ LABEL4:
 LABEL7:
    sconst                 "-Attempting to kick player from chat-channel..."
    iconst                 2
-   invoke                 96
+   iconst                 -1
+   iconst                 0
+   iconst                 -1
+   invoke                 5517
    sload                  0
    clan_kickuser         
 RETURN:
