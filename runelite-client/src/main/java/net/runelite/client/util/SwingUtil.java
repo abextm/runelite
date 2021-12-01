@@ -25,11 +25,9 @@
 package net.runelite.client.util;
 
 import java.awt.AWTException;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Insets;
@@ -40,7 +38,6 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.Enumeration;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,18 +46,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.components.CustomScrollBarUI;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 /**
  * Various Swing utilities.
@@ -68,86 +56,6 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 @Slf4j
 public class SwingUtil
 {
-	/**
-	 * Sets some sensible defaults for swing.
-	 * IMPORTANT! Needs to be called before main frame creation
-	 */
-	public static void setupDefaults()
-	{
-		// Force heavy-weight popups/tooltips.
-		// Prevents them from being obscured by the game applet.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-		ToolTipManager.sharedInstance().setInitialDelay(300);
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-		UIManager.put("Button.foreground", Color.WHITE);
-		UIManager.put("MenuItem.foreground", Color.WHITE);
-		UIManager.put("Panel.background", ColorScheme.DARK_GRAY_COLOR);
-		UIManager.put("ScrollBarUI", CustomScrollBarUI.class.getName());
-		UIManager.put("TextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
-		UIManager.put("TextField.selectionForeground", Color.WHITE);
-		UIManager.put("FormattedTextField.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
-		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
-		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
-		UIManager.put("TextArea.selectionForeground", Color.WHITE);
-
-		// Do not render shadows under popups/tooltips.
-		// Fixes black boxes under popups that are above the game applet.
-		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
-
-		// Do not fill in background on repaint. Reduces flickering when
-		// the applet is resized.
-		System.setProperty("sun.awt.noerasebackground", "true");
-	}
-
-	/**
-	 * Safely sets Swing theme
-	 *
-	 * @param laf the swing look and feel
-	 */
-	public static void setTheme(@Nonnull final LookAndFeel laf)
-	{
-		try
-		{
-			UIManager.setLookAndFeel(laf);
-
-			if (OSType.getOSType() == OSType.MacOS)
-			{
-				// On MacOS Substance doesn't install its own popup factory, and the default one uses lightweight
-				// components unless the Aqua LAF is used. Lightweight components do not render correctly over AWT
-				// canvases on MacOS - so replace the popup factory one with that forces heavy components.
-				PopupFactory.setSharedInstance(new MacOSPopupFactory());
-			}
-		}
-		catch (UnsupportedLookAndFeelException ex)
-		{
-			log.warn("Unable to set look and feel", ex);
-		}
-	}
-
-	/**
-	 * Sets default Swing font.
-	 * IMPORTANT! Needs to be called before main frame creation
-	 *
-	 * @param font the new font to use
-	 */
-	public static void setFont(@Nonnull final Font font)
-	{
-		final FontUIResource f = new FontUIResource(font);
-		final Enumeration keys = UIManager.getDefaults().keys();
-
-		while (keys.hasMoreElements())
-		{
-			final Object key = keys.nextElement();
-			final Object value = UIManager.get(key);
-
-			if (value instanceof FontUIResource)
-			{
-				UIManager.put(key, f);
-			}
-		}
-	}
-
 	/**
 	 * Create tray icon.
 	 *
@@ -214,7 +122,6 @@ public class SwingUtil
 		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
-		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		button.setFocusable(false);
 		button.addActionListener(e ->
 		{

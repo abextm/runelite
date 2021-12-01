@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.ui.laf;
 
-import java.awt.Component;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
-/**
- * Popup factory for Java 11 which forces heavyweight popups. Lightweight popups do not render correctly
- * over AWT canvases on OSX.
- */
-class MacOSPopupFactory extends PopupFactory
+public class RuneLiteCheckBoxUI extends RuneLiteRadioButtonUI
 {
-	@Override
-	protected Popup getPopup(Component owner, Component contents, int x, int y, boolean isHeavyWeightPopup) throws IllegalArgumentException
+	private static final RuneLiteCheckBoxUI INSTANCE = new RuneLiteCheckBoxUI();
+	public static ComponentUI createUI(JComponent b)
 	{
-		return super.getPopup(owner, contents, x, y, true);
+		return INSTANCE;
+	}
+
+	@Override
+	public String getPropertyPrefix()
+	{
+		return "CheckBox.";
 	}
 }

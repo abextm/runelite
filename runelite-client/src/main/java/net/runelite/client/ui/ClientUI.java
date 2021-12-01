@@ -28,8 +28,6 @@ import com.google.common.base.Strings;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -38,7 +36,6 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -55,13 +52,14 @@ import javax.inject.Singleton;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
+import javax.swing.JPopupMenu;
+import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -87,16 +85,13 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
+import net.runelite.client.ui.laf.RuneLiteLAF;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.WinUtil;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
 /**
  * Client UI.
@@ -310,14 +305,24 @@ public class ClientUI
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
-			// Set some sensible swing defaults
-			SwingUtil.setupDefaults();
+			// Do not fill in background on repaint. Reduces flickering when
+			// the applet is resized.
+			System.setProperty("sun.awt.noerasebackground", "true");
 
-			// Use substance look and feel
-			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
+			// Force heavy-weight popups/tooltips.
+			// Prevents them from being obscured by the game applet.
+			ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+			ToolTipManager.sharedInstance().setInitialDelay(300);
+			JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				// On MacOS Substance doesn't install its own popup factory, and the default one uses lightweight
+				// components unless the Aqua LAF is used. Lightweight components do not render correctly over AWT
+				// canvases on MacOS - so replace the popup factory one with that forces heavy components.
+				PopupFactory.setSharedInstance(new MacOSPopupFactory());
+			}
 
-			// Use custom UI font
-			SwingUtil.setFont(FontManager.getRunescapeFont());
+			new RuneLiteLAF().use();
 
 			// Create main window
 			frame = new ContainableFrame();
@@ -381,9 +386,6 @@ public class ClientUI
 			navContainer.setMinimumSize(new Dimension(0, 0));
 			navContainer.setMaximumSize(new Dimension(0, 0));
 			navContainer.setPreferredSize(new Dimension(0, 0));
-
-			// To reduce substance's colorization (tinting)
-			navContainer.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
@@ -431,55 +433,7 @@ public class ClientUI
 			mouseManager.registerMouseListener(mouseListener);
 
 			// Decorate window with custom chrome and titlebar if needed
-			withTitleBar = config.enableCustomChrome();
-			frame.setUndecorated(withTitleBar);
-
-			if (withTitleBar)
-			{
-				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
-				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-				titleBar.add(titleToolbar);
-
-				// Substance's default layout manager for the title bar only lays out substance's components
-				// This wraps the default manager and lays out the TitleToolbar as well.
-				LayoutManager delegate = titleBar.getLayout();
-				titleBar.setLayout(new LayoutManager()
-				{
-					@Override
-					public void addLayoutComponent(String name, Component comp)
-					{
-						delegate.addLayoutComponent(name, comp);
-					}
-
-					@Override
-					public void removeLayoutComponent(Component comp)
-					{
-						delegate.removeLayoutComponent(comp);
-					}
-
-					@Override
-					public Dimension preferredLayoutSize(Container parent)
-					{
-						return delegate.preferredLayoutSize(parent);
-					}
-
-					@Override
-					public Dimension minimumLayoutSize(Container parent)
-					{
-						return delegate.minimumLayoutSize(parent);
-					}
-
-					@Override
-					public void layoutContainer(Container parent)
-					{
-						delegate.layoutContainer(parent);
-						final int width = titleToolbar.getPreferredSize().width;
-						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					}
-				});
-			}
+			withTitleBar = false ; //config.enableCustomChrome();
 
 			// Update config
 			updateFrameConfig(true);

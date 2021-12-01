@@ -22,35 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.components;
+package net.runelite.client.ui.laf;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JScrollBar;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import lombok.Setter;
-import net.runelite.client.ui.ColorScheme;
 
-/**
- * This scroll bar UI is to be used for the "RuneLite Obsidian" client theme.
- * It is a part of the client's redesign as detailed on issue #1342
- */
-public class CustomScrollBarUI extends BasicScrollBarUI
+public class RuneLiteScrollBarUI extends BasicScrollBarUI
 {
-
-	/* The background color of the bar's thumb */
-	@Setter
-	private Color thumbColor = ColorScheme.MEDIUM_GRAY_COLOR;
-
-	/* The background color of the bar's track */
-	@Setter
-	private Color trackColor = ColorScheme.SCROLL_TRACK_COLOR;
-
 	/**
 	 * Overrides the painting of the bar's track (the darker part underneath that extends
 	 * the full page length).
@@ -88,10 +71,14 @@ public class CustomScrollBarUI extends BasicScrollBarUI
 
 	public static ComponentUI createUI(JComponent c)
 	{
-		JScrollBar bar = (JScrollBar) c;
-		bar.setUnitIncrement(16);
-		bar.setPreferredSize(new Dimension(7, 7));
-		return new CustomScrollBarUI();
+		return new RuneLiteScrollBarUI();
+	}
+
+	@Override
+	public void installUI(JComponent c)
+	{
+		super.installUI(c);
+		scrollbar.setUnitIncrement(16);
 	}
 
 	/**
