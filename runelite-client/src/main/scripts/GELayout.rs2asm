@@ -40,8 +40,6 @@ LABEL16:
    jump                   LABEL36
 LABEL34:
    sconst                 "Grand Exchange"
-   sconst                 "setGETitle"  ;
-   runelite_callback     ;
    cc_settext            
 LABEL36:
    return                

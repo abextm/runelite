@@ -383,7 +383,7 @@ LABEL350:
    iload                  12
    5031                  
    istore                 15
-   sstore                 2                 ; timestamp
+   sstore                 2
    istore                 14
    sstore                 0
    sstore                 3
@@ -396,34 +396,9 @@ LABEL350:
    iload                  14
    invoke                 91
    iconst                 1
-   if_icmpeq              CHAT_FILTER       ; Jump to our new label instead
-   jump                   LABEL562
-CHAT_FILTER:
-   sload                  0                 ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  18                ; Load the messageType
-   iload                  12                ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 0                 ; Override the message with our filtered message
-   if_icmpeq              LABEL368          ; Check if we are building this message
+   if_icmpeq              LABEL368
    jump                   LABEL562
 LABEL368:
-   iload                  12 ; message uid
-   sconst                 "" ; message channel
-   sload                   1 ; message name
-   sload                   0 ; message
-   sload                   2 ; message timestamp
-   sconst                 "chatMessageBuilding"
-   runelite_callback     
-   pop_int                  ; uid
-   sstore                 2 ; message timestamp
-   sstore                 0 ; message
-   sstore                 1 ; message name
-   pop_string               ; message channel
    iload                  18
    switch                
       3: LABEL371
@@ -439,8 +414,6 @@ LABEL371:
    sconst                 "</col>"
    append                
    sload                  5
-   sconst                 "splitPrivChatUsernameColor"
-   runelite_callback     
    sconst                 "From "
    sload                  1
    sconst                 ":"
@@ -474,8 +447,6 @@ LABEL403:
    sconst                 "</col>"
    append                
    sload                  5
-   sconst                 "splitPrivChatUsernameColor"
-   runelite_callback     
    sconst                 "To "
    sload                  1
    sconst                 ":"
