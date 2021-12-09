@@ -3,10 +3,6 @@
 .string_stack_count 0
 .int_var_count      14
 .string_var_count   0
-; callback "chatboxBackgroundBuilt"
-; 	used by the ChatboxPerformancePlugin to know when it needs to rebuild.
-;   Unmark the plugin as hidden and toggle it. The chatbox should change opacity
-;   slightly
    iconst                 10616834
    cc_deleteall          
    iconst                 0
@@ -371,8 +367,6 @@ LABEL250:
    istore                 13
    jump                   LABEL223
 LABEL333:
-   sconst                 "chatboxBackgroundBuilt"
-   runelite_callback     
    jump                   LABEL394
 LABEL334:
    iconst                 10616867
