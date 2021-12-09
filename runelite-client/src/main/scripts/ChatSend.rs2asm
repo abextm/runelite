@@ -131,7 +131,7 @@ LABEL102:
    sload                  0              ; load input
    iload                  0              ; load chat type
    iload                  1              ; load clan target
-   sconst                 "chatboxInput" ; event name
+   sconst                 "" ; event name
    runelite_callback     ; invoke callback
    pop_int               ; pop clan target
    pop_int               ; pop chat type
