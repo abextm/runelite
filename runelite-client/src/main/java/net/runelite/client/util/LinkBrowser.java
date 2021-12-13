@@ -60,15 +60,21 @@ public class LinkBrowser
 				return;
 			}
 
-			if (attemptDesktopBrowse(url))
+			if (attemptGIOLaunch(url, false))
 			{
-				log.debug("Opened url through Desktop#browse to {}", url);
+				log.debug("Opened url through GIO to {}", url);
 				return;
 			}
 
 			if (shouldAttemptXdg && attemptXdgOpen(url))
 			{
 				log.debug("Opened url through xdg-open to {}", url);
+				return;
+			}
+
+			if (attemptDesktopBrowse(url))
+			{
+				log.debug("Opened url through Desktop#browse to {}", url);
 				return;
 			}
 			
@@ -91,9 +97,9 @@ public class LinkBrowser
 				return;
 			}
 
-			if (attemptDesktopOpen(directory))
+			if (attemptGIOLaunch(directory, true))
 			{
-				log.debug("Opened directory through Desktop#open to {}", directory);
+				log.debug("Opened url through GIO to {}", directory);
 				return;
 			}
 
@@ -102,10 +108,37 @@ public class LinkBrowser
 				log.debug("Opened directory through xdg-open to {}", directory);
 				return;
 			}
+
+			if (attemptDesktopOpen(directory))
+			{
+				log.debug("Opened directory through Desktop#open to {}", directory);
+				return;
+			}
 			
 			log.warn("LinkBrowser.open() could not open {}", directory);
 			showMessageBox("Unable to open folder. Press 'OK' and the folder directory will be copied to your clipboard.", directory);
 		}).start();
+	}
+
+	private static boolean attemptGIOLaunch(String resource, boolean isFile)
+	{
+		GLib glib = GLib.getInstance();
+		if (glib == null)
+		{
+			return false;
+		}
+
+		if (isFile)
+		{
+			resource = "file://" + resource;
+		}
+
+		boolean ok = glib.launch(resource);
+		if (!ok)
+		{
+			log.warn("unable to use gio to open \"{}\"", resource);
+		}
+		return ok;
 	}
 
 	private static boolean attemptXdgOpen(String resource)
