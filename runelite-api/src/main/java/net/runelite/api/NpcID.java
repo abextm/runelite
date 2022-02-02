@@ -9480,6 +9480,15 @@ public final class NpcID
 	public static final int THE_SAGE = 11232;
 	public static final int LEAGUE_TUTOR = 11233;
 	public static final int LEAGUES_ASSISTANT_11234 = 11234;
+	public static final int DUST_DEVIL_11238 = 11238;
+	public static final int ABYSSAL_DEMON_11239 = 11239;
+	public static final int GREATER_NECHRYAEL_11240 = 11240;
+	public static final int JELLY_11241 = 11241;
+	public static final int JELLY_11242 = 11242;
+	public static final int JELLY_11243 = 11243;
+	public static final int JELLY_11244 = 11244;
+	public static final int JELLY_11245 = 11245;
+	public static final int REVENANT_MALEDICTUS = 11246;
 	public static final int NEXLING = 11276;
 	public static final int NEXLING_11277 = 11277;
 	public static final int NEX = 11278;

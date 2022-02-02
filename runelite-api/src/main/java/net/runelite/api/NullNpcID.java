@@ -1740,6 +1740,7 @@ public final class NullNpcID
 	public static final int NULL_11224 = 11224;
 	public static final int NULL_11235 = 11235;
 	public static final int NULL_11236 = 11236;
+	public static final int NULL_11237 = 11237;
 	public static final int NULL_11253 = 11253;
 	public static final int NULL_11256 = 11256;
 	public static final int NULL_11257 = 11257;
