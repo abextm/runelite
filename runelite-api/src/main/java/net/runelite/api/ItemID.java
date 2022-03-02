@@ -10234,7 +10234,7 @@ public final class ItemID
 	public static final int THE_WILD_HUNT = 22512;
 	public static final int VERZIK_VITUR__PATIENT_RECORD = 22514;
 	public static final int DAWNBRINGER = 22516;
-	public static final int VERZIKS_CRYSTAL_SHARD = 22517;
+	public static final int ESCAPE_CRYSTAL = 22517;
 	public static final int CABBAGE_22519 = 22519;
 	public static final int CABBAGE_22520 = 22520;
 	public static final int COIN_POUCH = 22521;
@@ -12021,7 +12021,7 @@ public final class ItemID
 	public static final int CORRUPTED_PADDLEFISH = 25958;
 	public static final int CORRUPTED_ESCAPE_CRYSTAL = 25959;
 	public static final int CRYSTAL_PADDLEFISH = 25960;
-	public static final int ESCAPE_CRYSTAL = 25961;
+	public static final int ESCAPE_CRYSTAL_25961 = 25961;
 	public static final int CRYPT_KEY = 25963;
 	public static final int RANIS_HEAD = 25964;
 	public static final int STRANGE_SPIDER_EGGS = 25965;
