@@ -926,8 +926,6 @@ LABEL763:
    compare               
    iconst                 0
    if_icmpeq              LABEL775
-   sconst                 "runeliteCommand" ; load callback name
-   runelite_callback     ; invoke callback
    jump                   LABEL778
 LABEL775:
    get_varc_string        335
@@ -1081,15 +1079,7 @@ LABEL891:
    iload                  0
    iload                  1
    invoke                 74
-   iconst                 1                 ; check if we're ignoring input
-   iconst                 0                 ;
-   sconst                 "blockChatInput"  ;
-   runelite_callback     ;
-   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL897          ; jump over SKIPSETVARC
-SKIPSETVARC:
-   pop_string            ; pop message
 LABEL897:
    invoke                 223
    return                
