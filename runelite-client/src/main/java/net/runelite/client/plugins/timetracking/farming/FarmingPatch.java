@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import java.util.Collections;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,12 @@ class FarmingPatch
 	@Getter(onMethod_ = {@Varbit})
 	private final int varbit;
 	private final PatchImplementation implementation;
+	private final List<Integer> gameObjectIds;
+	
+	FarmingPatch(String name, int varbit, PatchImplementation implementation, int gameObjectId)
+	{
+		this(name, varbit, implementation, Collections.singletonList(gameObjectId));
+	}
 
 	String configKey()
 	{
