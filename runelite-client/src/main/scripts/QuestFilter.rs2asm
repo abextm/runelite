@@ -1,23 +1,8 @@
 .id                 3238
 .int_stack_count    4
 .string_stack_count 0
-.int_var_count      5 ; +1 for filter result
+.int_var_count      4
 .string_var_count   0
-   iconst                -1       ; set to 1 to hide, 0 to show
-   iload                  0       ; quest struct
-   sconst                 "questFilter"
-   runelite_callback
-   pop_int                        ; quest struct
-   istore                 4       ; save result
-   ; compare with -1
-   iload                  4       ; load result
-   iconst                -1
-   if_icmpeq              continue
-   ; return value
-   iload                  4
-   return
-
-continue:
    iload                  0
    iconst                 611
    struct_param          
