@@ -4,12 +4,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,10 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -38,14 +39,13 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CompostTracker
 {
-
 	@Value
 	@VisibleForTesting
 	static class PendingCompost
 	{
-		Instant queuedTime;
-		WorldPoint patchLocation;
-		FarmingPatch farmingPatch;
+		private final Instant queuedTime;
+		private final WorldPoint patchLocation;
+		private final FarmingPatch farmingPatch;
 	}
 
 	private static final Duration COMPOST_ACTION_TIMEOUT = Duration.ofSeconds(30);
@@ -73,6 +73,11 @@ public class CompostTracker
 	@VisibleForTesting
 	final Map<FarmingPatch, PendingCompost> pendingCompostActions = new HashMap<>();
 
+	private static String configKey(FarmingPatch fp)
+	{
+		return fp.configKey() + "." + TimeTrackingConfig.COMPOST;
+	}
+
 	public void setCompostState(FarmingPatch fp, Compost state)
 	{
 		log.debug("Storing compost state [{}] for patch [{}]", state, fp);
@@ -94,28 +99,27 @@ public class CompostTracker
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked e)
 	{
-		if (e.isConsumed())
+		if (!(e.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
+			|| (e.getMenuAction() == MenuAction.GAME_OBJECT_SECOND_OPTION && "Inspect".equals(e.getMenuOption()))))
 		{
 			return;
 		}
 
-		Player p = client.getLocalPlayer();
-		Collection<FarmingRegion> currentRegions = farmingWorld.getRegionsForLocation(p.getWorldLocation());
-		if (currentRegions.isEmpty())
-		{
-			return;
-		}
+		ObjectComposition lc = client.getObjectDefinition(e.getId());
+		@Varbit int varbit = lc.getVarbitId();
 
-		FarmingPatch farmingPatch = currentRegions.stream()
-			.flatMap(fr -> Arrays.stream(fr.getPatches()))
-			.filter(fp -> fp.getGameObjectIds().contains(e.getId()))
+		WorldPoint objLocation = WorldPoint.fromScene(client, e.getParam0(), e.getParam1(), client.getPlane());
+
+		FarmingPatch farmingPatch = farmingWorld.getRegionsForLocation(objLocation).stream()
+			.flatMap(r -> Stream.of(r.getPatches()))
+			.filter(p -> p.getVarbit() == varbit)
 			.findFirst()
 			.orElse(null);
 		if (farmingPatch == null)
 		{
 			return;
 		}
-		
+
 		if (e.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT)
 		{
 			Widget w = client.getSelectedWidget();
@@ -126,14 +130,10 @@ public class CompostTracker
 				return;
 			}
 		}
-		else if (!e.getMenuOption().equals("Inspect"))
-		{
-			return;
-		}
 
 		PendingCompost pc = new PendingCompost(
 			Instant.now(),
-			WorldPoint.fromScene(client, e.getParam0(), e.getParam1(), client.getPlane()),
+			objLocation,
 			farmingPatch
 		);
 		log.debug("Storing pending compost action [{}] for patch [{}]", pc, farmingPatch);
@@ -147,7 +147,7 @@ public class CompostTracker
 		{
 			return;
 		}
-		
+
 		Compost compostUsed = determineCompostUsed(e.getMessage());
 		if (compostUsed == null)
 		{
@@ -196,7 +196,7 @@ public class CompostTracker
 		GameObject patchObject = null;
 		for (GameObject go : patchTile.getGameObjects())
 		{
-			if (go != null && pendingCompost.getFarmingPatch().getGameObjectIds().contains(go.getId()))
+			if (go != null && client.getObjectDefinition(go.getId()).getVarbitId() == pendingCompost.getFarmingPatch().getVarbit())
 			{
 				patchObject = go;
 				break;
@@ -222,9 +222,8 @@ public class CompostTracker
 
 	private void filterTimeouts()
 	{
-		pendingCompostActions.entrySet()
-			.removeIf(e -> Duration.between(e.getValue().getQueuedTime(), Instant.now())
-				.compareTo(COMPOST_ACTION_TIMEOUT) > 0);
+		Instant timeout = Instant.now().minus(COMPOST_ACTION_TIMEOUT);
+		pendingCompostActions.values().removeIf(a -> a.getQueuedTime().isBefore(timeout));
 	}
 
 	@VisibleForTesting
@@ -255,10 +254,4 @@ public class CompostTracker
 
 		return null;
 	}
-
-	private String configKey(FarmingPatch fp)
-	{
-		return fp.configKey() + "." + TimeTrackingConfig.COMPOST;
-	}
-
 }
