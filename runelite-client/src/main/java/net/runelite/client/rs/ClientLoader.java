@@ -36,7 +36,6 @@ import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -487,9 +486,11 @@ public class ClientLoader implements Supplier<Applet>
 			}
 		}
 
-		try (HashingOutputStream hos = new HashingOutputStream(Hashing.sha512(), new FileOutputStream(PATCHED_CACHE));
+		try (FileChannel patched = FileChannel.open(PATCHED_CACHE.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
 			InputStream patch = ClientLoader.class.getResourceAsStream("/client.patch"))
 		{
+			HashingOutputStream hos = new HashingOutputStream(Hashing.sha512(), Channels.newOutputStream(patched));
+
 			new FileByFileV1DeltaApplier().applyDelta(VANILLA_CACHE, patch, hos);
 
 			if (!Arrays.equals(hos.hash().asBytes(), appliedPatchHash))
