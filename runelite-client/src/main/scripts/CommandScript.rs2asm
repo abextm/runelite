@@ -870,9 +870,6 @@ LABEL724:
    if_icmpgt              LABEL728
    jump                   LABEL791
 LABEL728:
-   ; move chatout_add under if ($length2 > 2) to only add for :: commands
-   get_varc_string        335
-   invoke                 77 ; chatout_add
    get_varc_string        335
    sconst                 "::toggleroof"
    iconst                 0
@@ -911,8 +908,6 @@ LABEL750:
    compare               
    iconst                 0
    if_icmpeq              LABEL762
-   sconst                 "runeliteCommand" ; load callback name
-   runelite_callback     ; invoke callback
    jump                   LABEL765
 LABEL762:
    get_varc_string        335
@@ -965,11 +960,8 @@ LABEL798:
    iload                  9
    invoke                 5517
 LABEL804:
-   ; see comment above
-   jump AFTER_CHATOUT_ADD
    get_varc_string        335
    invoke                 77
-AFTER_CHATOUT_ADD:
    sconst                 ""
    set_varc_string        335
 LABEL808:
@@ -981,8 +973,6 @@ LABEL809:
    jump                   LABEL819
 LABEL813:
    iload                  3
-   sconst                 "devtoolsEnabled"
-   runelite_callback
    iconst                 1
    if_icmpeq              LABEL817
    jump                   LABEL818
@@ -997,8 +987,6 @@ LABEL819:
    jump                   LABEL829
 LABEL823:
    iload                  3
-   sconst                 "devtoolsEnabled"
-   runelite_callback
    iconst                 1
    if_icmpeq              LABEL827
    jump                   LABEL828
@@ -1073,15 +1061,7 @@ LABEL878:
    iload                  0
    iload                  1
    invoke                 74
-   iconst                 1                 ; check if we're ignoring input
-   iconst                 0                 ;
-   sconst                 "blockChatInput"  ;
-   runelite_callback     ;
-   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL884          ; jump over SKIPSETVARC
-SKIPSETVARC:
-   pop_string            ; pop message
 LABEL884:
    invoke                 223
    return                
