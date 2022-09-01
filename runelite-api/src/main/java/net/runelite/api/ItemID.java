@@ -12826,11 +12826,11 @@ public final class ItemID
 	public static final int TEARS_OF_ELIDINIS_1 = 27333;
 	public static final int BLESSED_CRYSTAL_SCARAB_2 = 27335;
 	public static final int BLESSED_CRYSTAL_SCARAB_1 = 27337;
-	public static final int LIQUID_ADRENALINE_2 = 27339;
+	public static final int LIQUID_ADRENALINE = 27339;
 	public static final int LIQUID_ADRENALINE_1 = 27341;
 	public static final int SMELLING_SALTS_2 = 27343;
 	public static final int SMELLING_SALTS_1 = 27345;
-	public static final int AMBROSIA_2 = 27347;
+	public static final int AMBROSIA = 27347;
 	public static final int AMBROSIA_1 = 27349;
 	public static final int HONEY_LOCUST = 27351;
 	public static final int TUMEKENS_GUARDIAN = 27352;
