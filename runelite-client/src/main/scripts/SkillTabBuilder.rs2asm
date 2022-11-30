@@ -16,12 +16,6 @@
    iload                  0
    stat_base             
    istore                 4
-   iload                  0                   ; load the skill id from arguments
-   iload                  4                   ; load the current real skill level
-   sconst                 "skillTabBaseLevel" ; push event name
-   runelite_callback     ; invoke callback
-   istore                 4                   ; store the (possibly) edited real skill level
-   pop_int                                    ; pop the skill id we pushed
    iload                  4
    tostring              
    cc_settext             1
@@ -47,8 +41,6 @@
 LABEL35:
    iload                  4
    iconst                 99
-   sconst                 "skillTabMaxLevel"   ; push event name
-   runelite_callback     ; invoke callback
    if_icmplt              LABEL39
    jump                   LABEL65
 LABEL39:
