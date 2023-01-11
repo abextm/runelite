@@ -419,7 +419,7 @@ LABEL395:
    iload                  10
    chat_gethistoryex_byuid
    istore                 21
-   sstore                 22                ; timestamp
+   sstore                 22
    istore                 15
    sstore                 19
    sstore                 18
@@ -432,21 +432,8 @@ LABEL395:
    sload                  19
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER
+   if_icmpeq              LABEL413
    jump                   LABEL1868
-CHAT_FILTER:
-   sload                  19                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  11                ; Load the messageType
-   iload                  10                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 19                ; Override the message with our filtered message
-   if_icmpeq              LABEL413          ; Check if we are building this message
-   jump                   LABEL1868          ; continue to next message, skipping this
 LABEL413:
    iload                  11
    sload                  17
@@ -464,20 +451,6 @@ LABEL413:
    if_icmpeq              LABEL428
    jump                   LABEL1868
 LABEL428:
-   iconst                 0 ; splitpmbox
-   iload                  10 ; message uid
-   sload                  18 ; message channel
-   sload                  17 ; message name
-   sload                  19 ; message
-   sload                  22 ; message timestamp
-   sconst                 "chatMessageBuilding"
-   runelite_callback     
-   pop_int                   ; pop uid
-   pop_int                   ; splitpmbox
-   sstore                 22 ; message timestamp
-   sstore                 19 ; message
-   sstore                 17 ; message name
-   sstore                 18 ; message channel
    iload                  11
    switch                
       2: LABEL431
@@ -560,8 +533,6 @@ LABEL479:
    sload                  17
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    sconst                 "null"
    invoke                 4742
    sload                  5
@@ -649,8 +620,6 @@ LABEL561:
    sload                  17
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    sconst                 "null"
    invoke                 4742
    sload                  5
@@ -797,7 +766,7 @@ LABEL682:
    invoke                 199
    istore                 7
    jump                   LABEL1449
-LABEL707:; case ^chattype_clanchat
+LABEL707:
    iconst                 1
    activeclansettings_find_affined
    iconst                 1
@@ -868,11 +837,7 @@ LABEL764:
 LABEL769:
    sload                  17
    removetags            
-   ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
-   jump                   L1
    activeclanchannel_getuserslot
-L1:
-   activeclansettings_getaffinedslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -880,11 +845,7 @@ L1:
    jump                   LABEL856
 LABEL777:
    iload                  17
-   ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
-   jump                   L2
    activeclanchannel_getuserrank
-L2:
-   activeclansettings_getaffinedrank
    invoke                 4302
    istore                 16
    sstore                 21
@@ -1039,7 +1000,7 @@ LABEL893:
    istore                 7
 LABEL925:
    jump                   LABEL1449
-LABEL926:; case ^chattype_clanguestchat
+LABEL926:
    activeclansettings_find_listened
    iconst                 1
    if_icmpeq              LABEL930
@@ -1052,11 +1013,7 @@ LABEL930:
 LABEL934:
    sload                  17
    removetags            
-   ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
-   jump                   L3
    activeclanchannel_getuserslot
-L3:
-   activeclansettings_getaffinedslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -1064,11 +1021,7 @@ L3:
    jump                   LABEL1021
 LABEL942:
    iload                  17
-   ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
-   jump                   L4
    activeclanchannel_getuserrank
-L4:
-   activeclansettings_getaffinedrank
    invoke                 4302
    istore                 16
    sstore                 21

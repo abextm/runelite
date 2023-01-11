@@ -115,7 +115,7 @@ LABEL85:
    substring             
    sconst                 "/"
    compare               
-   iconst                 0 ;  
+   iconst                 0
    if_icmpne              LABEL94
    jump                   LABEL98
 LABEL94:
@@ -143,18 +143,6 @@ LABEL109:
    istore                 1
    istore                 0
 LABEL113:
-   sload                  0              ; load input
-   iload                  0              ; load chat type
-   iload                  1              ; load clan target
-   sconst                 "chatboxInput" ; event name
-   runelite_callback     ; invoke callback
-   pop_int               ; pop clan target
-   pop_int               ; pop chat type
-   string_length         ; get string length of chat message
-   iconst                 0              ; load 0
-   if_icmpne              CONTINUE       ; if length is not 0, continue
-   return                
-CONTINUE:
    sconst                 ""
    sstore                 1
    iload                  0
