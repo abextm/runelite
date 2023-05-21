@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import net.runelite.client.ui.components.ComplexList;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,6 +45,12 @@ public class PluginSearch
 			.filter(plugin -> Text.matchesSearchTerms(SPLITTER.split(query.toLowerCase()), plugin.getKeywords()))
 			.sorted(comparator(query))
 			.collect(Collectors.toList());
+	}
+
+	public static <T extends SearchablePlugin> void search(ComplexList<T> searchablePlugins, String query)
+	{
+		searchablePlugins.filter(plugin -> Text.matchesSearchTerms(SPLITTER.split(query.toLowerCase()), plugin.getKeywords()));
+		searchablePlugins.entries().sort(comparator(query));
 	}
 
 	private static Comparator<SearchablePlugin> comparator(String query)

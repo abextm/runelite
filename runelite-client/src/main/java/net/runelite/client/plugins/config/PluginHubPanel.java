@@ -33,7 +33,6 @@ import com.google.common.html.HtmlEscapers;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -52,7 +51,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -87,6 +85,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.ComplexList;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
@@ -125,25 +124,14 @@ class PluginHubPanel extends PluginPanel
 	{
 		@Nullable
 		private final PluginHubManifest.DisplayData manifest;
-		private boolean loadingStarted;
-		private boolean loaded;
 
 		PluginIcon(PluginHubManifest.DisplayData manifest)
 		{
 			setIcon(MISSING_ICON);
 
 			this.manifest = manifest.hasIcon() ? manifest : null;
-			this.loaded = !manifest.hasIcon();
-		}
-
-		@Override
-		public void paint(Graphics g)
-		{
-			super.paint(g);
-
-			if (!loaded && !loadingStarted)
+			if (manifest.hasIcon())
 			{
-				loadingStarted = true;
 				synchronized (iconLoadQueue)
 				{
 					iconLoadQueue.add(this);
@@ -161,7 +149,6 @@ class PluginHubPanel extends PluginPanel
 			{
 				BufferedImage img = externalPluginClient.downloadIcon(manifest);
 
-				loaded = true;
 				SwingUtilities.invokeLater(() -> setIcon(new ImageIcon(img)));
 			}
 			catch (IOException e)
@@ -198,25 +185,15 @@ class PluginHubPanel extends PluginPanel
 		executor.submit(this::pumpIconQueue);
 	}
 
-	private class PluginItem extends JPanel implements SearchablePlugin
+	@Getter
+	private static class PluginItem implements SearchablePlugin
 	{
-		private static final int HEIGHT = 70;
-		private static final int ICON_WIDTH = 48;
-		private static final int BOTTOM_LINE_HEIGHT = 16;
-
 		private final PluginHubManifest.DisplayData manifest;
-
-		@Getter
 		@Nullable
 		private final PluginHubManifest.JarData jarData;
-
-		@Getter
+		private final Collection<Plugin> loadedPlugins;
 		private final List<String> keywords = new ArrayList<>();
-
-		@Getter
 		private final int userCount;
-
-		@Getter
 		private final boolean installed;
 
 		PluginItem(PluginHubManifest.DisplayData newManifest, PluginHubManifest.JarData jarData, Collection<Plugin> loadedPlugins, int userCount, boolean installed)
@@ -233,6 +210,7 @@ class PluginHubPanel extends PluginPanel
 			this.jarData = jarData;
 			this.userCount = userCount;
 			this.installed = installed;
+			this.loadedPlugins = loadedPlugins;
 
 			Collections.addAll(keywords, SPACES.split(manifest.getDisplayName().toLowerCase()));
 
@@ -247,6 +225,27 @@ class PluginHubPanel extends PluginPanel
 			{
 				Collections.addAll(keywords, manifest.getTags());
 			}
+		}
+
+		@Override
+		public String getSearchableName()
+		{
+			return manifest.getDisplayName();
+		}
+	}
+
+	private class PluginItemView extends JPanel
+	{
+		private static final int HEIGHT = 86;
+		private static final int ICON_WIDTH = 48;
+		private static final int BOTTOM_LINE_HEIGHT = 16;
+
+		PluginItemView(PluginItem pluginItem)
+		{
+			PluginHubManifest.DisplayData manifest = pluginItem.manifest;
+			PluginHubManifest.JarData jarData = pluginItem.jarData;
+			Collection<Plugin> loadedPlugins = pluginItem.loadedPlugins;
+			boolean installed = pluginItem.installed;
 
 			setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			setOpaque(true);
@@ -423,27 +422,21 @@ class PluginHubPanel extends PluginPanel
 			int lineHeight = description.getFontMetrics(description.getFont()).getHeight();
 			layout.setVerticalGroup(layout.createParallelGroup()
 				.addComponent(badge, GroupLayout.Alignment.TRAILING)
-				.addComponent(icon, HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT + lineHeight)
+				.addComponent(icon, HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT)
 				.addGroup(layout.createSequentialGroup()
 					.addGap(5)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						.addComponent(pluginName)
 						.addComponent(author))
-					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+					.addGap(3)
 					.addComponent(description, lineHeight, GroupLayout.PREFERRED_SIZE, lineHeight * 2)
-					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+					.addGap(3)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						.addComponent(version, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT)
 						.addComponent(help, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT)
 						.addComponent(configure, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT)
 						.addComponent(addrm, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT))
 					.addGap(5)));
-		}
-
-		@Override
-		public String getSearchableName()
-		{
-			return manifest.getDisplayName();
 		}
 	}
 
@@ -458,7 +451,7 @@ class PluginHubPanel extends PluginPanel
 	private final IconTextField searchBar;
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
-	private List<PluginItem> plugins = null;
+	private ComplexList<PluginItem> plugins;
 	private PluginHubManifest.ManifestFull lastManifest;
 
 	@Inject
@@ -588,6 +581,11 @@ class PluginHubPanel extends PluginPanel
 
 		revalidate();
 
+		plugins = new ComplexList<>();
+		plugins.setGap(5);
+		plugins.setRenderer(PluginItemView::new);
+		plugins.setSizer((m, _v) -> new Dimension(mainPanel.getWidth(), PluginItemView.HEIGHT));
+
 		refreshing.setVisible(false);
 		reloadPluginList();
 	}
@@ -666,44 +664,44 @@ class PluginHubPanel extends PluginPanel
 				return;
 			}
 
-			plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
+			plugins.entries().clear();
+			Sets.union(display.keySet(), loadedPlugins.keySet())
 				.stream()
 				.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
 					pluginCounts.getOrDefault(id, -1), installed.contains(id)))
-				.collect(Collectors.toList());
+				.forEach(plugins.entries()::add);
 
 			refreshing.setVisible(false);
+			mainPanel.removeAll();
+			mainPanel.add(plugins);
+
 			filter();
 		});
 	}
 
 	void filter()
 	{
-		if (refreshing.isVisible() || plugins == null)
+		if (refreshing.isVisible())
 		{
 			return;
 		}
-
-		mainPanel.removeAll();
-
-		Stream<PluginItem> stream = plugins.stream();
 
 		String query = searchBar.getText();
 		boolean isSearching = query != null && !query.trim().isEmpty();
 		if (isSearching)
 		{
-			PluginSearch.search(plugins, query).forEach(mainPanel::add);
+			PluginSearch.search(plugins, query);
 		}
 		else
 		{
-			stream.filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+			plugins.filter(p -> p.isInstalled() || p.getJarData() != null);
+			plugins.entries().sort(
+				Comparator.comparing((PluginItem p) -> p.getJarData() == null)
 					.thenComparing(PluginItem::isInstalled)
 					.thenComparingInt(PluginItem::getUserCount)
 					.reversed()
 					.thenComparing(p -> p.manifest.getDisplayName())
-				)
-				.forEach(mainPanel::add);
+			);
 		}
 
 		mainPanel.revalidate();
@@ -723,16 +721,8 @@ class PluginHubPanel extends PluginPanel
 	{
 		mainPanel.removeAll();
 		refreshing.setVisible(false);
-		plugins = null;
+		plugins.entries().clear();
 		lastManifest = null;
-
-		synchronized (iconLoadQueue)
-		{
-			for (PluginIcon pi; (pi = iconLoadQueue.poll()) != null; )
-			{
-				pi.loadingStarted = false;
-			}
-		}
 	}
 
 	@Subscribe
@@ -741,7 +731,7 @@ class PluginHubPanel extends PluginPanel
 		Map<String, Integer> pluginCounts = Collections.emptyMap();
 		if (plugins != null)
 		{
-			pluginCounts = plugins.stream()
+			pluginCounts = plugins.entries().stream()
 				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
 		}
 
