@@ -660,15 +660,6 @@ LABEL556:
    iconst                 1
    istore                 9
 LABEL558:
-   iconst                 0                   ; 1 to block
-   iload                  5                   ; chat type
-   iload                  6                   ; message prefix length
-   sconst                 "chatDefaultReturn" ; event name
-   runelite_callback                          ; callback
-   istore                 6                   ; message prefix length
-   istore                 5                   ; chat type
-   iconst                 1                   ; load 1
-   if_icmpeq              AFTER_CHATOUT_ADD   ; skip chatout_add (due to comment below) and jump to varcstring355 = ""
    iload                  5
    iconst                 44
    if_icmpeq              LABEL562
@@ -876,9 +867,6 @@ LABEL716:
    if_icmpgt              LABEL720
    jump                   LABEL783
 LABEL720:
-   ; move chatout_add under if ($length2 > 2) to only add for :: commands
-   get_varc_string        335
-   invoke                 77 ; chatout_add
    get_varc_string        335
    sconst                 "::toggleroof"
    iconst                 0
@@ -917,8 +905,6 @@ LABEL742:
    compare               
    iconst                 0
    if_icmpeq              LABEL754
-   sconst                 "runeliteCommand" ; load callback name
-   runelite_callback     ; invoke callback
    jump                   LABEL757
 LABEL754:
    get_varc_string        335
@@ -971,11 +957,8 @@ LABEL790:
    iload                  9
    invoke                 5517
 LABEL796:
-   ; see comment above
-   jump                   AFTER_CHATOUT_ADD
    get_varc_string        335
    invoke                 77
-AFTER_CHATOUT_ADD:
    sconst                 ""
    set_varc_string        335
 LABEL800:
@@ -987,8 +970,6 @@ LABEL801:
    jump                   LABEL811
 LABEL805:
    iload                  3
-   sconst                 "devtoolsEnabled"
-   runelite_callback     
    iconst                 1
    if_icmpeq              LABEL809
    jump                   LABEL810
@@ -1003,8 +984,6 @@ LABEL811:
    jump                   LABEL821
 LABEL815:
    iload                  3
-   sconst                 "devtoolsEnabled"
-   runelite_callback     
    iconst                 1
    if_icmpeq              LABEL819
    jump                   LABEL820
@@ -1079,15 +1058,7 @@ LABEL870:
    iload                  0
    iload                  1
    invoke                 74
-   iconst                 1                 ; check if we're ignoring input
-   iconst                 0                 ;
-   sconst                 "blockChatInput"  ;
-   runelite_callback     ;
-   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL876          ; jump over SKIPSETVARC
-SKIPSETVARC:
-   pop_string            ; pop message
 LABEL876:
    invoke                 223
    return                
