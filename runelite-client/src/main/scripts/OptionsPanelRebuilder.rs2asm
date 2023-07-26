@@ -338,29 +338,21 @@ LABEL308:
    viewport_clampfov     
    get_varc_int           73
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    if_icmpge              LABEL317
    jump                   LABEL333
 LABEL317:
    get_varc_int           73
    iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    if_icmple              LABEL321
    jump                   LABEL333
 LABEL321:
    get_varc_int           74
    iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    if_icmpge              LABEL325
    jump                   LABEL333
 LABEL325:
    get_varc_int           74
    iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    if_icmple              LABEL329
    jump                   LABEL333
 LABEL329:
