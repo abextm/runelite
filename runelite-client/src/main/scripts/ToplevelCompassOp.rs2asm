@@ -29,29 +29,21 @@ LABEL11:
    jump                   LABEL33
 LABEL18:
    cam_getangle_xa       
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 0
    cam_forceangle        
    jump                   LABEL33
 LABEL22:
    cam_getangle_xa       
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 1536
    cam_forceangle        
    jump                   LABEL33
 LABEL26:
    cam_getangle_xa       
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 1024
    cam_forceangle        
    jump                   LABEL33
 LABEL30:
    cam_getangle_xa       
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 512
    cam_forceangle        
 LABEL33:
