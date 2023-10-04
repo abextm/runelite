@@ -32,8 +32,6 @@ LABEL18:
    iconst                 5
    randominc             
    add                   
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 0
    cam_forceangle        
    jump                   LABEL45
@@ -42,8 +40,6 @@ LABEL25:
    iconst                 5
    randominc             
    add                   
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 1536
    cam_forceangle        
    jump                   LABEL45
@@ -52,8 +48,6 @@ LABEL32:
    iconst                 5
    randominc             
    add                   
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 1024
    cam_forceangle        
    jump                   LABEL45
@@ -62,8 +56,6 @@ LABEL39:
    iconst                 5
    randominc             
    add                   
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 512
    cam_forceangle        
 LABEL45:
