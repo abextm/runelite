@@ -23,48 +23,36 @@ LABEL11:
    iload                  0
    switch                
       1: LABEL18
-      2: LABEL25
-      3: LABEL32
-      4: LABEL39
-   jump                   LABEL45
+      2: LABEL22
+      3: LABEL26
+      4: LABEL30
+   jump                   LABEL33
 LABEL18:
-   iconst                 225
-   iconst                 5
-   randominc             
-   add                   
+   cam_getangle_xa       
    sconst                 "lookPreservePitch"
    runelite_callback     
    iconst                 0
    cam_forceangle        
-   jump                   LABEL45
-LABEL25:
-   iconst                 225
-   iconst                 5
-   randominc             
-   add                   
+   jump                   LABEL33
+LABEL22:
+   cam_getangle_xa       
    sconst                 "lookPreservePitch"
    runelite_callback     
    iconst                 1536
    cam_forceangle        
-   jump                   LABEL45
-LABEL32:
-   iconst                 225
-   iconst                 5
-   randominc             
-   add                   
+   jump                   LABEL33
+LABEL26:
+   cam_getangle_xa       
    sconst                 "lookPreservePitch"
    runelite_callback     
    iconst                 1024
    cam_forceangle        
-   jump                   LABEL45
-LABEL39:
-   iconst                 225
-   iconst                 5
-   randominc             
-   add                   
+   jump                   LABEL33
+LABEL30:
+   cam_getangle_xa       
    sconst                 "lookPreservePitch"
    runelite_callback     
    iconst                 512
    cam_forceangle        
-LABEL45:
+LABEL33:
    return                
