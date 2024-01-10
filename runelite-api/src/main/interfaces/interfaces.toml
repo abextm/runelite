@@ -470,8 +470,8 @@ streak=15
 id=616
 
 [kourend_favour]
-id=246
-overlay=1
+id=-1
+overlay=-1
 
 [level_up]
 id=233
