@@ -37,6 +37,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -160,6 +161,7 @@ public class IconTextField extends JPanel
 		JList<String> suggestionList = new JList<>();
 		suggestionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		suggestionList.setModel(suggestionListModel);
+		suggestionList.setBorder(null);
 		suggestionList.addListSelectionListener(e ->
 		{
 			String val = suggestionList.getSelectedValue();
@@ -171,6 +173,15 @@ public class IconTextField extends JPanel
 			textField.setText(val);
 			textField.getTextField().selectAll();
 			textField.getTextField().requestFocusInWindow();
+		});
+		suggestionList.addMouseMotionListener(new MouseMotionAdapter()
+		{
+			@Override
+			public void mouseMoved(MouseEvent ev)
+			{
+				int idx = suggestionList.locationToIndex(ev.getPoint());
+				suggestionList.setSelectedIndex(idx);
+			}
 		});
 
 		JPopupMenu popup = new JPopupMenu();
@@ -191,7 +202,7 @@ public class IconTextField extends JPanel
 		suggestionButton.setText("▾");
 		suggestionButton.addActionListener(e ->
 		{
-			popup.setPopupSize(getWidth(), suggestionList.getPreferredSize().height);
+			suggestionList.setPreferredSize(new Dimension(getWidth(), suggestionList.getPreferredSize().height));
 			popup.show(IconTextField.this, 0, suggestionButton.getHeight());
 			popup.revalidate();
 			popup.requestFocusInWindow();
