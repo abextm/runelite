@@ -53,6 +53,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
@@ -83,10 +84,6 @@ import net.runelite.client.util.ReflectUtil;
 @Slf4j
 public class PluginManager
 {
-	/**
-	 * Base package where the core plugins are
-	 */
-	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 	private static final File SIDELOADED_PLUGINS = new File(RuneLite.RUNELITE_DIR, "sideloaded-plugins");
 
 	private final boolean developerMode;
@@ -265,10 +262,9 @@ public class PluginManager
 	public void loadCorePlugins() throws IOException, PluginInstantiationException
 	{
 		SplashScreen.stage(.59, null, "Loading plugins");
-		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
-
-		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
-			.map(ClassInfo::load)
+		List<Class<?>> plugins = ServiceLoader.load(Plugin.class, getClass().getClassLoader())
+			.stream()
+			.map(ServiceLoader.Provider::type)
 			.collect(Collectors.toList());
 
 		loadPlugins(plugins, (loaded, total) ->
