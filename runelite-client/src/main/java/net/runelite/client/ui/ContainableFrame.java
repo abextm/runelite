@@ -49,12 +49,16 @@ public class ContainableFrame extends JFrame
 	private Mode containedInScreen;
 	private boolean rightSideSuction;
 	private boolean boundsOpSet;
+	private boolean ignoreSizeChange = false;
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public void resize(int width, int height)
 	{
-		reshape(getX(), getY(), width, height);
+		if (!ignoreSizeChange)
+		{
+			reshape(getX(), getY(), width, height);
+		}
 	}
 
 	@Override
@@ -182,16 +186,44 @@ public class ContainableFrame extends JFrame
 	public void revalidateMinimumSize()
 	{
 		Dimension minSize = getLayout().minimumLayoutSize(this);
-		if (OSType.getOSType() == OSType.Windows)
+		setMinimumSize(minSize);
+	}
+
+	@Override
+	public void setMinimumSize(Dimension minSize)
+	{
+		if (OSType.getOSType() == OSType.Windows && minSize != null)
 		{
 			// JDK-8221452 - Window.setMinimumSize does not respect DPI scaling
 			AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
 			int scaledX = (int) Math.round(minSize.width * transform.getScaleX());
 			int scaledY = (int) Math.round(minSize.height * transform.getScaleY());
-			minSize = new Dimension(scaledX, scaledY);
-		}
 
-		setMinimumSize(minSize);
+			// Window::setMinimumSize will call setSize if the window is smaller
+			// than the new minimum size. Because setSize is scaled, we have to
+			// block that call and apply it ourselves
+			try
+			{
+				ignoreSizeChange = true;
+				super.setMinimumSize(new Dimension(scaledX, scaledY));
+			}
+			finally
+			{
+				ignoreSizeChange = false;
+			}
+
+			Dimension size = getSize();
+			if (size.width < minSize.width || size.height < minSize.height)
+			{
+				int w = Math.max(size.width, minSize.width);
+				int h = Math.max(size.height, minSize.height);
+				setSize(w, h);
+			}
+		}
+		else
+		{
+			super.setMinimumSize(minSize);
+		}
 	}
 
 	private boolean isFullScreen()
