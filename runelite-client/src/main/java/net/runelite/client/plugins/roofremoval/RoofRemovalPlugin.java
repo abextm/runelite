@@ -66,7 +66,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 public class RoofRemovalPlugin extends Plugin
 {
-	private static class FlaggedArea
+	static class FlaggedArea
 	{
 		int rx1;
 		int ry1;
@@ -87,6 +87,9 @@ public class RoofRemovalPlugin extends Plugin
 
 	@Inject
 	private RoofRemovalConfig config;
+
+	@Inject
+	private RoofRemovalDevtool devtool;
 
 	private final Map<Integer, long[]> overrides = new HashMap<>();
 	private final Set<Integer> configOverrideRegions = new HashSet<>();
@@ -119,6 +122,8 @@ public class RoofRemovalPlugin extends Plugin
 			}
 			return true;
 		});
+
+		devtool.start();
 	}
 
 	@Override
