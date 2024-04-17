@@ -15250,6 +15250,7 @@ public final class NullItemID
 	public static final int NULL_29426 = 29426;
 	public static final int NULL_29429 = 29429;
 	public static final int NULL_29430 = 29430;
+	public static final int NULL_29431 = 29431;
 	public static final int NULL_29432 = 29432;
 	public static final int NULL_29434 = 29434;
 	public static final int NULL_29436 = 29436;
@@ -15257,6 +15258,8 @@ public final class NullItemID
 	public static final int NULL_29440 = 29440;
 	public static final int NULL_29442 = 29442;
 	public static final int NULL_29444 = 29444;
+	public static final int NULL_29445 = 29445;
+	public static final int NULL_29446 = 29446;
 	public static final int NULL_29447 = 29447;
 	public static final int NULL_29450 = 29450;
 	public static final int NULL_29451 = 29451;

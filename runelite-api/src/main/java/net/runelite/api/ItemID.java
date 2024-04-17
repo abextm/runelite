@@ -13970,15 +13970,12 @@ public final class ItemID
 	public static final int SUNFIRE_FANATIC_ARMOUR_SET = 29424;
 	public static final int HERBALISTS_NOTES = 29427;
 	public static final int CHEFS_NOTES = 29428;
-	public static final int YOLKLORE_OF_AYASTER = 29431;
 	public static final int BOOK_OF_EGG = 29433;
 	public static final int BOOK_OF_EGG_29435 = 29435;
 	public static final int EGG_PRIEST_ROBE = 29437;
 	public static final int EGG_PRIEST_ROBE_TOP = 29439;
 	public static final int EGG_PRIEST_NECKLACE = 29441;
 	public static final int EGG_PRIEST_MITRE = 29443;
-	public static final int EASTER_EGG_MINED = 29445;
-	public static final int EGGNAPPIN_SACK = 29446;
 	public static final int IMBUED_MAGE_ARENA_CAPE = 29448;
 	public static final int ZOMBIE_PIRATE_KEY = 29449;
 	public static final int TELEPORT_ANCHORING_SCROLL = 29455;
