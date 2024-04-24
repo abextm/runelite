@@ -425,7 +425,7 @@ LABEL401:
    iload                  10
    chat_gethistoryex_byuid
    istore                 21
-   sstore                 23                ; timestamp
+   sstore                 23
    istore                 15
    sstore                 20
    sstore                 19
@@ -438,21 +438,8 @@ LABEL401:
    sload                  20
    invoke                 193
    iconst                 1
-   if_icmpeq              CHAT_FILTER
+   if_icmpeq              LABEL419
    jump                   LABEL1993
-CHAT_FILTER:
-   sload                  20                ; Load the message
-   iconst                 1                 ; Gets changed to 0 if message is blocked
-   iload                  11                ; Load the messageType
-   iload                  10                 ; Load the id of the messageNode
-   sconst                 "chatFilterCheck"
-   runelite_callback     
-   pop_int               ; Pop the id of the messageNode
-   pop_int               ; Pop the messageType
-   iconst                 1                 ; 2nd half of conditional
-   sstore                 20                ; Override the message with our filtered message
-   if_icmpeq              LABEL419          ; Check if we are building this message
-   jump                   LABEL1993          ; continue to next message, skipping this
 LABEL419:
    iload                  11
    sload                  18
@@ -470,20 +457,6 @@ LABEL419:
    if_icmpeq              LABEL434
    jump                   LABEL1993
 LABEL434:
-   iconst                 0 ; splitpmbox
-   iload                  10 ; message uid
-   sload                  19 ; message channel
-   sload                  18 ; message name
-   sload                  20 ; message
-   sload                  23 ; message timestamp
-   sconst                 "chatMessageBuilding"
-   runelite_callback     
-   pop_int                   ; pop uid
-   pop_int                   ; splitpmbox
-   sstore                 23 ; message timestamp
-   sstore                 20 ; message
-   sstore                 18 ; message name
-   sstore                 19 ; message channel
    iload                  11
    switch                
       2: LABEL437
@@ -567,8 +540,6 @@ LABEL485:
    sload                  18
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    sconst                 "null"
    invoke                 4742
    sload                  5
@@ -656,8 +627,6 @@ LABEL567:
    sload                  18
    sconst                 ":"
    join_string            3
-   sconst                 "privChatUsername"
-   runelite_callback     
    sconst                 "null"
    invoke                 4742
    sload                  5
