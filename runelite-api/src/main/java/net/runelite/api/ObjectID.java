@@ -4550,6 +4550,10 @@ public final class ObjectID
 	public static final int HERB_PATCH_8136 = 8136;
 	public static final int HERB_PATCH_8137 = 8137;
 	public static final int HERB_PATCH_8138 = 8138;
+	public static final int BANK_BOOTH_8139 = 8139;
+	public static final int BANK_BOOTH_8140 = 8140;
+	public static final int CLOSED_BANK_BOOTH_8141 = 8141;
+	public static final int CLOSED_BANK_BOOTH_8142 = 8142;
 	public static final int DISEASED_HERBS = 8144;
 	public static final int DISEASED_HERBS_8145 = 8145;
 	public static final int DISEASED_HERBS_8146 = 8146;
