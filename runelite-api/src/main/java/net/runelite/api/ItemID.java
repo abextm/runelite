@@ -7610,7 +7610,7 @@ public final class ItemID
 	public static final int BIG_PIRATE_HAT = 12355;
 	public static final int KATANA = 12357;
 	public static final int LEPRECHAUN_HAT = 12359;
-	public static final int CAT_H = 12361;
+	public static final int CAT_MASK = 12361;
 	public static final int BRONZE_DRAGON_MASK = 12363;
 	public static final int IRON_DRAGON_MASK = 12365;
 	public static final int STEEL_DRAGON_MASK = 12367;
