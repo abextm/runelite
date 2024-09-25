@@ -1,7 +1,7 @@
 .id                 277
 .int_stack_count    17
 .string_stack_count 0
-.int_var_count      37 ; +1
+.int_var_count      36
 .string_var_count   1
    get_varbit             5102
    iconst                 1
@@ -323,13 +323,6 @@ LABEL253:
    istore                 31
    sconst                 ""
    sstore                 0
-   iconst                 0           ;
-   sconst "bankBuildTab"              ;
-   runelite_callback                  ;
-   istore                36           ; whether to use the single tab building mode instead of the whole bank
-   iload                 36           ;
-   iconst                    1        ;
-   if_icmpeq                 singletabbuildmode ;
    get_varbit             4150
    iconst                 0
    if_icmple              LABEL297
@@ -753,8 +746,7 @@ LABEL681:
    if_icmpeq              LABEL685
    jump                   LABEL726
 LABEL685:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   lowercase             ; instead get the var directly and lowercase it
+   invoke                 280
    sstore                 0
    sload                  0
    string_length         
@@ -779,10 +771,6 @@ LABEL703:
    tostring              
    sconst                 " found)"
    join_string            3
-   iload                  27                             ; load number of matches
-   sconst                 "setSearchBankInputTextFound"  ; load event name
-   runelite_callback     ; invoke callback
-   pop_int               ; pop number of matches
    iconst                 10616873
    if_settext            
 LABEL710:
@@ -801,8 +789,6 @@ LABEL711:
    jump                   LABEL725
 LABEL722:
    sconst                 "Show items whose names contain the following text:"
-   sconst                 "setSearchBankInputText"  ; load event name
-   runelite_callback     ; invoke callback
    iconst                 10616873
    if_settext            
 LABEL725:
@@ -831,32 +817,9 @@ LABEL729:
    iload                  14
    iload                  15
    iload                  16
-   invoke                 505 ; [proc,bankmain_finishbuilding]
-   return
-singletabbuildmode:
-  ; single tab mode loops items from 0-1220, which usually works due to only viewing a single tab range,
-  ; but since items that are not in a tab are stored at the *end* of the bank it causes them to appear
-  ; out of order. So iterate from the end of the tab ranges and loop back around
-   get_varbit             4171  ;
-   get_varbit             4172  ;
-   add                          ;
-   get_varbit             4173  ;
-   add                          ;
-   get_varbit             4174  ;
-   add                          ;
-   get_varbit             4175  ;
-   add                          ;
-   get_varbit             4176  ;
-   add                          ;
-   get_varbit             4177  ;
-   add                          ;
-   get_varbit             4178  ;
-   add                          ;
-   get_varbit             4179  ;
-   add                          ;
-   istore                 31    ; store start to the first item in the "All items" tab
+   invoke                 505
+   return                
 LABEL750:
-  ; if (~bankmain_searching = 1) {
    invoke                 514
    iconst                 1
    if_icmpeq              LABEL754
@@ -867,7 +830,6 @@ LABEL754:
    iconst                 1
    invoke                 299
 LABEL758:
-  ; after ~meslayer close
    iconst                 -1
    istore                 32
    iconst                 -1
@@ -886,22 +848,15 @@ LABEL770:
    if_icmplt              LABEL774
    jump                   LABEL854
 LABEL774:
-   ; item index = (loop index + offset) % bank size
-   iload                  20   ; loop index
-   iload                  31   ; offset
-   add                         ;
-   iconst                 1220 ; bank size
-   mod                         ;
-   istore                 30   ; store index
    iload                  2
-   iload                  30   ; use item index instead of loop index
+   iload                  20
    cc_find               
    iconst                 1
    if_icmpeq              LABEL780
    jump                   LABEL849
 LABEL780:
    iconst                 95
-   iload                  30   ; use item index instead of loop index
+   iload                  20
    inv_getobj            
    istore                 25
    iload                  25
@@ -914,9 +869,6 @@ LABEL788:
    add                   
    istore                 29
 LABEL792:
-   iload 36                          ; overriding single tab building mode?
-   iconst 1                          ;
-   if_icmpeq              filtertest ;
    iload                  20
    iload                  32
    if_icmpge              LABEL796
@@ -926,17 +878,12 @@ LABEL796:
    iload                  33
    if_icmplt              LABEL800
    jump                   LABEL847
-filtertest:
-   iload 25                         ; obj
-   invoke 279                       ; ~bankmain_filtertest
-   iconst 1                         ;
-   if_icmpne              LABEL847  ;
 LABEL800:
    iconst                 0
    cc_sethide            
    iload                  25
    iconst                 95
-   iload                  30        ; use item index instead of loop index
+   iload                  20
    inv_getnum            
    iload                  2
    iload                  3
@@ -992,14 +939,6 @@ LABEL849:
    istore                 20
    jump                   LABEL770
 LABEL854:
-   iload 36                                      ; overriding single tab building mode?
-   iconst 1                                      ;
-   if_icmpne              tabtitle               ; set normal "Tab" title
-   sconst                 "The Bank of Gielinor" ; bank title
-   iload                  5                      ; bank title component
-   if_settext                                    ;
-   jump FinishBuilding                           ;
-tabtitle:                                        ;
    get_varbit             4170
    iconst                 2
    if_icmpeq              LABEL858
@@ -1022,7 +961,6 @@ LABEL868:
    join_string            2
    iload                  5
    if_settext            
-FinishBuilding:
 LABEL874:
    iload                  0
    iload                  1
