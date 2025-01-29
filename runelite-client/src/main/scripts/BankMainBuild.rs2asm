@@ -353,8 +353,8 @@ LABEL277:
    iconst                 0                  ;
    sconst                 "bankBuildTab"     ;
    runelite_callback                         ;
-   istore                 36                 ; whether to use the single tab building mode instead of the whole bank
-   iload                  36                 ;
+   istore                 37                 ; whether to use the single tab building mode instead of the whole bank
+   iload                  37                 ;
    iconst                 1                  ;
    if_icmpeq              singletabbuildmode ;
    get_varbit             4150
@@ -787,7 +787,7 @@ LABEL709:
 LABEL713:
    jump                   GET_INPUT_TEXT ;  Skip truncating of varcstr 22 by not calling 280
    invoke                 280
-GET_INPUT_TEXT:                          ;
+GET_INPUT_TEXT:                   ;
    get_varc_string        359            ;
    lowercase                             ; instead get the var directly and lowercase it
    sstore                 0
@@ -818,7 +818,7 @@ LABEL731:
    sconst                 "setSearchBankInputTextFound"  ; load event name
    runelite_callback     ; invoke callback
    pop_int               ; pop number of matches
-   iconst                 10616873
+   iconst                 10616874
    if_settext            
 LABEL738:
    jump                   LABEL753
@@ -838,7 +838,7 @@ LABEL750:
    sconst                 "Show items whose names contain the following text:"
    sconst                 "setSearchBankInputText"  ; load event name
    runelite_callback     ; invoke callback
-   iconst                 10616873
+   iconst                 10616874
    if_settext            
 LABEL753:
    jump                   LABEL757
@@ -955,7 +955,7 @@ LABEL816:
    add                   
    istore                 29
 LABEL820:
-   iload                  36         ; overriding single tab building mode?
+   iload                  37         ; overriding single tab building mode?
    iconst                 1          ;
    if_icmpeq              filtertest ;
    iload                  20
@@ -1052,14 +1052,14 @@ LABEL889:
    if_sethide            
    jump                   LABEL916
 LABEL896:
-   iload                  36                     ; overriding single tab building mode?
+   iload                  37                     ; overriding single tab building mode?
    iconst                 1                      ;
    if_icmpne              tabtitle               ; set normal "Tab" title
    sconst                 "The Bank of Gielinor" ; bank title
    iload                  5                      ; bank title component
    if_settext                                    ;
    jump                   FinishBuilding         ;
-tabtitle:                                        ;
+tabtitle:                           ;
    get_varbit             4170
    iconst                 2
    if_icmpeq              LABEL900
