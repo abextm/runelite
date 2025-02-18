@@ -11883,6 +11883,7 @@ public final class NpcID
 	public static final int ICICLES = 14153;
 	public static final int PIRATE_14155 = 14155;
 	public static final int PIRATE_14156 = 14156;
+	public static final int DEVILED_DAVE = 14157;
 	public static final int SADIE = 14163;
 	public static final int SIR_BURRUS = 14165;
 	public static final int ARCHIBALD = 14167;
