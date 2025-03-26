@@ -6925,6 +6925,7 @@ public final class ObjectID
 	public static final int CANDLES_12301 = 12301;
 	public static final int CANDLES_12302 = 12302;
 	public static final int CHEST_12309 = 12309;
+	public static final int NISTIRIOS_MANIFESTO = 12310;
 	public static final int CHAIR_12311 = 12311;
 	public static final int CHAIR_12312 = 12312;
 	public static final int CHAIR_12313 = 12313;
@@ -7575,6 +7576,10 @@ public final class ObjectID
 	public static final int KOUREND_SIGIL = 13465;
 	public static final int FISHING_SPOT_13476 = 13476;
 	public static final int CHAIR_13481 = 13481;
+	public static final int TEKTONS_JOURNAL = 13482;
+	public static final int TRANSDIMENSIONAL_NOTES = 13483;
+	public static final int VANGUARD_JUDGEMENT = 13484;
+	public static final int HOUNDMASTERS_DIARY = 13485;
 	public static final int MITHRIL_ARMOUR = 13491;
 	public static final int ADAMANT_ARMOUR = 13492;
 	public static final int RUNE_ARMOUR = 13493;
@@ -15893,15 +15898,10 @@ public final class ObjectID
 	public static final int CRYSTAL_30017 = 30017;
 	public static final int CRYSTAL_30018 = 30018;
 	public static final int MAGICAL_FIRE = 30019;
-	public static final int NISTIRIOS_MANIFESTO = 30020;
 	public static final int FIRE_30021 = 30021;
-	public static final int TEKTONS_JOURNAL = 30022;
 	public static final int SEPTIC_TENDRILS = 30024;
-	public static final int TRANSDIMENSIONAL_NOTES = 30025;
-	public static final int VANGUARD_JUDGEMENT = 30026;
 	public static final int CRYSTAL_30027 = 30027;
 	public static final int ANCIENT_CHEST = 30028;
-	public static final int HOUNDMASTERS_DIARY = 30031;
 	public static final int ACID_POOL = 30032;
 	public static final int SMALL_CRYSTALS = 30033;
 	public static final int LARGE_CRYSTALS = 30034;
