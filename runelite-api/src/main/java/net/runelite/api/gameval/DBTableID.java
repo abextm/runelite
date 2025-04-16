@@ -415,6 +415,7 @@ public final class DBTableID
 			public static final int HALLOWEEN_2024 = 3935;
 			public static final int XMAS_2024 = 4228;
 			public static final int BIRTHDAY_2025 = 4318;
+			public static final int EASTER_2025 = 5107;
 		}
 	}
 

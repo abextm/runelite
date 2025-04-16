@@ -9310,6 +9310,11 @@ public final class ObjectID extends ObjectID1
 	public static final int BCS_FURNACE = 2883;
 
 	/**
+	 * Carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_NO_TRAIL = 2884;
+
+	/**
 	 * Cupboard
 	 */
 	public static final int LEGENDS_CUPBOARD = 2885;
