@@ -6443,6 +6443,11 @@ public final class ObjectID extends ObjectID1
 	public static final int WIZARDS_TOWER_LADDER = 2148;
 
 	/**
+	 * Trellis
+	 */
+	public static final int GARDEN_TRELLIS_CONCAVE_SHORTCUT = 2149;
+
+	/**
 	 * Obelisk of Earth
 	 */
 	public static final int OBELISK_EARTH = 2150;

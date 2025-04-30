@@ -7917,7 +7917,6 @@ public final class DBTableID
 			public static final int DIDYOUKNOW_HUMIDIFY = 5127;
 			public static final int DIDYOUKNOW_TEMPOROSS_LEAVE_DESKTOP = 5128;
 			public static final int DIDYOUKNOW_TEMPOROSS_LEAVE_MOBILE = 5129;
-			public static final int DIDYOUKNOW_HOP_WORLD = 5130;
 			public static final int DIDYOUKNOW_GLORY_GEMS = 5131;
 			public static final int DIDYOUKNOW_SNOWFLAKE_BASALT = 5132;
 			public static final int DIDYOUKNOW_FARMINGGEAR = 5133;
