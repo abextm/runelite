@@ -1080,6 +1080,7 @@ public final class ObjectID
 	public static final int COFFIN_2145 = 2145;
 	public static final int LADDER_2147 = 2147;
 	public static final int LADDER_2148 = 2148;
+	public static final int TRELLIS = 2149;
 	public static final int OBELISK_OF_EARTH = 2150;
 	public static final int OBELISK_OF_WATER = 2151;
 	public static final int OBELISK_OF_AIR = 2152;
@@ -5974,7 +5975,7 @@ public final class ObjectID
 	public static final int HOLE_IN_WALL_10320 = 10320;
 	public static final int MANHOLE_10321 = 10321;
 	public static final int LADDER_10322 = 10322;
-	public static final int TRELLIS = 10323;
+	public static final int TRELLIS_10323 = 10323;
 	public static final int TRELLIS_10324 = 10324;
 	public static final int DOOR_10325 = 10325;
 	public static final int DOOR_10326 = 10326;
