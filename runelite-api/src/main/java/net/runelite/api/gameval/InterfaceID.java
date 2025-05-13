@@ -17707,10 +17707,9 @@ public final class InterfaceID
 		public static final int MAPPOOL_LAYER_GRAPHIC0 = 0x01fb_002a;
 		public static final int MAPPOOL_LAYER_GRAPHIC1 = 0x01fb_002b;
 		public static final int MAPPOOL_LAYER_GRAPHIC2 = 0x01fb_002c;
-		public static final int MAPPOOL_CHECKBOX = 0x01fb_002d;
-		public static final int SCALING_LAYER_GRAPHIC0 = 0x01fb_002e;
-		public static final int SCALING_LAYER_GRAPHIC1 = 0x01fb_002f;
-		public static final int SCALING_LAYER_GRAPHIC2 = 0x01fb_0030;
+		public static final int SCALING_LAYER_GRAPHIC0 = 0x01fb_002d;
+		public static final int SCALING_LAYER_GRAPHIC1 = 0x01fb_002e;
+		public static final int SCALING_LAYER_GRAPHIC2 = 0x01fb_002f;
 	}
 
 	public static final class TolHomonculusOverlay

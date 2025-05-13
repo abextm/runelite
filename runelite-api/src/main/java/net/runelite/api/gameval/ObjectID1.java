@@ -65070,7 +65070,6 @@ class ObjectID1
 	 * Ladder
 	 */
 	public static final int GRANDTREE_LADDERMIDDLE_BOTTOM = 56233;
-	public static final int EASTER25_CARROT_CRATE_TRAIL_INVESTIGATE_1 = 56234;
 
 	/**
 	 * Curiously positioned crate of carrots
@@ -65086,7 +65085,6 @@ class ObjectID1
 	 * Curiously positioned crate of carrots
 	 */
 	public static final int EASTER25_CARROT_CRATE_NOOP_1 = 56237;
-	public static final int EASTER25_CARROT_SCRAPS_TRAIL_INVESTIGATE_2 = 56238;
 
 	/**
 	 * Conspicuous carrot scraps
@@ -65102,7 +65100,6 @@ class ObjectID1
 	 * Carrot scraps
 	 */
 	public static final int EASTER25_CARROT_SCRAPS_TRAIL_NOOP_2 = 56241;
-	public static final int EASTER25_CARROT_SCRAPS_TRAIL_INVESTIGATE_3 = 56242;
 
 	/**
 	 * Suspicious carrot scraps
@@ -65118,10 +65115,6 @@ class ObjectID1
 	 * Carrot scraps
 	 */
 	public static final int EASTER25_CARROT_SCRAPS_TRAIL_NOOP_3 = 56245;
-	public static final int EASTER25_CARROT_TRAIL_1 = 56246;
-	public static final int EASTER25_CARROT_TRAIL_2 = 56247;
-	public static final int EASTER25_CARROT_TRAIL_3 = 56248;
-	public static final int EASTER25_RABBITHOLE_ENTRANCE = 56249;
 
 	/**
 	 * Bush
@@ -65156,9 +65149,6 @@ class ObjectID1
 	 * Crate
 	 */
 	public static final int EASTER25_CRATE01_CARROT01 = 56263;
-	public static final int EASTER25_STALL01_DEFAULT01_MULTI01 = 56264;
-	public static final int EASTER25_STALL01_DEFAULT01_MULTI02 = 56265;
-	public static final int EASTER25_STALL01_DEFAULT01_MULTI03 = 56266;
 
 	/**
 	 * Market stall
@@ -65189,10 +65179,6 @@ class ObjectID1
 	 * Market stall
 	 */
 	public static final int EASTER25_STALL01_COMPLETE03 = 56272;
-	public static final int EASTER25_EGGS01_MULTI = 56273;
-	public static final int EASTER25_EGGS02_MULTI = 56274;
-	public static final int EASTER25_EGGS03_MULTI = 56275;
-	public static final int EASTER25_EGGS04_MULTI = 56276;
 
 	/**
 	 * Crate
@@ -65237,7 +65223,6 @@ class ObjectID1
 	 * Sack of raisins
 	 */
 	public static final int EASTER25_RAISIN_SACK = 56296;
-	public static final int EASTER25_SACK_MULTI = 56297;
 
 	/**
 	 * Old bookcase
