@@ -11066,6 +11066,10 @@ public final class VarbitID
 	public static final int YAMA_TRANSITION_PHASE = 16550;
 	public static final int LEAGUE_TASK_EQUIP_A_WIZARD_ROBE_AND_HAT = 16554;
 	public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_A_MYSTIC_SET = 16555;
+	public static final int COLLECTION_BOSSES_DERANGED_ARCHAEOLOGIST_COMPLETED = 16559;
+	public static final int PLAYER_IS_IN_NIGHTMARE_CHALLENGE = 16560;
+	public static final int INFERNO_SHOWN_GM_HELM = 16561;
+	public static final int SHARK_LURE_USE_QUANTITY = 16564;
 	public static final int LEAGUE_TASK_STEAL_A_GOLOVANOVA_FRUIT_TOP = 16568;
 	public static final int LEAGUE_TASK_PLANT_100_GOLOVANOVA_SEEDS = 16569;
 	public static final int LEAGUE_TASK_PLANT_100_BOLOGANO_SEEDS = 16570;
