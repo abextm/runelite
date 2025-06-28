@@ -11,13 +11,13 @@
    sconst                 "questFilter"
    runelite_callback     
    pop_int                        ; quest dbrow
-   istore                 5       ; save result
+   istore                 8       ; save result
    ; compare with -1
-   iload                  5       ; load result
+   iload                  8       ; load result
    iconst                 -1
    if_icmpeq              continue
    ; return value
-   iload                  5
+   iload                  8
    return                
 
 continue:
@@ -29,7 +29,7 @@ continue:
    if_icmpeq              LABEL7
    jump                   LABEL13
 LABEL7:
-   invoke                 4025
+   iload                  7
    iconst                 1
    if_icmpeq              LABEL11
    jump                   LABEL13
@@ -67,90 +67,89 @@ LABEL34:
    iconst                 1
    return                
 LABEL36:
-   iload                  0
-   invoke                 6153
+   iload                  6
    iconst                 1
-   if_icmpeq              LABEL41
-   jump                   LABEL43
-LABEL41:
+   if_icmpeq              LABEL40
+   jump                   LABEL42
+LABEL40:
    iconst                 1
    return                
-LABEL43:
+LABEL42:
    iload                  1
    iconst                 0
-   if_icmpeq              LABEL47
-   jump                   LABEL53
-LABEL47:
+   if_icmpeq              LABEL46
+   jump                   LABEL52
+LABEL46:
    get_varbit             13775
    iconst                 1
-   if_icmpeq              LABEL51
-   jump                   LABEL53
-LABEL51:
+   if_icmpeq              LABEL50
+   jump                   LABEL52
+LABEL50:
    iconst                 1
    return                
-LABEL53:
+LABEL52:
    iload                  1
    iconst                 1
-   if_icmpeq              LABEL57
-   jump                   LABEL63
-LABEL57:
+   if_icmpeq              LABEL56
+   jump                   LABEL62
+LABEL56:
    get_varbit             13776
    iconst                 1
-   if_icmpeq              LABEL61
-   jump                   LABEL63
-LABEL61:
+   if_icmpeq              LABEL60
+   jump                   LABEL62
+LABEL60:
    iconst                 1
    return                
-LABEL63:
+LABEL62:
    iload                  1
    iconst                 2
-   if_icmpeq              LABEL67
-   jump                   LABEL73
-LABEL67:
+   if_icmpeq              LABEL66
+   jump                   LABEL72
+LABEL66:
    get_varbit             13777
    iconst                 1
-   if_icmpeq              LABEL71
-   jump                   LABEL73
-LABEL71:
+   if_icmpeq              LABEL70
+   jump                   LABEL72
+LABEL70:
    iconst                 1
    return                
-LABEL73:
+LABEL72:
    iload                  1
    iconst                 1
-   if_icmpeq              LABEL77
-   jump                   LABEL87
-LABEL77:
+   if_icmpeq              LABEL76
+   jump                   LABEL86
+LABEL76:
    get_varbit             13778
    iconst                 2
-   if_icmpeq              LABEL81
-   jump                   LABEL87
-LABEL81:
+   if_icmpeq              LABEL80
+   jump                   LABEL86
+LABEL80:
    iload                  2
    iconst                 0
-   if_icmpeq              LABEL85
-   jump                   LABEL87
-LABEL85:
+   if_icmpeq              LABEL84
+   jump                   LABEL86
+LABEL84:
    iconst                 1
    return                
-LABEL87:
+LABEL86:
    iload                  1
    iconst                 1
-   if_icmpeq              LABEL91
-   jump                   LABEL101
-LABEL91:
+   if_icmpeq              LABEL90
+   jump                   LABEL100
+LABEL90:
    get_varbit             13779
    iconst                 2
-   if_icmpeq              LABEL95
-   jump                   LABEL101
-LABEL95:
+   if_icmpeq              LABEL94
+   jump                   LABEL100
+LABEL94:
    iload                  3
    iconst                 0
-   if_icmpeq              LABEL99
-   jump                   LABEL101
-LABEL99:
+   if_icmpeq              LABEL98
+   jump                   LABEL100
+LABEL98:
    iconst                 1
    return                
-LABEL101:
+LABEL100:
    iconst                 0
    return                
    iconst                 -1
