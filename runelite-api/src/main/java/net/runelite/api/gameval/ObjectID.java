@@ -78385,7 +78385,7 @@ public final class ObjectID extends ObjectID1
 	public static final int DRAGON_SLAYER_QIP_ROCKCOLUMN3 = 25082;
 
 	/**
-	 * Stalagmite
+	 * Stalactite
 	 */
 	public static final int DRAGON_SLAYER_QIP_STAGAMITE = 25083;
 
@@ -95962,7 +95962,7 @@ public final class ObjectID extends ObjectID1
 	public static final int FOSSIL_U_ROCKS_FLOOR_SOFT_09 = 30795;
 
 	/**
-	 * Bank Chest-wreck
+	 * Bank Chest
 	 */
 	public static final int FOSSIL_WASHED_UP_CHEST = 30796;
 

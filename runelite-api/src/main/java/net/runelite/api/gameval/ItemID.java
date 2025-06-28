@@ -16,7 +16,7 @@ public final class ItemID
 	public static final int MCANNONTOOLKIT = 1;
 
 	/**
-	 * Cannonball
+	 * Steel cannonball
 	 */
 	public static final int MCANNONBALL = 2;
 
@@ -21224,7 +21224,7 @@ public final class ItemID
 	public static final int TINY_NET = 6674;
 
 	/**
-	 * An empty box
+	 * Empty fish food box
 	 */
 	public static final int EMPTY_FISHFOOD_BOX = 6675;
 
@@ -24195,47 +24195,47 @@ public final class ItemID
 	public static final int HUNDRED_PIRATE_GROUND_KELP = 7517;
 
 	/**
-	 * Crab meat
+	 * Giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GIANT_CRAB_MEAT = 7518;
 
 	/**
-	 * Crab meat
+	 * Giant crab meat
 	 */
 	public static final int CERT_HUNDRED_PIRATE_GIANT_CRAB_MEAT = 7519;
 
 	/**
-	 * Burnt crab meat
+	 * Burnt giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_BURNED_GIANT_CRAB_MEAT = 7520;
 
 	/**
-	 * Cooked crab meat
+	 * Cooked giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GIANT_CRAB_MEAT_5 = 7521;
 
 	/**
-	 * Cooked crab meat
+	 * Cooked giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GIANT_CRAB_MEAT_4 = 7523;
 
 	/**
-	 * Cooked crab meat
+	 * Cooked giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GIANT_CRAB_MEAT_3 = 7524;
 
 	/**
-	 * Cooked crab meat
+	 * Cooked giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GIANT_CRAB_MEAT_2 = 7525;
 
 	/**
-	 * Cooked crab meat
+	 * Cooked giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GIANT_CRAB_MEAT_1 = 7526;
 
 	/**
-	 * Ground crab meat
+	 * Ground giant crab meat
 	 */
 	public static final int HUNDRED_PIRATE_GROUND_GIANT_CRAB_MEAT = 7527;
 
@@ -46839,37 +46839,37 @@ public final class ItemID
 	public static final int MM2_THIEVING_KEY3 = 19569;
 
 	/**
-	 * Bronze javelin heads
+	 * Bronze javelin tips
 	 */
 	public static final int BRONZE_JAVELIN_HEAD = 19570;
 
 	/**
-	 * Iron javelin heads
+	 * Iron javelin tips
 	 */
 	public static final int IRON_JAVELIN_HEAD = 19572;
 
 	/**
-	 * Steel javelin heads
+	 * Steel javelin tips
 	 */
 	public static final int STEEL_JAVELIN_HEAD = 19574;
 
 	/**
-	 * Mithril javelin heads
+	 * Mithril javelin tips
 	 */
 	public static final int MITHRIL_JAVELIN_HEAD = 19576;
 
 	/**
-	 * Adamant javelin heads
+	 * Adamant javelin tips
 	 */
 	public static final int ADAMANT_JAVELIN_HEAD = 19578;
 
 	/**
-	 * Rune javelin heads
+	 * Rune javelin tips
 	 */
 	public static final int RUNE_JAVELIN_HEAD = 19580;
 
 	/**
-	 * Dragon javelin heads
+	 * Dragon javelin tips
 	 */
 	public static final int DRAGON_JAVELIN_HEAD = 19582;
 
@@ -52493,7 +52493,7 @@ public final class ItemID
 	public static final int AMETHYST_ARROWHEADS = 21350;
 
 	/**
-	 * Amethyst javelin heads
+	 * Amethyst javelin tips
 	 */
 	public static final int AMETHYST_JAVELIN_HEAD = 21352;
 
@@ -56341,7 +56341,7 @@ public final class ItemID
 	public static final int AERIAL_FISHING_GLOVES_BIRD = 22817;
 
 	/**
-	 * Fish chunks
+	 * Null
 	 */
 	public static final int FISH_CHUNKS = 22818;
 
@@ -58449,7 +58449,7 @@ public final class ItemID
 	public static final int SET_DRAGONSTONE_ARMOUR = 23667;
 
 	/**
-	 * Flyer
+	 * Iwan's flyer
 	 */
 	public static final int FLIER_PRIF = 23670;
 
@@ -79333,6 +79333,2505 @@ public final class ItemID
 	 */
 	public static final int PLUGIN_DEV_WORLD_TOOL = 30890;
 
+	/**
+	 * Keris partisan of amascut
+	 */
+	public static final int KERIS_PARTISAN_AMASCUT = 30891;
+
+	/**
+	 * Jewel of amascut
+	 */
+	public static final int JEWEL_OF_AMASCUT = 30893;
+
+	/**
+	 * Steel ring
+	 */
+	public static final int STEEL_RING = 30895;
+
+	/**
+	 * Giant bones
+	 */
+	public static final int GIANT_BONES = 30898;
+
+	/**
+	 * Shark lure
+	 */
+	public static final int SHARK_LURE = 30900;
+	public static final int SAILING_INTRO_MEDALLION = 30902;
+
+	/**
+	 * Old cup
+	 */
+	public static final int SAILING_INTRO_CUP = 30903;
+
+	/**
+	 * Deep sea helmet
+	 */
+	public static final int TRR_DIVING_HELMET = 30904;
+
+	/**
+	 * Deep sea apparatus
+	 */
+	public static final int TRR_DIVING_BACKPACK = 30906;
+	public static final int TRR_RED_CORAL = 30908;
+
+	/**
+	 * Form cr-4p
+	 */
+	public static final int CURRENT_AFFAIRS_FORM = 30909;
+
+	/**
+	 * Form 7r4-5h
+	 */
+	public static final int CURRENT_AFFAIRS_FORM_2 = 30910;
+
+	/**
+	 * Form 7r4-5h
+	 */
+	public static final int CURRENT_AFFAIRS_FORM_2_SIGNED = 30911;
+
+	/**
+	 * Mayoral fishbowl
+	 */
+	public static final int CURRENT_AFFAIRS_MAYORAL_FISHBOWL = 30912;
+
+	/**
+	 * Mayor of catherby
+	 */
+	public static final int CURRENT_AFFAIRS_MAYOR_OF_CATHERBY = 30913;
+
+	/**
+	 * Paper
+	 */
+	public static final int ROCKO_PAPER = 30915;
+
+	/**
+	 * Confession
+	 */
+	public static final int ROCKO_CONFESSION = 30917;
+
+	/**
+	 * Note
+	 */
+	public static final int ROCKO_NOTE = 30919;
+
+	/**
+	 * Ink bottle
+	 */
+	public static final int ROCKO_INK_BOTTLE = 30921;
+
+	/**
+	 * Inky paper
+	 */
+	public static final int ROCKO_INKY_PAPER = 30923;
+
+	/**
+	 * Ink bottle
+	 */
+	public static final int ROCKO_EMPTY_BOTTLE = 30925;
+
+	/**
+	 * Smashed bottle
+	 */
+	public static final int ROCKO_BROKEN_BOTTLE = 30927;
+
+	/**
+	 * Prison uniform top
+	 */
+	public static final int ROCKO_PRISON_TOP = 30929;
+
+	/**
+	 * Prison uniform trousers
+	 */
+	public static final int ROCKO_PRISON_LEGS = 30931;
+
+	/**
+	 * Fishy prison uniform top
+	 */
+	public static final int ROCKO_FISHY_TOP = 30933;
+
+	/**
+	 * Tin cup
+	 */
+	public static final int ROCKO_TIN_CUP_GROUND = 30935;
+
+	/**
+	 * Tin cup
+	 */
+	public static final int ROCKO_TIN_CUP = 30937;
+
+	/**
+	 * Pipe
+	 */
+	public static final int ROCKO_PIPE = 30939;
+
+	/**
+	 * Accordion
+	 */
+	public static final int ROCKO_ACCORDIAN = 30941;
+
+	/**
+	 * Accordion
+	 */
+	public static final int ROCKO_ACCORDIAN_HOLED = 30943;
+
+	/**
+	 * Accordion
+	 */
+	public static final int ROCKO_ACCORDIAN_PIPED = 30945;
+
+	/**
+	 * Vacuum pump
+	 */
+	public static final int ROCKO_HOOVER = 30947;
+
+	/**
+	 * Vacuum pump and gull
+	 */
+	public static final int ROCKO_HOOVER_GULL = 30949;
+
+	/**
+	 * Quill
+	 */
+	public static final int ROCKO_QUILL = 30951;
+
+	/**
+	 * Inky quill
+	 */
+	public static final int ROCKO_QUILL_INKY = 30953;
+
+	/**
+	 * File
+	 */
+	public static final int ROCKO_FOLDER = 30955;
+
+	/**
+	 * File
+	 */
+	public static final int ROCKO_FOLDER_FULL = 30957;
+
+	/**
+	 * Dragon nails
+	 */
+	public static final int NAILS_DRAGON = 30959;
+
+	/**
+	 * Camphor pyre logs
+	 */
+	public static final int CAMPHOR_LOGS_PYRE = 30961;
+
+	/**
+	 * Ironwood pyre logs
+	 */
+	public static final int IRONWOOD_LOGS_PYRE = 30964;
+
+	/**
+	 * Rosewood pyre logs
+	 */
+	public static final int ROSEWOOD_LOGS_PYRE = 30967;
+
+	/**
+	 * Makeshift bandages
+	 */
+	public static final int TT_BANDAGES = 30970;
+
+	/**
+	 * Tortugan scute
+	 */
+	public static final int TORTUGAN_SCUTE = 30971;
+
+	/**
+	 * Sea shell
+	 */
+	public static final int SEA_SHELL = 30973;
+
+	/**
+	 * List of repairs
+	 */
+	public static final int TT_REPAIRS_LIST = 30975;
+
+	/**
+	 * Tortugan shield
+	 */
+	public static final int TORTUGAN_SHIELD = 30976;
+	public static final int PORT_TASK_BOARD_ICON_DUMMY = 30978;
+	public static final int DOCKING_POINT_ICON_DUMMY = 30979;
+	public static final int LEDGER_TABLE_ICON_DUMMY = 30980;
+
+	/**
+	 * Sailing cape
+	 */
+	public static final int SKILLCAPE_SAILING = 30981;
+
+	/**
+	 * Sailing cape(t)
+	 */
+	public static final int SKILLCAPE_SAILING_TRIMMED = 30983;
+
+	/**
+	 * Sailing hood
+	 */
+	public static final int SKILLCAPE_SAILING_HOOD = 30985;
+
+	/**
+	 * Gryphon feather
+	 */
+	public static final int GRYPHON_FEATHER = 30987;
+
+	/**
+	 * Horn of plenty
+	 */
+	public static final int HORN_OF_PLENTY = 30989;
+
+	/**
+	 * Horn of plenty (empty)
+	 */
+	public static final int HORN_OF_PLENTY_UNCHARGED = 30991;
+
+	/**
+	 * Broken hasta
+	 */
+	public static final int BLUNN_HASTA = 30992;
+
+	/**
+	 * Spirit angler headband
+	 */
+	public static final int KRILL_ANGLER_HAT = 30993;
+
+	/**
+	 * Fossilised skull
+	 */
+	public static final int TORTUGAN_FOSSIL_SOUVENIR = 30994;
+
+	/**
+	 * Tankard
+	 */
+	public static final int TORTUGAN_TANKARD_SOUVENIR = 30995;
+
+	/**
+	 * Camphor blowpipe
+	 */
+	public static final int CAMPHOR_BLOWPIPE = 30996;
+
+	/**
+	 * Camphor blowpipe (empty)
+	 */
+	public static final int CAMPHOR_BLOWPIPE_EMPTY = 30998;
+
+	/**
+	 * Ironwood blowpipe
+	 */
+	public static final int IRONWOOD_BLOWPIPE = 31000;
+
+	/**
+	 * Ironwood blowpipe (empty)
+	 */
+	public static final int IRONWOOD_BLOWPIPE_EMPTY = 31002;
+
+	/**
+	 * Rosewood blowpipe
+	 */
+	public static final int ROSEWOOD_BLOWPIPE = 31004;
+
+	/**
+	 * Rosewood blowpipe (empty)
+	 */
+	public static final int ROSEWOOD_BLOWPIPE_EMPTY = 31006;
+	public static final int FORESTRY_FIRE_JATOBA_LOGS = 31008;
+	public static final int FORESTRY_FIRE_CAMPHOR_LOGS = 31009;
+	public static final int FORESTRY_FIRE_IRONWOOD_LOGS = 31010;
+	public static final int FORESTRY_FIRE_ROSEWOOD_LOGS = 31011;
+	public static final int FORESTRY_FIRE_SHAYZIEN_PINE_LOGS = 31012;
+
+	/**
+	 * Jatoba logs
+	 */
+	public static final int JATOBA_LOGS = 31013;
+
+	/**
+	 * Camphor logs
+	 */
+	public static final int CAMPHOR_LOGS = 31015;
+
+	/**
+	 * Shayzien pine logs
+	 */
+	public static final int SHAYZIEN_PINE_LOGS = 31018;
+
+	/**
+	 * Ironwood logs
+	 */
+	public static final int IRONWOOD_LOGS = 31020;
+
+	/**
+	 * Rosewood logs
+	 */
+	public static final int ROSEWOOD_LOGS = 31023;
+
+	/**
+	 * Red crab
+	 */
+	public static final int RED_CRAB = 31026;
+
+	/**
+	 * Blue crab
+	 */
+	public static final int BLUE_CRAB = 31029;
+
+	/**
+	 * Rainbow crab
+	 */
+	public static final int RAINBOW_CRAB = 31032;
+
+	/**
+	 * Raw red crab meat
+	 */
+	public static final int RAW_RED_CRAB_MEAT = 31035;
+
+	/**
+	 * Red crab meat
+	 */
+	public static final int RED_CRAB_MEAT = 31038;
+
+	/**
+	 * Burnt red crab meat
+	 */
+	public static final int BURNT_RED_CRAB_MEAT = 31041;
+
+	/**
+	 * Raw blue crab meat
+	 */
+	public static final int RAW_BLUE_CRAB_MEAT = 31043;
+
+	/**
+	 * Blue crab meat
+	 */
+	public static final int BLUE_CRAB_MEAT = 31046;
+
+	/**
+	 * Burnt blue crab meat
+	 */
+	public static final int BURNT_BLUE_CRAB_MEAT = 31049;
+
+	/**
+	 * Raw rainbow crab meat
+	 */
+	public static final int RAW_RAINBOW_CRAB_MEAT = 31051;
+
+	/**
+	 * Rainbow crab meat
+	 */
+	public static final int RAINBOW_CRAB_MEAT = 31054;
+
+	/**
+	 * Burnt rainbow crab meat
+	 */
+	public static final int BURNT_RAINBOW_CRAB_MEAT = 31057;
+
+	/**
+	 * Red crab paste
+	 */
+	public static final int RED_CRAB_PASTE = 31059;
+
+	/**
+	 * Blue crab paste
+	 */
+	public static final int BLUE_CRAB_PASTE = 31062;
+
+	/**
+	 * Rainbow crab paste
+	 */
+	public static final int RAINBOW_CRAB_PASTE = 31065;
+
+	/**
+	 * Flax seed
+	 */
+	public static final int FLAX_SEED = 31068;
+
+	/**
+	 * Hemp seed
+	 */
+	public static final int HEMP_SEED = 31070;
+
+	/**
+	 * Cotton seed
+	 */
+	public static final int COTTON_SEED = 31072;
+
+	/**
+	 * Elkhorn frag
+	 */
+	public static final int CORAL_ELKHORN_FRAG = 31074;
+
+	/**
+	 * Pillar frag
+	 */
+	public static final int CORAL_PILLAR_FRAG = 31076;
+
+	/**
+	 * Umbral frag
+	 */
+	public static final int CORAL_UMBRAL_FRAG = 31078;
+	public static final int FLAX_SEED_2 = 31080;
+	public static final int FLAX_SEED_3 = 31081;
+	public static final int FLAX_SEED_4 = 31082;
+	public static final int FLAX_SEED_5 = 31083;
+	public static final int HEMP_SEED_2 = 31084;
+	public static final int HEMP_SEED_3 = 31085;
+	public static final int HEMP_SEED_4 = 31086;
+	public static final int HEMP_SEED_5 = 31087;
+	public static final int COTTON_SEED_2 = 31088;
+	public static final int COTTON_SEED_3 = 31089;
+	public static final int COTTON_SEED_4 = 31090;
+	public static final int COTTON_SEED_5 = 31091;
+	public static final int CAMPHOR_SEEDS_2 = 31092;
+	public static final int CAMPHOR_SEEDS_3 = 31093;
+	public static final int CAMPHOR_SEEDS_4 = 31094;
+	public static final int CAMPHOR_SEEDS_5 = 31095;
+	public static final int IRONWOOD_SEEDS_2 = 31096;
+	public static final int IRONWOOD_SEEDS_3 = 31097;
+	public static final int IRONWOOD_SEEDS_4 = 31098;
+	public static final int IRONWOOD_SEEDS_5 = 31099;
+	public static final int ROSEWOOD_SEEDS_2 = 31100;
+	public static final int ROSEWOOD_SEEDS_3 = 31101;
+	public static final int ROSEWOOD_SEEDS_4 = 31102;
+	public static final int ROSEWOOD_SEEDS_5 = 31103;
+	public static final int CORAL_ELKHORN_FRAG_2 = 31104;
+	public static final int CORAL_ELKHORN_FRAG_3 = 31105;
+	public static final int CORAL_ELKHORN_FRAG_4 = 31106;
+	public static final int CORAL_ELKHORN_FRAG_5 = 31107;
+	public static final int CORAL_PILLAR_FRAG_2 = 31108;
+	public static final int CORAL_PILLAR_FRAG_3 = 31109;
+	public static final int CORAL_PILLAR_FRAG_4 = 31110;
+	public static final int CORAL_PILLAR_FRAG_5 = 31111;
+	public static final int CORAL_UMBRAL_FRAG_2 = 31112;
+	public static final int CORAL_UMBRAL_FRAG_3 = 31113;
+	public static final int CORAL_UMBRAL_FRAG_4 = 31114;
+	public static final int CORAL_UMBRAL_FRAG_5 = 31115;
+
+	/**
+	 * Camphor seed
+	 */
+	public static final int CAMPHOR_SEED = 31116;
+
+	/**
+	 * Ironwood seed
+	 */
+	public static final int IRONWOOD_SEED = 31118;
+
+	/**
+	 * Rosewood seed
+	 */
+	public static final int ROSEWOOD_SEED = 31120;
+
+	/**
+	 * Elkhorn coral
+	 */
+	public static final int CORAL_ELKHORN = 31122;
+
+	/**
+	 * Pillar coral
+	 */
+	public static final int CORAL_PILLAR = 31125;
+
+	/**
+	 * Umbral coral
+	 */
+	public static final int CORAL_UMBRAL = 31128;
+
+	/**
+	 * Camphor seedling
+	 */
+	public static final int PLANTPOT_CAMPHOR_SEED = 31131;
+
+	/**
+	 * Ironwood seedling
+	 */
+	public static final int PLANTPOT_IRONWOOD_SEED = 31133;
+
+	/**
+	 * Rosewood seedling
+	 */
+	public static final int PLANTPOT_ROSEWOOD_SEED = 31135;
+
+	/**
+	 * Camphor seedling (w)
+	 */
+	public static final int PLANTPOT_CAMPHOR_SEED_WATERED = 31137;
+
+	/**
+	 * Ironwood seedling (w)
+	 */
+	public static final int PLANTPOT_IRONWOOD_SEED_WATERED = 31139;
+
+	/**
+	 * Rosewood seedling (w)
+	 */
+	public static final int PLANTPOT_ROSEWOOD_SEED_WATERED = 31141;
+
+	/**
+	 * Camphor sapling
+	 */
+	public static final int PLANTPOT_CAMPHOR_SAPLING = 31143;
+
+	/**
+	 * Ironwood sapling
+	 */
+	public static final int PLANTPOT_IRONWOOD_SAPLING = 31146;
+
+	/**
+	 * Rosewood sapling
+	 */
+	public static final int PLANTPOT_ROSEWOOD_SAPLING = 31149;
+
+	/**
+	 * Villager
+	 */
+	public static final int PICKPOCKET_GUIDE_VILLAGER = 31152;
+
+	/**
+	 * Pirate
+	 */
+	public static final int PICKPOCKET_GUIDE_PIRATE = 31153;
+
+	/**
+	 * Coin pouch
+	 */
+	public static final int PICKPOCKET_COIN_POUCH_PIRATE = 31154;
+
+	/**
+	 * Lead ore
+	 */
+	public static final int LEAD_ORE = 31155;
+
+	/**
+	 * Nickel ore
+	 */
+	public static final int NICKEL_ORE = 31158;
+
+	/**
+	 * Rubium
+	 */
+	public static final int RUBIUM = 31161;
+
+	/**
+	 * Gryphon
+	 */
+	public static final int SLAYERGUIDE_GRYPHON = 31164;
+
+	/**
+	 * Ball of cotton
+	 */
+	public static final int BALL_OF_COTTON = 31165;
+
+	/**
+	 * Hemp
+	 */
+	public static final int HEMP = 31168;
+
+	/**
+	 * Cotton boll
+	 */
+	public static final int COTTON_BOLL = 31171;
+
+	/**
+	 * Linen yarn
+	 */
+	public static final int LINEN_YARN = 31174;
+
+	/**
+	 * Hemp yarn
+	 */
+	public static final int HEMP_YARN = 31177;
+
+	/**
+	 * Cotton yarn
+	 */
+	public static final int COTTON_YARN = 31180;
+
+	/**
+	 * Bolt of linen
+	 */
+	public static final int BOLT_OF_LINEN = 31183;
+
+	/**
+	 * Bolt of canvas
+	 */
+	public static final int BOLT_OF_CANVAS = 31186;
+
+	/**
+	 * Bolt of cotton
+	 */
+	public static final int BOLT_OF_COTTON = 31189;
+	public static final int SALVAGING_HOOK_OBJ = 31192;
+	public static final int PORT_TASK_BOARD_PORT_SARIM = 31193;
+	public static final int PORT_TASK_BOARD_MUSA_POINT = 31194;
+	public static final int SAILING_COMBAT_CANNON_GRAPHIC_OBJECT = 31195;
+	public static final int SAILING_CHUM_STATION_OBJ = 31196;
+	public static final int SAILING_CHUM_STATION_ADVANCED_OBJ = 31197;
+	public static final int SAILING_CHUM_SPREADER_OBJ = 31198;
+	public static final int SAILING_SONAR_ORB_OBJ = 31199;
+	public static final int SAILING_FREMENNIK_SONAR_ORB_OBJ = 31200;
+	public static final int SAILING_TRAWLING_NET_OBJ = 31201;
+	public static final int SAILING_LINEN_TRAWLING_NET_OBJ = 31202;
+	public static final int SAILING_HEMP_TRAWLING_NET_OBJ = 31203;
+	public static final int SAILING_COTTON_TRAWLING_NET_OBJ = 31204;
+
+	/**
+	 * Mounted giant krill
+	 */
+	public static final int POH_TROPHY_GIANT_KRILL = 31205;
+
+	/**
+	 * Mounted giant krill
+	 */
+	public static final int POH_TROPHY_GIANT_KRILL_MAHOGANY = 31206;
+
+	/**
+	 * Mounted haddock
+	 */
+	public static final int POH_TROPHY_HADDOCK = 31207;
+
+	/**
+	 * Mounted haddock
+	 */
+	public static final int POH_TROPHY_HADDOCK_MAHOGANY = 31208;
+
+	/**
+	 * Mounted yellowfin tuna
+	 */
+	public static final int POH_TROPHY_YELLOWFIN_TUNA = 31209;
+
+	/**
+	 * Mounted yellowfin tuna
+	 */
+	public static final int POH_TROPHY_YELLOWFIN_TUNA_MAHOGANY = 31210;
+
+	/**
+	 * Mounted halibut
+	 */
+	public static final int POH_TROPHY_HALIBUT = 31211;
+
+	/**
+	 * Mounted bluefin tuna
+	 */
+	public static final int POH_TROPHY_BLUEFIN_TUNA = 31212;
+
+	/**
+	 * Mounted marlin
+	 */
+	public static final int POH_TROPHY_MARLIN = 31213;
+
+	/**
+	 * Teleport boat to me
+	 */
+	public static final int POH_TABLET_TELEPORTBOATTOME = 31214;
+
+	/**
+	 * Teleport me to boat
+	 */
+	public static final int POH_TABLET_TELEPORTMETOBOAT = 31216;
+
+	/**
+	 * Giant blue krill
+	 */
+	public static final int POH_TROPHYDROP_GIANT_KRILL = 31218;
+
+	/**
+	 * Stuffed giant blue krill
+	 */
+	public static final int POH_TROPHYDROP_GIANT_KRILL_STUFFED = 31220;
+
+	/**
+	 * Golden haddock
+	 */
+	public static final int POH_TROPHYDROP_HADDOCK = 31222;
+
+	/**
+	 * Stuffed golden haddock
+	 */
+	public static final int POH_TROPHYDROP_HADDOCK_STUFFED = 31224;
+
+	/**
+	 * Orangefin tuna
+	 */
+	public static final int POH_TROPHYDROP_YELLOWFIN_TUNA = 31226;
+
+	/**
+	 * Stuffed orangefin tuna
+	 */
+	public static final int POH_TROPHYDROP_YELLOWFIN_TUNA_STUFFED = 31228;
+
+	/**
+	 * Huge halibut
+	 */
+	public static final int POH_TROPHYDROP_HALIBUT = 31230;
+
+	/**
+	 * Stuffed huge halibut
+	 */
+	public static final int POH_TROPHYDROP_HALIBUT_STUFFED = 31232;
+
+	/**
+	 * Purplefin tuna
+	 */
+	public static final int POH_TROPHYDROP_BLUEFIN_TUNA = 31234;
+
+	/**
+	 * Stuffed purplefin tuna
+	 */
+	public static final int POH_TROPHYDROP_BLUEFIN_TUNA_STUFFED = 31236;
+
+	/**
+	 * Swift marlin
+	 */
+	public static final int POH_TROPHYDROP_MARLIN = 31238;
+
+	/**
+	 * Stuffed swift marlin
+	 */
+	public static final int POH_TROPHYDROP_MARLIN_STUFFED = 31240;
+
+	/**
+	 * Camphor plank
+	 */
+	public static final int PLANK_CAMPHOR = 31242;
+
+	/**
+	 * Ironwood plank
+	 */
+	public static final int PLANK_IRONWOOD = 31245;
+
+	/**
+	 * Rosewood plank
+	 */
+	public static final int PLANK_ROSEWOOD = 31248;
+
+	/**
+	 * Dragon bar
+	 */
+	public static final int DRAGON_BAR = 31251;
+
+	/**
+	 * Dragon sheet
+	 */
+	public static final int DRAGON_SHEET = 31254;
+
+	/**
+	 * Chain
+	 */
+	public static final int CHAIN = 31257;
+
+	/**
+	 * Lead bar
+	 */
+	public static final int LEAD_BAR = 31260;
+
+	/**
+	 * Cupronickel bar
+	 */
+	public static final int CUPRONICKEL_BAR = 31263;
+
+	/**
+	 * Raw swordtip squid
+	 */
+	public static final int RAW_SWORDTIP_SQUID = 31266;
+
+	/**
+	 * Swordtip squid
+	 */
+	public static final int SWORDTIP_SQUID = 31269;
+
+	/**
+	 * Burnt swordtip squid
+	 */
+	public static final int BURNT_SWORDTIP_SQUID = 31272;
+
+	/**
+	 * Raw jumbo squid
+	 */
+	public static final int RAW_JUMBO_SQUID = 31274;
+
+	/**
+	 * Jumbo squid
+	 */
+	public static final int JUMBO_SQUID = 31277;
+
+	/**
+	 * Burnt jumbo squid
+	 */
+	public static final int BURNT_JUMBO_SQUID = 31280;
+
+	/**
+	 * Squid paste
+	 */
+	public static final int SQUID_PASTE = 31282;
+
+	/**
+	 * Squid beak
+	 */
+	public static final int SQUID_BEAK = 31285;
+
+	/**
+	 * Bronze keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_BRONZE = 31288;
+
+	/**
+	 * Iron keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_IRON = 31291;
+
+	/**
+	 * Steel keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_STEEL = 31294;
+
+	/**
+	 * Mithril keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_MITHRIL = 31297;
+
+	/**
+	 * Adamant keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_ADAMANT = 31300;
+
+	/**
+	 * Rune keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_RUNE = 31303;
+
+	/**
+	 * Dragon keel parts
+	 */
+	public static final int SAILING_BOAT_KEEL_PART_DRAGON = 31306;
+
+	/**
+	 * Large bronze keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_BRONZE = 31309;
+
+	/**
+	 * Large iron keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_IRON = 31312;
+
+	/**
+	 * Large steel keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_STEEL = 31315;
+
+	/**
+	 * Large mithril keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_MITHRIL = 31318;
+
+	/**
+	 * Large adamant keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_ADAMANT = 31321;
+
+	/**
+	 * Large rune keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_RUNE = 31324;
+
+	/**
+	 * Large dragon keel parts
+	 */
+	public static final int SAILING_BOAT_LARGE_KEEL_PART_DRAGON = 31327;
+
+	/**
+	 * Wooden hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_WOODEN = 31330;
+
+	/**
+	 * Oak hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_OAK = 31333;
+
+	/**
+	 * Teak hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_TEAK = 31336;
+
+	/**
+	 * Mahogany hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_MAHOGANY = 31339;
+
+	/**
+	 * Camphor hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_CAMPHOR = 31342;
+
+	/**
+	 * Ironwood hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_IRONWOOD = 31345;
+
+	/**
+	 * Rosewood hull part
+	 */
+	public static final int SAILING_BOAT_HULL_PART_ROSEWOOD = 31348;
+
+	/**
+	 * Large wooden hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_WOODEN = 31351;
+
+	/**
+	 * Large oak hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_OAK = 31354;
+
+	/**
+	 * Large teak hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_TEAK = 31357;
+
+	/**
+	 * Large mahogany hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_MAHOGANY = 31360;
+
+	/**
+	 * Large camphor hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_CAMPHOR = 31363;
+
+	/**
+	 * Large ironwood hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_IRONWOOD = 31366;
+
+	/**
+	 * Large rosewood hull part
+	 */
+	public static final int SAILING_BOAT_LARGE_HULL_PART_ROSEWOOD = 31369;
+
+	/**
+	 * Regular hull
+	 */
+	public static final int SAILING_DUMMY_REGULAR_HULL = 31372;
+
+	/**
+	 * Regular and bronze steering equipment
+	 */
+	public static final int SAILING_DUMMY_REGULAR_BRONZE_STEERING_EQUIPMENT = 31373;
+
+	/**
+	 * Regular mast with cloth sail
+	 */
+	public static final int SAILING_DUMMY_REGULAR_MAST = 31374;
+
+	/**
+	 * Oak hull
+	 */
+	public static final int SAILING_DUMMY_OAK_HULL = 31375;
+
+	/**
+	 * Oak and iron steering equipment
+	 */
+	public static final int SAILING_DUMMY_OAK_IRON_STEERING_EQUIPMENT = 31376;
+
+	/**
+	 * Oak mast with cloth sail
+	 */
+	public static final int SAILING_DUMMY_OAK_MAST = 31377;
+
+	/**
+	 * Teak hull
+	 */
+	public static final int SAILING_DUMMY_TEAK_HULL = 31378;
+
+	/**
+	 * Teak and steel steering equipment
+	 */
+	public static final int SAILING_DUMMY_TEAK_STEEL_STEERING_EQUIPMENT = 31379;
+
+	/**
+	 * Teak mast with cloth sail
+	 */
+	public static final int SAILING_DUMMY_TEAK_MAST = 31380;
+
+	/**
+	 * Mahogany hull
+	 */
+	public static final int SAILING_DUMMY_MAHOGANY_HULL = 31381;
+
+	/**
+	 * Mahogany and mithril steering equipment
+	 */
+	public static final int SAILING_DUMMY_MAHOGANY_MITHRIL_STEERING_EQUIPMENT = 31382;
+
+	/**
+	 * Mahogany mast with cotton sail
+	 */
+	public static final int SAILING_DUMMY_MAHOGANY_MAST = 31383;
+
+	/**
+	 * Camphor hull
+	 */
+	public static final int SAILING_DUMMY_CAMPHOR_HULL = 31384;
+
+	/**
+	 * Camphor and adamant steering equipment
+	 */
+	public static final int SAILING_DUMMY_CAMPHOR_ADAMANT_STEERING_EQUIPMENT = 31385;
+
+	/**
+	 * Camphor mast with cotton sail
+	 */
+	public static final int SAILING_DUMMY_CAMPHOR_MAST = 31386;
+
+	/**
+	 * Ironwood hull
+	 */
+	public static final int SAILING_DUMMY_IRONWOOD_HULL = 31387;
+
+	/**
+	 * Ironwood and runite steering equipment
+	 */
+	public static final int SAILING_DUMMY_IRONWOOD_RUNITE_STEERING_EQUIPMENT = 31388;
+
+	/**
+	 * Ironwood mast with silk sail
+	 */
+	public static final int SAILING_DUMMY_IRONWOOD_MAST = 31389;
+
+	/**
+	 * Rosewood hull
+	 */
+	public static final int SAILING_DUMMY_ROSEWOOD_HULL = 31390;
+
+	/**
+	 * Rosewood and dragon steering equipment
+	 */
+	public static final int SAILING_DUMMY_ROSEWOOD_RUNITE_STEERING_EQUIPMENT = 31391;
+
+	/**
+	 * Rosewood mast with silk sail
+	 */
+	public static final int SAILING_DUMMY_ROSEWOOD_MAST = 31392;
+
+	/**
+	 * Bronze keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_BRONZE = 31393;
+
+	/**
+	 * Iron keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_IRON = 31394;
+
+	/**
+	 * Steel keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_STEEL = 31395;
+
+	/**
+	 * Mithril keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_MITHRIL = 31396;
+
+	/**
+	 * Adamant keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_ADAMANT = 31397;
+
+	/**
+	 * Rune keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_RUNITE = 31398;
+
+	/**
+	 * Dragon keel parts
+	 */
+	public static final int SAILING_DUMMY_KEEL_PART_DRAGON = 31399;
+
+	/**
+	 * Rope trawling net
+	 */
+	public static final int SAILING_DUMMY_TRAWLING_NET = 31400;
+
+	/**
+	 * Linen trawling net
+	 */
+	public static final int SAILING_DUMMY_LINEN_TRAWLING_NET = 31401;
+
+	/**
+	 * Hemp trawling net
+	 */
+	public static final int SAILING_DUMMY_HEMP_TRAWLING_NET = 31402;
+
+	/**
+	 * Cotton trawling net
+	 */
+	public static final int SAILING_DUMMY_COTTON_TRAWLING_NET = 31403;
+
+	/**
+	 * Bronze cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_BRONZE = 31404;
+
+	/**
+	 * Iron cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_IRON = 31405;
+
+	/**
+	 * Steel cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_STEEL = 31406;
+
+	/**
+	 * Mithril cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_MITHRIL = 31407;
+
+	/**
+	 * Adamant cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_ADAMANT = 31408;
+
+	/**
+	 * Rune cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_RUNE = 31409;
+
+	/**
+	 * Dragon cannon
+	 */
+	public static final int SAILING_DUMMY_CANNON_DRAGON = 31410;
+
+	/**
+	 * Wind catcher
+	 */
+	public static final int SAILING_DUMMY_WIND_CATCHER = 31411;
+
+	/**
+	 * Bronze salvaging hook
+	 */
+	public static final int SAILING_DUMMY_SALVAGING_HOOK_BRONZE = 31412;
+
+	/**
+	 * Iron salvaging hook
+	 */
+	public static final int SAILING_DUMMY_SALVAGING_HOOK_IRON = 31413;
+
+	/**
+	 * Steel salvaging hook
+	 */
+	public static final int SAILING_DUMMY_SALVAGING_HOOK_STEEL = 31414;
+
+	/**
+	 * Wooden cargo hold
+	 */
+	public static final int SAILING_DUMMY_CARGO_HOLD_WOOD = 31415;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_DUMMY_CARGO_HOLD_OAK = 31416;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_DUMMY_CARGO_HOLD_TEAK = 31417;
+
+	/**
+	 * Repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_WOOD = 31418;
+
+	/**
+	 * Oak repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_OAK = 31419;
+
+	/**
+	 * Teak repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_TEAK = 31420;
+
+	/**
+	 * Mahogany repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_MAHOGANY = 31421;
+
+	/**
+	 * Camphor repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_CAMPHOR = 31422;
+
+	/**
+	 * Ironwood repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_IRONWOOD = 31423;
+
+	/**
+	 * Rosewood repair kit
+	 */
+	public static final int SAILING_DUMMY_REPAIR_KIT_ROSEWOOD = 31424;
+
+	/**
+	 * Range
+	 */
+	public static final int SAILING_DUMMY_RANGE = 31425;
+
+	/**
+	 * Captain's log
+	 */
+	public static final int SAILING_LOG_INITIAL = 31426;
+
+	/**
+	 * Captain's log
+	 */
+	public static final int SAILING_LOG = 31427;
+	public static final int SAILING_STEERING_WHEEL01_DUMMY_PLAYER = 31429;
+
+	/**
+	 * Boat bottle (empty)
+	 */
+	public static final int SAILING_BOAT_BOTTLE_EMPTY = 31430;
+
+	/**
+	 * Boat bottle (full)
+	 */
+	public static final int SAILING_BOAT_BOTTLE_FULL = 31433;
+
+	/**
+	 * Boat deed
+	 */
+	public static final int SAILING_DEED_RAFT = 31434;
+
+	/**
+	 * Boat deed
+	 */
+	public static final int SAILING_DEED_2X5 = 31436;
+
+	/**
+	 * Boat deed
+	 */
+	public static final int SAILING_DEED_KANDARIN_LARGE = 31438;
+
+	/**
+	 * Seal fur
+	 */
+	public static final int SEAL_FUR = 31440;
+
+	/**
+	 * Raw seal meat
+	 */
+	public static final int RAW_SEAL_MEAT = 31443;
+
+	/**
+	 * Whale bones
+	 */
+	public static final int WHALE_BONES = 31446;
+
+	/**
+	 * Monodon bones
+	 */
+	public static final int MONODON_BONES = 31449;
+
+	/**
+	 * Repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT = 31452;
+
+	/**
+	 * Oak repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT_OAK = 31455;
+
+	/**
+	 * Teak repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT_TEAK = 31458;
+
+	/**
+	 * Mahogany repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT_MAHOGANY = 31461;
+
+	/**
+	 * Camphor repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT_CAMPHOR = 31464;
+
+	/**
+	 * Ironwood repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT_IRONWOOD = 31467;
+
+	/**
+	 * Rosewood repair kit
+	 */
+	public static final int BOAT_REPAIR_KIT_ROSEWOOD = 31470;
+
+	/**
+	 * Bronze cannonball
+	 */
+	public static final int BRONZE_CANNONBALL = 31473;
+
+	/**
+	 * Iron cannonball
+	 */
+	public static final int IRON_CANNONBALL = 31475;
+
+	/**
+	 * Mithril cannonball
+	 */
+	public static final int MITHRIL_CANNONBALL = 31477;
+
+	/**
+	 * Adamant cannonball
+	 */
+	public static final int ADAMANT_CANNONBALL = 31479;
+
+	/**
+	 * Rune cannonball
+	 */
+	public static final int RUNE_CANNONBALL = 31481;
+
+	/**
+	 * Dragon cannonball
+	 */
+	public static final int DRAGON_CANNONBALL = 31483;
+
+	/**
+	 * Bronze chainshot cannonball
+	 */
+	public static final int BRONZE_CHAINSHOT_CANNONBALL = 31485;
+
+	/**
+	 * Iron chainshot cannonball
+	 */
+	public static final int IRON_CHAINSHOT_CANNONBALL = 31487;
+
+	/**
+	 * Steel chainshot cannonball
+	 */
+	public static final int STEEL_CHAINSHOT_CANNONBALL = 31489;
+
+	/**
+	 * Mithril chainshot cannonball
+	 */
+	public static final int MITHRIL_CHAINSHOT_CANNONBALL = 31491;
+
+	/**
+	 * Adamant chainshot cannonball
+	 */
+	public static final int ADAMANT_CHAINSHOT_CANNONBALL = 31493;
+
+	/**
+	 * Rune chainshot cannonball
+	 */
+	public static final int RUNE_CHAINSHOT_CANNONBALL = 31495;
+
+	/**
+	 * Dragon chainshot cannonball
+	 */
+	public static final int DRAGON_CHAINSHOT_CANNONBALL = 31497;
+
+	/**
+	 * Bronze incendiary cannonball
+	 */
+	public static final int BRONZE_INCENDIARY_CANNONBALL = 31499;
+
+	/**
+	 * Iron incendiary cannonball
+	 */
+	public static final int IRON_INCENDIARY_CANNONBALL = 31501;
+
+	/**
+	 * Steel incendiary cannonball
+	 */
+	public static final int STEEL_INCENDIARY_CANNONBALL = 31503;
+
+	/**
+	 * Mithril incendiary cannonball
+	 */
+	public static final int MITHRIL_INCENDIARY_CANNONBALL = 31505;
+
+	/**
+	 * Adamant incendiary cannonball
+	 */
+	public static final int ADAMANT_INCENDIARY_CANNONBALL = 31507;
+
+	/**
+	 * Rune incendiary cannonball
+	 */
+	public static final int RUNE_INCENDIARY_CANNONBALL = 31509;
+
+	/**
+	 * Dragon incendiary cannonball
+	 */
+	public static final int DRAGON_INCENDIARY_CANNONBALL = 31511;
+
+	/**
+	 * Sunken rum
+	 */
+	public static final int SAILING_BT_TEMPOR_TANTRUM_RUM_SUPPLIES = 31513;
+
+	/**
+	 * Placeholder swordfish reward
+	 */
+	public static final int SAILING_BT_SWORDFISH_REWARD = 31515;
+
+	/**
+	 * Placeholder shark reward
+	 */
+	public static final int SAILING_BT_SHARK_REWARD = 31517;
+
+	/**
+	 * Placeholder marlin reward
+	 */
+	public static final int SAILING_BT_MARLIN_REWARD = 31519;
+	public static final int _56_TELEPORT_BOAT_TO_ME = 31521;
+	public static final int _67_TELEPORT_ME_TO_BOAT = 31522;
+
+	/**
+	 * Bottle of almost smuggled rum
+	 */
+	public static final int SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM = 31523;
+
+	/**
+	 * Bottle of sorodamin's bru
+	 */
+	public static final int SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU = 31525;
+
+	/**
+	 * Bottle of fish bladder stout
+	 */
+	public static final int SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES = 31527;
+
+	/**
+	 * Spyglass
+	 */
+	public static final int SAILING_CHARTING_SPYGLASS = 31529;
+
+	/**
+	 * Current duck
+	 */
+	public static final int SAILING_CHARTING_CURRENT_DUCK = 31531;
+
+	/**
+	 * Crowbar
+	 */
+	public static final int SAILING_CHARTING_CROWBAR = 31533;
+
+	/**
+	 * Portable weather station
+	 */
+	public static final int SAILING_CHARTING_WEATHER_STATION_EMPTY = 31535;
+
+	/**
+	 * Portable weather station (rusty)
+	 */
+	public static final int SAILING_CHARTING_WEATHER_STATION_RUSTY = 31536;
+
+	/**
+	 * Data filled portable weather station
+	 */
+	public static final int SAILING_CHARTING_WEATHER_STATION_FULL = 31537;
+
+	/**
+	 * Deep sea helmet
+	 */
+	public static final int SAILING_CHARTING_UPGRADED_DIVING_HELMET = 31538;
+
+	/**
+	 * Deep sea apparatus
+	 */
+	public static final int SAILING_CHARTING_UPGRADED_DIVING_BACKPACK = 31540;
+	public static final int DUMMY_CHARTING_SPYGLASS = 31542;
+	public static final int DUMMY_CHARTING_DUCK = 31543;
+	public static final int DUMMY_CHARTING_WEATHERSTATION = 31544;
+	public static final int DUMMY_CHARTING_QUILL = 31545;
+	public static final int DUMMY_CHARTING_SCROLL = 31546;
+
+	/**
+	 * Fine fish offcuts
+	 */
+	public static final int SAILING_FINE_FISH_OFFCUTS = 31547;
+
+	/**
+	 * Premium fish offcuts
+	 */
+	public static final int SAILING_PREMIUM_FISH_OFFCUTS = 31549;
+
+	/**
+	 * Raw giant krill
+	 */
+	public static final int RAW_GIANT_KRILL = 31551;
+
+	/**
+	 * Giant krill
+	 */
+	public static final int GIANT_KRILL = 31554;
+
+	/**
+	 * Burnt giant krill
+	 */
+	public static final int BURNT_GIANT_KRILL = 31557;
+
+	/**
+	 * Raw haddock
+	 */
+	public static final int RAW_HADDOCK = 31559;
+
+	/**
+	 * Haddock
+	 */
+	public static final int HADDOCK = 31562;
+
+	/**
+	 * Burnt haddock
+	 */
+	public static final int BURNT_HADDOCK = 31565;
+
+	/**
+	 * Raw yellowfin tuna
+	 */
+	public static final int RAW_YELLOWFIN_TUNA = 31567;
+
+	/**
+	 * Yellowfin tuna
+	 */
+	public static final int YELLOWFIN_TUNA = 31570;
+
+	/**
+	 * Burnt yellowfin tuna
+	 */
+	public static final int BURNT_YELLOWFIN_TUNA = 31573;
+
+	/**
+	 * Raw halibut
+	 */
+	public static final int RAW_HALIBUT = 31575;
+
+	/**
+	 * Halibut
+	 */
+	public static final int HALIBUT = 31578;
+
+	/**
+	 * Burnt halibut
+	 */
+	public static final int BURNT_HALIBUT = 31581;
+
+	/**
+	 * Raw marlin
+	 */
+	public static final int RAW_MARLIN = 31583;
+
+	/**
+	 * Marlin
+	 */
+	public static final int MARLIN = 31586;
+
+	/**
+	 * Burnt marlin
+	 */
+	public static final int BURNT_MARLIN = 31589;
+
+	/**
+	 * Raw bluefin tuna
+	 */
+	public static final int RAW_BLUEFIN_TUNA = 31591;
+
+	/**
+	 * Bluefin tuna
+	 */
+	public static final int BLUEFIN_TUNA = 31594;
+
+	/**
+	 * Burnt bluefin tuna
+	 */
+	public static final int BURNT_BLUEFIN_TUNA = 31597;
+
+	/**
+	 * Haddock eye
+	 */
+	public static final int HADDOCK_EYE = 31599;
+
+	/**
+	 * Yellow tuna fin
+	 */
+	public static final int YELLOW_TUNA_FIN = 31602;
+
+	/**
+	 * Marlin scales
+	 */
+	public static final int MARLIN_SCALES = 31605;
+
+	/**
+	 * Tiny pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_500 = 31608;
+
+	/**
+	 * Small pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_1000 = 31611;
+
+	/**
+	 * Shiny pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_5000 = 31614;
+
+	/**
+	 * Bright pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_10000 = 31617;
+
+	/**
+	 * Big pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_25000 = 31620;
+
+	/**
+	 * Huge pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_50000 = 31623;
+
+	/**
+	 * Enormous pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_100000 = 31626;
+
+	/**
+	 * Shimmering pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_250000 = 31629;
+
+	/**
+	 * Glistening pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_500000 = 31632;
+
+	/**
+	 * Brilliant pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_1000000 = 31635;
+
+	/**
+	 * Radiant pearl
+	 */
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_2500000 = 31638;
+
+	/**
+	 * Small salvage
+	 */
+	public static final int SAILING_SMALL_SHIPWRECK_SALVAGE = 31641;
+
+	/**
+	 * Fishy salvage
+	 */
+	public static final int SAILING_FISHERMAN_SHIPWRECK_SALVAGE = 31643;
+
+	/**
+	 * Barracuda salvage
+	 */
+	public static final int SAILING_BARRACUDA_SHIPWRECK_SALVAGE = 31645;
+
+	/**
+	 * Large salvage
+	 */
+	public static final int SAILING_LARGE_SHIPWRECK_SALVAGE = 31647;
+
+	/**
+	 * Plundered salvage
+	 */
+	public static final int SAILING_PIRATE_SHIPWRECK_SALVAGE = 31649;
+
+	/**
+	 * Martial salvage
+	 */
+	public static final int SAILING_MERCENARY_SHIPWRECK_SALVAGE = 31651;
+
+	/**
+	 * Colossal salvage
+	 */
+	public static final int SAILING_COLOSSAL_SHIPWRECK_SALVAGE = 31653;
+
+	/**
+	 * Opulent salvage
+	 */
+	public static final int SAILING_MERCHANT_SHIPWRECK_SALVAGE = 31655;
+
+	/**
+	 * Spooky salvage
+	 */
+	public static final int SAILING_HAUNTED_SHIPWRECK_SALVAGE = 31657;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_SMALL = 31659;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_FISHERMAN = 31661;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_BARRACUDA = 31663;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_LARGE = 31665;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_PIRATE = 31667;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_MERCENARY = 31669;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_COLOSSAL = 31671;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_MERCHANT = 31673;
+
+	/**
+	 * Sunken locket
+	 */
+	public static final int SALVAGING_RARE_HAUNTED = 31675;
+	public static final int CARGO_INTERFACE_DUMMY = 31677;
+	public static final int SALVAGE_INTERFACE_DUMMY = 31678;
+
+	/**
+	 * Portmaster's watch
+	 */
+	public static final int PORT_TASKS_TEST_CLOCK = 31679;
+
+	/**
+	 * Crate of steel swords
+	 */
+	public static final int CARGO_CRATE_OF_STEEL_SWORDS = 31680;
+
+	/**
+	 * Crate of raw fish
+	 */
+	public static final int CARGO_CRATE_OF_RAW_FISH = 31681;
+
+	/**
+	 * Crate of bananas
+	 */
+	public static final int CARGO_CRATE_OF_BANANAS = 31682;
+
+	/**
+	 * Crate of rotten bananas
+	 */
+	public static final int CARGO_CRATE_OF_ROTTEN_BANANAS = 31683;
+
+	/**
+	 * Crate of beer
+	 */
+	public static final int CARGO_CRATE_OF_BEER = 31684;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_OF_LOGS = 31685;
+
+	/**
+	 * Crate of grog
+	 */
+	public static final int CARGO_CRATE_OF_GROG = 31686;
+
+	/**
+	 * Crate of rum
+	 */
+	public static final int CARGO_CRATE_OF_RUM = 31687;
+
+	/**
+	 * Crate of smuggled rum
+	 */
+	public static final int CARGO_CRATE_OF_SMUGGLED_RUM = 31688;
+
+	/**
+	 * Crate of kegs
+	 */
+	public static final int CARGO_CRATE_OF_KEGS = 31689;
+
+	/**
+	 * Crate of bait
+	 */
+	public static final int CARGO_CRATE_OF_BAIT = 31690;
+
+	/**
+	 * Crate of potatoes
+	 */
+	public static final int CARGO_CRATE_OF_POTATOES = 31691;
+
+	/**
+	 * Crate of compost
+	 */
+	public static final int CARGO_CRATE_OF_COMPOST = 31692;
+
+	/**
+	 * Crate of red salamanders
+	 */
+	public static final int CARGO_CRATE_OF_RED_SALAMANDERS = 31693;
+
+	/**
+	 * Crate of swamp paste
+	 */
+	public static final int CARGO_CRATE_OF_SWAMP_PASTE = 31694;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_OF_IDENTIFIED_SWORDS = 31695;
+
+	/**
+	 * Crate of live lobsters
+	 */
+	public static final int CARGO_CRATE_OF_LIVE_LOBSTERS = 31696;
+
+	/**
+	 * Crate of raw lobsters
+	 */
+	public static final int CARGO_CRATE_OF_RAW_LOBSTERS = 31697;
+
+	/**
+	 * Crate of wax
+	 */
+	public static final int CARGO_CRATE_OF_WAX = 31698;
+
+	/**
+	 * Crate of coconuts
+	 */
+	public static final int CARGO_CRATE_OF_COCONUTS = 31699;
+
+	/**
+	 * Crate of vials
+	 */
+	public static final int CARGO_CRATE_OF_VIALS = 31700;
+
+	/**
+	 * Crate of silk
+	 */
+	public static final int CARGO_CRATE_OF_SILK = 31701;
+
+	/**
+	 * Crate of pineapples
+	 */
+	public static final int CARGO_CRATE_OF_PINEAPPLES = 31702;
+
+	/**
+	 * Crate of fresh fish
+	 */
+	public static final int CARGO_CRATE_OF_FRESH_FISH = 31703;
+
+	/**
+	 * Crate of cabbages
+	 */
+	public static final int CARGO_CRATE_OF_CABBAGES = 31704;
+
+	/**
+	 * Crate of steel arrowtips
+	 */
+	public static final int CARGO_CRATE_OF_STEEL_ARROWTIPS = 31705;
+
+	/**
+	 * Crate of raw karambwan
+	 */
+	public static final int CARGO_CRATE_OF_RAW_KARAMBWAN = 31706;
+
+	/**
+	 * Crate of oak planks
+	 */
+	public static final int CARGO_CRATE_OF_OAK_PLANKS = 31707;
+
+	/**
+	 * Crate of glassmaking supplies
+	 */
+	public static final int CARGO_CRATE_OF_GLASS_MAKE_SUPPLIES = 31708;
+
+	/**
+	 * Crate of coal
+	 */
+	public static final int CARGO_CRATE_OF_COAL = 31709;
+
+	/**
+	 * Crate of silver jewellery
+	 */
+	public static final int CARGO_CRATE_OF_SILVER_JEWELLERY = 31710;
+
+	/**
+	 * Crate of buckets
+	 */
+	public static final int CARGO_CRATE_OF_BUCKETS = 31711;
+
+	/**
+	 * Crate of trawler fish
+	 */
+	public static final int CARGO_CRATE_OF_TRAWLER_FISH = 31712;
+
+	/**
+	 * Crate of gold ore
+	 */
+	public static final int CARGO_CRATE_OF_GOLD_ORE = 31713;
+
+	/**
+	 * Crate of mithril armour
+	 */
+	public static final int CARGO_CRATE_OF_MITHRIL_ARMOUR = 31714;
+
+	/**
+	 * Crate of sand
+	 */
+	public static final int CARGO_CRATE_OF_SAND = 31715;
+
+	/**
+	 * Crate of spices
+	 */
+	public static final int CARGO_CRATE_OF_SPICES = 31716;
+
+	/**
+	 * Crate of secret stuff
+	 */
+	public static final int CARGO_CRATE_OF_SECRET_STUFF = 31717;
+
+	/**
+	 * Crate of dragon daggers
+	 */
+	public static final int CARGO_CRATE_OF_DRAGON_DAGGERS = 31718;
+
+	/**
+	 * Crate of ship parts
+	 */
+	public static final int CARGO_CRATE_OF_SHIP_PARTS = 31719;
+
+	/**
+	 * Crate of dragon equipment
+	 */
+	public static final int CARGO_CRATE_OF_DRAGON_EQUIPMENT = 31720;
+
+	/**
+	 * Crate of anglers clothing
+	 */
+	public static final int CARGO_CRATE_OF_SPIRIT_ANGLERS_GARB = 31721;
+
+	/**
+	 * Crate of anglers clothing
+	 */
+	public static final int CARGO_CRATE_OF_ANGLERS_OUTFIT = 31722;
+
+	/**
+	 * Crate of pineapples
+	 */
+	public static final int CARGO_CRATE_OF_BRIMHAVEN_PINEAPPLES = 31723;
+
+	/**
+	 * Crate of high importance
+	 */
+	public static final int CARGO_CRATE_OF_HIGH_IMPORTANCE = 31724;
+
+	/**
+	 * Crate of salted meat
+	 */
+	public static final int CARGO_CRATE_OF_SALTED_MEAT = 31725;
+
+	/**
+	 * Crate of dragon's bitter
+	 */
+	public static final int CARGO_CRATE_OF_DRAGONS_BITTER = 31726;
+
+	/**
+	 * Crate of hops
+	 */
+	public static final int CARGO_CRATE_OF_HOPS = 31727;
+
+	/**
+	 * Crate of bones
+	 */
+	public static final int CARGO_CRATE_OF_BONES = 31728;
+
+	/**
+	 * Crate of steel bars
+	 */
+	public static final int CARGO_CRATE_OF_STEEL_BARS = 31729;
+
+	/**
+	 * Crate of bark
+	 */
+	public static final int CARGO_CRATE_OF_BARK = 31730;
+
+	/**
+	 * Crate of raw meat
+	 */
+	public static final int CARGO_CRATE_OF_RAW_MEAT = 31731;
+
+	/**
+	 * Crate of lumber
+	 */
+	public static final int CARGO_CRATE_OF_LUMBER = 31732;
+
+	/**
+	 * Crate of live rabbits
+	 */
+	public static final int CARGO_CRATE_OF_LIVE_RABBITS = 31733;
+
+	/**
+	 * Crate of hammers
+	 */
+	public static final int CARGO_CRATE_OF_HAMMERS = 31734;
+
+	/**
+	 * Crate of mushrooms
+	 */
+	public static final int CARGO_CRATE_OF_MUSHROOMS = 31735;
+
+	/**
+	 * Crate of fur
+	 */
+	public static final int CARGO_CRATE_OF_FUR = 31736;
+
+	/**
+	 * Crate of clothing
+	 */
+	public static final int CARGO_CRATE_OF_CLOTHING = 31737;
+
+	/**
+	 * Crate of fishing equipment
+	 */
+	public static final int CARGO_CRATE_OF_FISHING_EQUIPMENT = 31738;
+
+	/**
+	 * Crate of granite
+	 */
+	public static final int CARGO_CRATE_OF_GRANITE = 31739;
+
+	/**
+	 * Crate of importance
+	 */
+	public static final int CARGO_CRATE_OF_IMPORTANCE = 31740;
+
+	/**
+	 * Crate of cocktails
+	 */
+	public static final int CARGO_CRATE_OF_COCKTAILS = 31741;
+
+	/**
+	 * Crate of cacti
+	 */
+	public static final int CARGO_CRATE_OF_CACTUS = 31742;
+
+	/**
+	 * Crate of coral
+	 */
+	public static final int CARGO_CRATE_OF_CORAL = 31743;
+
+	/**
+	 * Crate of sandstone
+	 */
+	public static final int CARGO_CRATE_OF_SANDSTONE = 31744;
+
+	/**
+	 * Crate of crocodile meat
+	 */
+	public static final int CARGO_CRATE_OF_CROCODILE_MEAT = 31745;
+
+	/**
+	 * Crate of cactus juice
+	 */
+	public static final int CARGO_CRATE_OF_CACTUS_JUICE = 31746;
+
+	/**
+	 * Crate of yak hair
+	 */
+	public static final int CARGO_CRATE_OF_YAK_HAIR = 31747;
+
+	/**
+	 * Crate of nail beast fur
+	 */
+	public static final int CARGO_CRATE_OF_NAIL_BEAST_FUR = 31748;
+
+	/**
+	 * Crate of kyatt fur
+	 */
+	public static final int CARGO_CRATE_OF_KYATT_FUR = 31749;
+
+	/**
+	 * Crate of kebbit teeth
+	 */
+	public static final int CARGO_CRATE_OF_KEBBIT_TEETH = 31750;
+
+	/**
+	 * Crate of redwood logs
+	 */
+	public static final int CARGO_CRATE_OF_REDWOOD = 31751;
+
+	/**
+	 * Crate of aphcs rum
+	 */
+	public static final int CARGO_CRATE_OF_BRAINDEATH_RUM = 31752;
+
+	/**
+	 * Crate of kyatt teeth
+	 */
+	public static final int CARGO_CRATE_OF_KYATT_TEETH = 31753;
+
+	/**
+	 * Crate of special fish
+	 */
+	public static final int CARGO_CRATE_OF_SPECIAL_FISH = 31754;
+
+	/**
+	 * Crate of books
+	 */
+	public static final int CARGO_CRATE_OF_VARROCK_BOOKS = 31755;
+
+	/**
+	 * Crate of books
+	 */
+	public static final int CARGO_CRATE_OF_ARCEUUS_BOOKS = 31756;
+
+	/**
+	 * Crate of antelope meat
+	 */
+	public static final int CARGO_CRATE_OF_ANTELOPE_MEAT = 31757;
+
+	/**
+	 * Crate of anglerfish
+	 */
+	public static final int CARGO_CRATE_OF_ANGLERFISH = 31758;
+
+	/**
+	 * Crate of vegetables
+	 */
+	public static final int CARGO_CRATE_OF_VEGETABLES = 31759;
+
+	/**
+	 * Crate of mithril ore
+	 */
+	public static final int CARGO_CRATE_OF_MITHRIL_ORE = 31760;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_OF_PLANKS = 31761;
+
+	/**
+	 * Crate of flour
+	 */
+	public static final int CARGO_CRATE_OF_FLOUR = 31762;
+
+	/**
+	 * Crate of seaweed
+	 */
+	public static final int CARGO_CRATE_OF_SEAWEED = 31763;
+
+	/**
+	 * Crate of runes
+	 */
+	public static final int CARGO_CRATE_OF_VARROCK_RUNES = 31764;
+
+	/**
+	 * Crate of runes
+	 */
+	public static final int CARGO_CRATE_OF_YANILLE_RUNES = 31765;
+
+	/**
+	 * Crate of seeds
+	 */
+	public static final int CARGO_CRATE_OF_SEEDS = 31766;
+
+	/**
+	 * Crate of sharks
+	 */
+	public static final int CARGO_CRATE_OF_RELLEKKA_SHARKS = 31767;
+
+	/**
+	 * Crate of wine
+	 */
+	public static final int CARGO_CRATE_OF_WINE = 31768;
+
+	/**
+	 * Crate of chocolate
+	 */
+	public static final int CARGO_CRATE_OF_CHOCOLATE = 31769;
+
+	/**
+	 * Crate of marble
+	 */
+	public static final int CARGO_CRATE_OF_MARBLE = 31770;
+
+	/**
+	 * Crate of wheat
+	 */
+	public static final int CARGO_CRATE_OF_WHEAT = 31771;
+
+	/**
+	 * Crate of exotic furs
+	 */
+	public static final int CARGO_CRATE_OF_EXOTIC_FURS = 31772;
+
+	/**
+	 * Crate of alpaca wool
+	 */
+	public static final int CARGO_CRATE_OF_ALPACA_WOOL = 31773;
+
+	/**
+	 * Crate of pirate looty
+	 */
+	public static final int CARGO_CRATE_OF_PIRATE_LOOTY = 31774;
+
+	/**
+	 * Crate of returned bananas
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_0 = 31775;
+
+	/**
+	 * Crate of eye patches
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_1 = 31776;
+
+	/**
+	 * Crate of gold ore
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_2 = 31777;
+
+	/**
+	 * Crate of fresh pineapples
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_3 = 31778;
+
+	/**
+	 * Crate of wine jugs
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_4 = 31779;
+
+	/**
+	 * Crate of peg legs
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_5 = 31780;
+
+	/**
+	 * Crate of general store supplies
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_6 = 31781;
+
+	/**
+	 * Crate of free bananas
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_7 = 31782;
+
+	/**
+	 * Crate of artisinal beer glasses
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_8 = 31783;
+
+	/**
+	 * Crate of zembo's wine
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_9 = 31784;
+
+	/**
+	 * Crate of secret ingredients
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_10 = 31785;
+
+	/**
+	 * Crate of raw lobsters
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_11 = 31786;
+
+	/**
+	 * Crate of teak goods
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_12 = 31787;
+
+	/**
+	 * Musa point crate 13
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_13 = 31788;
+
+	/**
+	 * Crate of cocktail ingredients
+	 */
+	public static final int CARGO_CRATE_MUSA_POINT_14 = 31789;
+
+	/**
+	 * Crate of materials
+	 */
+	public static final int SAILING_INTRO_CARGO_CRATE = 31790;
+
+	/**
+	 * Famished shark fin
+	 */
+	public static final int BOUNTY_OBJECT_FAMISHED_SHARK_FIN = 31791;
+
+	/**
+	 * Crandor shark fin
+	 */
+	public static final int BOUNTY_OBJECT_CRANDOR_SHARK_FIN = 31792;
+
+	/**
+	 * Shark jaw
+	 */
+	public static final int BOUNTY_OBJECT_KARAMJAN_SHARK_JAW = 31793;
+
+	/**
+	 * Reef shark tooth
+	 */
+	public static final int BOUNTY_OBJECT_LARGE_REEF_SHARK_TEETH = 31794;
+
+	/**
+	 * Pygmy kraken tentacle
+	 */
+	public static final int BOUNTY_OBJECT_PYGMY_KRAKEN_TENTACLE = 31795;
+
+	/**
+	 * Pristine monodon horn
+	 */
+	public static final int BOUNTY_OBJECT_PRISTINE_CATHERBY_MONODON_HORN = 31796;
+
+	/**
+	 * Broken monodon horn
+	 */
+	public static final int BOUNTY_OBJECT_BROKEN_CATHERBY_MONODON_HORN = 31797;
+
+	/**
+	 * Pygmy kraken tentacles
+	 */
+	public static final int BOUNTY_OBJECT_PYGMY_KRAKEN_BUNCH_OF_TENTACLES = 31798;
+
+	/**
+	 * Ogre monodon horn
+	 */
+	public static final int BOUNTY_OBJECT_OGRE_MONODON_HORN = 31799;
+
+	/**
+	 * Baby kraken head
+	 */
+	public static final int BOUNTY_OBJECT_BABY_KRAKEN_HEADS = 31800;
+
+	/**
+	 * Broken monodon horn
+	 */
+	public static final int BOUNTY_OBJECT_BROKEN_KHARAZI_MONODON_HORN = 31801;
+
+	/**
+	 * Large reef shark fin
+	 */
+	public static final int BOUNTY_OBJECT_LARGE_REEF_SHARK_FIN = 31802;
+
+	/**
+	 * Broken monodon horn
+	 */
+	public static final int BOUNTY_OBJECT_BROKEN_OGRE_MONODON_HORN = 31803;
+
+	/**
+	 * Baby sea kraken tentacle
+	 */
+	public static final int BOUNTY_OBJECT_BABY_SEA_KRAKEN_TENTACLE = 31804;
+
+	/**
+	 * Deep sea kraken heart
+	 */
+	public static final int BOUNTY_OBJECT_DEEP_SEA_KRAKEN_HEART = 31805;
+
+	/**
+	 * Albatross feather
+	 */
+	public static final int BOUNTY_OBJECT_ALBATROSS_FEATHER = 31806;
+
+	/**
+	 * Sea monodon heart
+	 */
+	public static final int BOUNTY_OBJECT_SEA_MONODON_HEART = 31807;
+
+	/**
+	 * Great white shark heart
+	 */
+	public static final int BOUNTY_OBJECT_GREAT_WHITE_SHARK_HEART = 31808;
+
+	/**
+	 * Karamjan tiger shark fin
+	 */
+	public static final int BOUNTY_OBJECT_KARAMJAN_TIGER_SHARK_FIN = 31809;
+
+	/**
+	 * Sea hawk feather
+	 */
+	public static final int BOUNTY_OBJECT_SEA_HAWK_FEATHER = 31810;
+
+	/**
+	 * Sea monodon horn
+	 */
+	public static final int BOUNTY_OBJECT_SEA_MONODON_HORN = 31811;
+
+	/**
+	 * Baby sea kraken blood
+	 */
+	public static final int BOUNTY_OBJECT_BABY_SEA_KRAKEN_BLOOD = 31812;
+
+	/**
+	 * Deep sea kraken tentacle
+	 */
+	public static final int BOUNTY_OBJECT_DEEP_SEA_KRAKEN_TENTACLE = 31813;
+
+	/**
+	 * Great white shark fin
+	 */
+	public static final int BOUNTY_OBJECT_GREAT_WHITE_SHARK_FIN = 31814;
+
+	/**
+	 * Rock golem
+	 */
+	public static final int SKILLPETMINING_LEAD = 31815;
+
+	/**
+	 * Rock golem
+	 */
+	public static final int SKILLPETMINING_NICKEL = 31816;
+
+	/**
+	 * Beaver
+	 */
+	public static final int SKILLPET_WC_CAMPHOR = 31817;
+
+	/**
+	 * Beaver
+	 */
+	public static final int SKILLPET_WC_IRONWOOD = 31818;
+
+	/**
+	 * Beaver
+	 */
+	public static final int SKILLPET_WC_JATOBA = 31819;
+
+	/**
+	 * Beaver
+	 */
+	public static final int SKILLPET_WC_ROSEWOOD = 31820;
+
+	/**
+	 * Rotten ship
+	 */
+	public static final int ROTTEN_SHIP = 31821;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -83779,6 +86278,137 @@ public final class ItemID
 		public static final int _3DOSESURGE = 30879;
 		public static final int _2DOSESURGE = 30882;
 		public static final int _1DOSESURGE = 30885;
+		public static final int STEEL_RING = 30896;
+		public static final int CAMPHOR_LOGS_PYRE = 30962;
+		public static final int IRONWOOD_LOGS_PYRE = 30965;
+		public static final int ROSEWOOD_LOGS_PYRE = 30968;
+		public static final int CAMPHOR_BLOWPIPE_EMPTY = 30999;
+		public static final int IRONWOOD_BLOWPIPE_EMPTY = 31003;
+		public static final int ROSEWOOD_BLOWPIPE_EMPTY = 31007;
+		public static final int CAMPHOR_LOGS = 31016;
+		public static final int IRONWOOD_LOGS = 31021;
+		public static final int ROSEWOOD_LOGS = 31024;
+		public static final int RED_CRAB = 31027;
+		public static final int BLUE_CRAB = 31030;
+		public static final int RAINBOW_CRAB = 31033;
+		public static final int RAW_RED_CRAB_MEAT = 31036;
+		public static final int RED_CRAB_MEAT = 31039;
+		public static final int BURNT_RED_CRAB_MEAT = 31042;
+		public static final int RAW_BLUE_CRAB_MEAT = 31044;
+		public static final int BLUE_CRAB_MEAT = 31047;
+		public static final int BURNT_BLUE_CRAB_MEAT = 31050;
+		public static final int RAW_RAINBOW_CRAB_MEAT = 31052;
+		public static final int RAINBOW_CRAB_MEAT = 31055;
+		public static final int BURNT_RAINBOW_CRAB_MEAT = 31058;
+		public static final int RED_CRAB_PASTE = 31060;
+		public static final int BLUE_CRAB_PASTE = 31063;
+		public static final int RAINBOW_CRAB_PASTE = 31066;
+		public static final int CORAL_ELKHORN = 31123;
+		public static final int CORAL_PILLAR = 31126;
+		public static final int CORAL_UMBRAL = 31129;
+		public static final int PLANTPOT_CAMPHOR_SAPLING = 31144;
+		public static final int PLANTPOT_IRONWOOD_SAPLING = 31147;
+		public static final int PLANTPOT_ROSEWOOD_SAPLING = 31150;
+		public static final int LEAD_ORE = 31156;
+		public static final int NICKEL_ORE = 31159;
+		public static final int RUBIUM = 31162;
+		public static final int BALL_OF_COTTON = 31166;
+		public static final int HEMP = 31169;
+		public static final int COTTON_BOLL = 31172;
+		public static final int LINEN_YARN = 31175;
+		public static final int HEMP_YARN = 31178;
+		public static final int COTTON_YARN = 31181;
+		public static final int BOLT_OF_LINEN = 31184;
+		public static final int BOLT_OF_CANVAS = 31187;
+		public static final int BOLT_OF_COTTON = 31190;
+		public static final int PLANK_CAMPHOR = 31243;
+		public static final int PLANK_IRONWOOD = 31246;
+		public static final int PLANK_ROSEWOOD = 31249;
+		public static final int DRAGON_BAR = 31252;
+		public static final int DRAGON_SHEET = 31255;
+		public static final int CHAIN = 31258;
+		public static final int LEAD_BAR = 31261;
+		public static final int CUPRONICKEL_BAR = 31264;
+		public static final int RAW_SWORDTIP_SQUID = 31267;
+		public static final int SWORDTIP_SQUID = 31270;
+		public static final int BURNT_SWORDTIP_SQUID = 31273;
+		public static final int RAW_JUMBO_SQUID = 31275;
+		public static final int JUMBO_SQUID = 31278;
+		public static final int BURNT_JUMBO_SQUID = 31281;
+		public static final int SQUID_PASTE = 31283;
+		public static final int SQUID_BEAK = 31286;
+		public static final int SAILING_BOAT_KEEL_PART_BRONZE = 31289;
+		public static final int SAILING_BOAT_KEEL_PART_IRON = 31292;
+		public static final int SAILING_BOAT_KEEL_PART_STEEL = 31295;
+		public static final int SAILING_BOAT_KEEL_PART_MITHRIL = 31298;
+		public static final int SAILING_BOAT_KEEL_PART_ADAMANT = 31301;
+		public static final int SAILING_BOAT_KEEL_PART_RUNE = 31304;
+		public static final int SAILING_BOAT_KEEL_PART_DRAGON = 31307;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_BRONZE = 31310;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_IRON = 31313;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_STEEL = 31316;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_MITHRIL = 31319;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_ADAMANT = 31322;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_RUNE = 31325;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_DRAGON = 31328;
+		public static final int SAILING_BOAT_HULL_PART_WOODEN = 31331;
+		public static final int SAILING_BOAT_HULL_PART_OAK = 31334;
+		public static final int SAILING_BOAT_HULL_PART_TEAK = 31337;
+		public static final int SAILING_BOAT_HULL_PART_MAHOGANY = 31340;
+		public static final int SAILING_BOAT_HULL_PART_CAMPHOR = 31343;
+		public static final int SAILING_BOAT_HULL_PART_IRONWOOD = 31346;
+		public static final int SAILING_BOAT_HULL_PART_ROSEWOOD = 31349;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_WOODEN = 31352;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_OAK = 31355;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_TEAK = 31358;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_MAHOGANY = 31361;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_CAMPHOR = 31364;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_IRONWOOD = 31367;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_ROSEWOOD = 31370;
+		public static final int SAILING_BOAT_BOTTLE_EMPTY = 31431;
+		public static final int SEAL_FUR = 31441;
+		public static final int RAW_SEAL_MEAT = 31444;
+		public static final int WHALE_BONES = 31447;
+		public static final int MONODON_BONES = 31450;
+		public static final int BOAT_REPAIR_KIT = 31453;
+		public static final int BOAT_REPAIR_KIT_OAK = 31456;
+		public static final int BOAT_REPAIR_KIT_TEAK = 31459;
+		public static final int BOAT_REPAIR_KIT_MAHOGANY = 31462;
+		public static final int BOAT_REPAIR_KIT_CAMPHOR = 31465;
+		public static final int BOAT_REPAIR_KIT_IRONWOOD = 31468;
+		public static final int BOAT_REPAIR_KIT_ROSEWOOD = 31471;
+		public static final int RAW_GIANT_KRILL = 31552;
+		public static final int GIANT_KRILL = 31555;
+		public static final int BURNT_GIANT_KRILL = 31558;
+		public static final int RAW_HADDOCK = 31560;
+		public static final int HADDOCK = 31563;
+		public static final int BURNT_HADDOCK = 31566;
+		public static final int RAW_YELLOWFIN_TUNA = 31568;
+		public static final int YELLOWFIN_TUNA = 31571;
+		public static final int BURNT_YELLOWFIN_TUNA = 31574;
+		public static final int RAW_HALIBUT = 31576;
+		public static final int HALIBUT = 31579;
+		public static final int BURNT_HALIBUT = 31582;
+		public static final int RAW_MARLIN = 31584;
+		public static final int MARLIN = 31587;
+		public static final int BURNT_MARLIN = 31590;
+		public static final int RAW_BLUEFIN_TUNA = 31592;
+		public static final int BLUEFIN_TUNA = 31595;
+		public static final int BURNT_BLUEFIN_TUNA = 31598;
+		public static final int HADDOCK_EYE = 31600;
+		public static final int YELLOW_TUNA_FIN = 31603;
+		public static final int MARLIN_SCALES = 31606;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_500 = 31609;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_1000 = 31612;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_5000 = 31615;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_10000 = 31618;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_25000 = 31621;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_50000 = 31624;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_100000 = 31627;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_250000 = 31630;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_500000 = 31633;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_1000000 = 31636;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_2500000 = 31639;
 	}
 
 	public static final class Placeholder
@@ -92794,6 +95424,251 @@ public final class ItemID
 		public static final int _2DOSESURGE = 30883;
 		public static final int _1DOSESURGE = 30886;
 		public static final int YAMAPET = 30889;
+		public static final int KERIS_PARTISAN_AMASCUT = 30892;
+		public static final int JEWEL_OF_AMASCUT = 30894;
+		public static final int STEEL_RING = 30897;
+		public static final int GIANT_BONES = 30899;
+		public static final int SHARK_LURE = 30901;
+		public static final int TRR_DIVING_HELMET = 30905;
+		public static final int TRR_DIVING_BACKPACK = 30907;
+		public static final int CURRENT_AFFAIRS_MAYOR_OF_CATHERBY = 30914;
+		public static final int ROCKO_PAPER = 30916;
+		public static final int ROCKO_CONFESSION = 30918;
+		public static final int ROCKO_NOTE = 30920;
+		public static final int ROCKO_INK_BOTTLE = 30922;
+		public static final int ROCKO_INKY_PAPER = 30924;
+		public static final int ROCKO_EMPTY_BOTTLE = 30926;
+		public static final int ROCKO_BROKEN_BOTTLE = 30928;
+		public static final int ROCKO_PRISON_TOP = 30930;
+		public static final int ROCKO_PRISON_LEGS = 30932;
+		public static final int ROCKO_FISHY_TOP = 30934;
+		public static final int ROCKO_TIN_CUP_GROUND = 30936;
+		public static final int ROCKO_TIN_CUP = 30938;
+		public static final int ROCKO_PIPE = 30940;
+		public static final int ROCKO_ACCORDIAN = 30942;
+		public static final int ROCKO_ACCORDIAN_HOLED = 30944;
+		public static final int ROCKO_ACCORDIAN_PIPED = 30946;
+		public static final int ROCKO_HOOVER = 30948;
+		public static final int ROCKO_HOOVER_GULL = 30950;
+		public static final int ROCKO_QUILL = 30952;
+		public static final int ROCKO_QUILL_INKY = 30954;
+		public static final int ROCKO_FOLDER = 30956;
+		public static final int ROCKO_FOLDER_FULL = 30958;
+		public static final int NAILS_DRAGON = 30960;
+		public static final int CAMPHOR_LOGS_PYRE = 30963;
+		public static final int IRONWOOD_LOGS_PYRE = 30966;
+		public static final int ROSEWOOD_LOGS_PYRE = 30969;
+		public static final int TORTUGAN_SCUTE = 30972;
+		public static final int SEA_SHELL = 30974;
+		public static final int TORTUGAN_SHIELD = 30977;
+		public static final int SKILLCAPE_SAILING = 30982;
+		public static final int SKILLCAPE_SAILING_TRIMMED = 30984;
+		public static final int SKILLCAPE_SAILING_HOOD = 30986;
+		public static final int GRYPHON_FEATHER = 30988;
+		public static final int HORN_OF_PLENTY = 30990;
+		public static final int CAMPHOR_BLOWPIPE = 30997;
+		public static final int IRONWOOD_BLOWPIPE = 31001;
+		public static final int ROSEWOOD_BLOWPIPE = 31005;
+		public static final int JATOBA_LOGS = 31014;
+		public static final int CAMPHOR_LOGS = 31017;
+		public static final int SHAYZIEN_PINE_LOGS = 31019;
+		public static final int IRONWOOD_LOGS = 31022;
+		public static final int ROSEWOOD_LOGS = 31025;
+		public static final int RED_CRAB = 31028;
+		public static final int BLUE_CRAB = 31031;
+		public static final int RAINBOW_CRAB = 31034;
+		public static final int RAW_RED_CRAB_MEAT = 31037;
+		public static final int RED_CRAB_MEAT = 31040;
+		public static final int RAW_BLUE_CRAB_MEAT = 31045;
+		public static final int BLUE_CRAB_MEAT = 31048;
+		public static final int RAW_RAINBOW_CRAB_MEAT = 31053;
+		public static final int RAINBOW_CRAB_MEAT = 31056;
+		public static final int RED_CRAB_PASTE = 31061;
+		public static final int BLUE_CRAB_PASTE = 31064;
+		public static final int RAINBOW_CRAB_PASTE = 31067;
+		public static final int FLAX_SEED = 31069;
+		public static final int HEMP_SEED = 31071;
+		public static final int COTTON_SEED = 31073;
+		public static final int CORAL_ELKHORN_FRAG = 31075;
+		public static final int CORAL_PILLAR_FRAG = 31077;
+		public static final int CORAL_UMBRAL_FRAG = 31079;
+		public static final int CAMPHOR_SEED = 31117;
+		public static final int IRONWOOD_SEED = 31119;
+		public static final int ROSEWOOD_SEED = 31121;
+		public static final int CORAL_ELKHORN = 31124;
+		public static final int CORAL_PILLAR = 31127;
+		public static final int CORAL_UMBRAL = 31130;
+		public static final int PLANTPOT_CAMPHOR_SEED = 31132;
+		public static final int PLANTPOT_IRONWOOD_SEED = 31134;
+		public static final int PLANTPOT_ROSEWOOD_SEED = 31136;
+		public static final int PLANTPOT_CAMPHOR_SEED_WATERED = 31138;
+		public static final int PLANTPOT_IRONWOOD_SEED_WATERED = 31140;
+		public static final int PLANTPOT_ROSEWOOD_SEED_WATERED = 31142;
+		public static final int PLANTPOT_CAMPHOR_SAPLING = 31145;
+		public static final int PLANTPOT_IRONWOOD_SAPLING = 31148;
+		public static final int PLANTPOT_ROSEWOOD_SAPLING = 31151;
+		public static final int LEAD_ORE = 31157;
+		public static final int NICKEL_ORE = 31160;
+		public static final int RUBIUM = 31163;
+		public static final int BALL_OF_COTTON = 31167;
+		public static final int HEMP = 31170;
+		public static final int COTTON_BOLL = 31173;
+		public static final int LINEN_YARN = 31176;
+		public static final int HEMP_YARN = 31179;
+		public static final int COTTON_YARN = 31182;
+		public static final int BOLT_OF_LINEN = 31185;
+		public static final int BOLT_OF_CANVAS = 31188;
+		public static final int BOLT_OF_COTTON = 31191;
+		public static final int POH_TABLET_TELEPORTBOATTOME = 31215;
+		public static final int POH_TABLET_TELEPORTMETOBOAT = 31217;
+		public static final int POH_TROPHYDROP_GIANT_KRILL = 31219;
+		public static final int POH_TROPHYDROP_GIANT_KRILL_STUFFED = 31221;
+		public static final int POH_TROPHYDROP_HADDOCK = 31223;
+		public static final int POH_TROPHYDROP_HADDOCK_STUFFED = 31225;
+		public static final int POH_TROPHYDROP_YELLOWFIN_TUNA = 31227;
+		public static final int POH_TROPHYDROP_YELLOWFIN_TUNA_STUFFED = 31229;
+		public static final int POH_TROPHYDROP_HALIBUT = 31231;
+		public static final int POH_TROPHYDROP_HALIBUT_STUFFED = 31233;
+		public static final int POH_TROPHYDROP_BLUEFIN_TUNA = 31235;
+		public static final int POH_TROPHYDROP_BLUEFIN_TUNA_STUFFED = 31237;
+		public static final int POH_TROPHYDROP_MARLIN = 31239;
+		public static final int POH_TROPHYDROP_MARLIN_STUFFED = 31241;
+		public static final int PLANK_CAMPHOR = 31244;
+		public static final int PLANK_IRONWOOD = 31247;
+		public static final int PLANK_ROSEWOOD = 31250;
+		public static final int DRAGON_BAR = 31253;
+		public static final int DRAGON_SHEET = 31256;
+		public static final int CHAIN = 31259;
+		public static final int LEAD_BAR = 31262;
+		public static final int CUPRONICKEL_BAR = 31265;
+		public static final int RAW_SWORDTIP_SQUID = 31268;
+		public static final int SWORDTIP_SQUID = 31271;
+		public static final int RAW_JUMBO_SQUID = 31276;
+		public static final int JUMBO_SQUID = 31279;
+		public static final int SQUID_PASTE = 31284;
+		public static final int SQUID_BEAK = 31287;
+		public static final int SAILING_BOAT_KEEL_PART_BRONZE = 31290;
+		public static final int SAILING_BOAT_KEEL_PART_IRON = 31293;
+		public static final int SAILING_BOAT_KEEL_PART_STEEL = 31296;
+		public static final int SAILING_BOAT_KEEL_PART_MITHRIL = 31299;
+		public static final int SAILING_BOAT_KEEL_PART_ADAMANT = 31302;
+		public static final int SAILING_BOAT_KEEL_PART_RUNE = 31305;
+		public static final int SAILING_BOAT_KEEL_PART_DRAGON = 31308;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_BRONZE = 31311;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_IRON = 31314;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_STEEL = 31317;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_MITHRIL = 31320;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_ADAMANT = 31323;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_RUNE = 31326;
+		public static final int SAILING_BOAT_LARGE_KEEL_PART_DRAGON = 31329;
+		public static final int SAILING_BOAT_HULL_PART_WOODEN = 31332;
+		public static final int SAILING_BOAT_HULL_PART_OAK = 31335;
+		public static final int SAILING_BOAT_HULL_PART_TEAK = 31338;
+		public static final int SAILING_BOAT_HULL_PART_MAHOGANY = 31341;
+		public static final int SAILING_BOAT_HULL_PART_CAMPHOR = 31344;
+		public static final int SAILING_BOAT_HULL_PART_IRONWOOD = 31347;
+		public static final int SAILING_BOAT_HULL_PART_ROSEWOOD = 31350;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_WOODEN = 31353;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_OAK = 31356;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_TEAK = 31359;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_MAHOGANY = 31362;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_CAMPHOR = 31365;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_IRONWOOD = 31368;
+		public static final int SAILING_BOAT_LARGE_HULL_PART_ROSEWOOD = 31371;
+		public static final int SAILING_LOG = 31428;
+		public static final int SAILING_BOAT_BOTTLE_EMPTY = 31432;
+		public static final int SAILING_DEED_RAFT = 31435;
+		public static final int SAILING_DEED_2X5 = 31437;
+		public static final int SAILING_DEED_KANDARIN_LARGE = 31439;
+		public static final int SEAL_FUR = 31442;
+		public static final int RAW_SEAL_MEAT = 31445;
+		public static final int WHALE_BONES = 31448;
+		public static final int MONODON_BONES = 31451;
+		public static final int BOAT_REPAIR_KIT = 31454;
+		public static final int BOAT_REPAIR_KIT_OAK = 31457;
+		public static final int BOAT_REPAIR_KIT_TEAK = 31460;
+		public static final int BOAT_REPAIR_KIT_MAHOGANY = 31463;
+		public static final int BOAT_REPAIR_KIT_CAMPHOR = 31466;
+		public static final int BOAT_REPAIR_KIT_IRONWOOD = 31469;
+		public static final int BOAT_REPAIR_KIT_ROSEWOOD = 31472;
+		public static final int BRONZE_CANNONBALL = 31474;
+		public static final int IRON_CANNONBALL = 31476;
+		public static final int MITHRIL_CANNONBALL = 31478;
+		public static final int ADAMANT_CANNONBALL = 31480;
+		public static final int RUNE_CANNONBALL = 31482;
+		public static final int DRAGON_CANNONBALL = 31484;
+		public static final int BRONZE_CHAINSHOT_CANNONBALL = 31486;
+		public static final int IRON_CHAINSHOT_CANNONBALL = 31488;
+		public static final int STEEL_CHAINSHOT_CANNONBALL = 31490;
+		public static final int MITHRIL_CHAINSHOT_CANNONBALL = 31492;
+		public static final int ADAMANT_CHAINSHOT_CANNONBALL = 31494;
+		public static final int RUNE_CHAINSHOT_CANNONBALL = 31496;
+		public static final int DRAGON_CHAINSHOT_CANNONBALL = 31498;
+		public static final int BRONZE_INCENDIARY_CANNONBALL = 31500;
+		public static final int IRON_INCENDIARY_CANNONBALL = 31502;
+		public static final int STEEL_INCENDIARY_CANNONBALL = 31504;
+		public static final int MITHRIL_INCENDIARY_CANNONBALL = 31506;
+		public static final int ADAMANT_INCENDIARY_CANNONBALL = 31508;
+		public static final int RUNE_INCENDIARY_CANNONBALL = 31510;
+		public static final int DRAGON_INCENDIARY_CANNONBALL = 31512;
+		public static final int SAILING_BT_TEMPOR_TANTRUM_RUM_SUPPLIES = 31514;
+		public static final int SAILING_BT_SWORDFISH_REWARD = 31516;
+		public static final int SAILING_BT_SHARK_REWARD = 31518;
+		public static final int SAILING_BT_MARLIN_REWARD = 31520;
+		public static final int SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM = 31524;
+		public static final int SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU = 31526;
+		public static final int SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES = 31528;
+		public static final int SAILING_CHARTING_SPYGLASS = 31530;
+		public static final int SAILING_CHARTING_CURRENT_DUCK = 31532;
+		public static final int SAILING_CHARTING_CROWBAR = 31534;
+		public static final int SAILING_CHARTING_UPGRADED_DIVING_HELMET = 31539;
+		public static final int SAILING_CHARTING_UPGRADED_DIVING_BACKPACK = 31541;
+		public static final int SAILING_FINE_FISH_OFFCUTS = 31548;
+		public static final int SAILING_PREMIUM_FISH_OFFCUTS = 31550;
+		public static final int RAW_GIANT_KRILL = 31553;
+		public static final int GIANT_KRILL = 31556;
+		public static final int RAW_HADDOCK = 31561;
+		public static final int HADDOCK = 31564;
+		public static final int RAW_YELLOWFIN_TUNA = 31569;
+		public static final int YELLOWFIN_TUNA = 31572;
+		public static final int RAW_HALIBUT = 31577;
+		public static final int HALIBUT = 31580;
+		public static final int RAW_MARLIN = 31585;
+		public static final int MARLIN = 31588;
+		public static final int RAW_BLUEFIN_TUNA = 31593;
+		public static final int BLUEFIN_TUNA = 31596;
+		public static final int HADDOCK_EYE = 31601;
+		public static final int YELLOW_TUNA_FIN = 31604;
+		public static final int MARLIN_SCALES = 31607;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_500 = 31610;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_1000 = 31613;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_5000 = 31616;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_10000 = 31619;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_25000 = 31622;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_50000 = 31625;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_100000 = 31628;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_250000 = 31631;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_500000 = 31634;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_1000000 = 31637;
+		public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL_2500000 = 31640;
+		public static final int SAILING_SMALL_SHIPWRECK_SALVAGE = 31642;
+		public static final int SAILING_FISHERMAN_SHIPWRECK_SALVAGE = 31644;
+		public static final int SAILING_BARRACUDA_SHIPWRECK_SALVAGE = 31646;
+		public static final int SAILING_LARGE_SHIPWRECK_SALVAGE = 31648;
+		public static final int SAILING_PIRATE_SHIPWRECK_SALVAGE = 31650;
+		public static final int SAILING_MERCENARY_SHIPWRECK_SALVAGE = 31652;
+		public static final int SAILING_COLOSSAL_SHIPWRECK_SALVAGE = 31654;
+		public static final int SAILING_MERCHANT_SHIPWRECK_SALVAGE = 31656;
+		public static final int SAILING_HAUNTED_SHIPWRECK_SALVAGE = 31658;
+		public static final int SALVAGING_RARE_SMALL = 31660;
+		public static final int SALVAGING_RARE_FISHERMAN = 31662;
+		public static final int SALVAGING_RARE_BARRACUDA = 31664;
+		public static final int SALVAGING_RARE_LARGE = 31666;
+		public static final int SALVAGING_RARE_PIRATE = 31668;
+		public static final int SALVAGING_RARE_MERCENARY = 31670;
+		public static final int SALVAGING_RARE_COLOSSAL = 31672;
+		public static final int SALVAGING_RARE_MERCHANT = 31674;
+		public static final int SALVAGING_RARE_HAUNTED = 31676;
 	}
 /* This file is automatically generated. Do not edit. */
 }
