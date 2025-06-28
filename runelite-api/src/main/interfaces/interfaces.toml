@@ -539,8 +539,8 @@ message_of_the_day=6
 
 [logout_panel]
 id=182
-world_switcher_button=3
-logout_button=6
+world_switcher_button=4
+logout_button=7
 
 [looting_bag]
 id=81
@@ -825,10 +825,10 @@ parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
 lumbridge_home_teleport=7
-edgeville_home_teleport=103
-lunar_home_teleport=104
-arceuus_home_teleport=148
-fertile_soil=129
+edgeville_home_teleport=105
+lunar_home_teleport=106
+arceuus_home_teleport=150
+fertile_soil=131
 
 [tempoross]
 id=437
