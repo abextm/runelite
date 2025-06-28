@@ -228,6 +228,11 @@ public enum Quest
 	MEAT_AND_GREET(3712, "Meat and Greet"),
 	ETHICALLY_ACQUIRED_ANTIQUITIES(3713, "Ethically Acquired Antiquities"),
 	THE_CURSE_OF_ARRAV(3937, "The Curse of Arrav"),
+	PANDEMONIUM(5173, "Pandemonium"),
+	PRYING_TIMES(5174, "Prying Times"),
+	CURRENT_AFFAIRS(5175, "Current Affairs"),
+	TROUBLED_TORTUGANS(5176, "Troubled Tortugans"),
+	THE_RED_REEF(5177, "The Red Reef"),
 	;
 
 	@Getter
