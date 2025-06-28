@@ -1061,10 +1061,6 @@
     11046,
     20587
   ],
-  "flyer": [
-    956,
-    23670
-  ],
   "skull": [
     964,
     965
@@ -3304,6 +3300,10 @@
     3755,
     20573
   ],
+  "tankard": [
+    3805,
+    30995
+  ],
   "saradomin page": [
     3827,
     3828,
@@ -3947,7 +3947,8 @@
   "note": [
     4597,
     4598,
-    21715
+    21715,
+    30919
   ],
   "oak blackjack": [
     4599,
@@ -5343,11 +5344,11 @@
     7509,
     7510
   ],
-  "crab meat": [
+  "giant crab meat": [
     7518,
     7519
   ],
-  "cooked crab meat": [
+  "cooked giant crab meat": [
     7521,
     7523,
     7524,
@@ -6647,7 +6648,8 @@
   ],
   "pipe": [
     9723,
-    10871
+    10871,
+    30939
   ],
   "combat potion": [
     9739,
@@ -8658,7 +8660,9 @@
     21340,
     21358,
     21359,
-    21360
+    21360,
+    31815,
+    31816
   ],
   "beaver": [
     13322,
@@ -8670,7 +8674,11 @@
     28234,
     28235,
     28236,
-    28237
+    28237,
+    31817,
+    31818,
+    31819,
+    31820
   ],
   "baby chinchompa": [
     13323,
@@ -9775,6 +9783,10 @@
     22405,
     22446
   ],
+  "chain": [
+    22414,
+    31257
+  ],
   "battlemage potion": [
     22449,
     22452,
@@ -9818,7 +9830,8 @@
     22537,
     22538,
     24703,
-    28822
+    28822,
+    31154
   ],
   "viggoras chainmace": [
     22542,
@@ -10808,6 +10821,10 @@
   "fish sack barrel": [
     25585,
     25587
+  ],
+  "spirit angler headband": [
+    25592,
+    30993
   ],
   "barronite mace": [
     25625,
@@ -12603,5 +12620,191 @@
     30878,
     30881,
     30884
+  ],
+  "deep sea helmet": [
+    30904,
+    31538
+  ],
+  "deep sea apparatus": [
+    30906,
+    31540
+  ],
+  "formr45h": [
+    30910,
+    30911
+  ],
+  "ink bottle": [
+    30921,
+    30925
+  ],
+  "tin cup": [
+    30935,
+    30937
+  ],
+  "accordion": [
+    30941,
+    30943,
+    30945
+  ],
+  "file": [
+    30955,
+    30957
+  ],
+  "sailing cape": [
+    30981,
+    30983
+  ],
+  "horn of plenty": [
+    30989,
+    30991
+  ],
+  "camphor blowpipe": [
+    30996,
+    30998
+  ],
+  "ironwood blowpipe": [
+    31000,
+    31002
+  ],
+  "rosewood blowpipe": [
+    31004,
+    31006
+  ],
+  "camphor seedling": [
+    31131,
+    31137
+  ],
+  "ironwood seedling": [
+    31133,
+    31139
+  ],
+  "rosewood seedling": [
+    31135,
+    31141
+  ],
+  "mounted giant krill": [
+    31205,
+    31206
+  ],
+  "mounted haddock": [
+    31207,
+    31208
+  ],
+  "mounted yellowfin tuna": [
+    31209,
+    31210
+  ],
+  "bronze keel parts": [
+    31288,
+    31393
+  ],
+  "iron keel parts": [
+    31291,
+    31394
+  ],
+  "steel keel parts": [
+    31294,
+    31395
+  ],
+  "mithril keel parts": [
+    31297,
+    31396
+  ],
+  "adamant keel parts": [
+    31300,
+    31397
+  ],
+  "rune keel parts": [
+    31303,
+    31398
+  ],
+  "dragon keel parts": [
+    31306,
+    31399
+  ],
+  "repair kit": [
+    31418,
+    31452
+  ],
+  "oak repair kit": [
+    31419,
+    31455
+  ],
+  "teak repair kit": [
+    31420,
+    31458
+  ],
+  "mahogany repair kit": [
+    31421,
+    31461
+  ],
+  "camphor repair kit": [
+    31422,
+    31464
+  ],
+  "ironwood repair kit": [
+    31423,
+    31467
+  ],
+  "rosewood repair kit": [
+    31424,
+    31470
+  ],
+  "captains log": [
+    31426,
+    31427
+  ],
+  "boat bottle": [
+    31430,
+    31433
+  ],
+  "boat deed": [
+    31434,
+    31436,
+    31438
+  ],
+  "portable weather station": [
+    31535,
+    31536
+  ],
+  "sunken locket": [
+    31659,
+    31661,
+    31663,
+    31665,
+    31667,
+    31669,
+    31671,
+    31673,
+    31675
+  ],
+  "crate of raw lobsters": [
+    31697,
+    31786
+  ],
+  "crate of pineapples": [
+    31702,
+    31723
+  ],
+  "crate of gold ore": [
+    31713,
+    31777
+  ],
+  "crate of anglers clothing": [
+    31721,
+    31722
+  ],
+  "crate of books": [
+    31755,
+    31756
+  ],
+  "crate of runes": [
+    31764,
+    31765
+  ],
+  "broken monodon horn": [
+    31797,
+    31801,
+    31803
   ]
 }
