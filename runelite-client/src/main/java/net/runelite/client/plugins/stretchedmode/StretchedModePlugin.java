@@ -68,8 +68,8 @@ public class StretchedModePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		mouseManager.registerMouseListener(0, mouseListener);
-		mouseManager.registerMouseWheelListener(0, mouseWheelListener);
+		mouseManager.registerMouseListener(100, mouseListener);
+		mouseManager.registerMouseWheelListener(100, mouseWheelListener);
 
 		client.setStretchedEnabled(true);
 		updateConfig();

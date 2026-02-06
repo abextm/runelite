@@ -26,10 +26,12 @@ package net.runelite.client.input;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Value;
 import net.runelite.client.config.RuneLiteConfig;
 
 @Singleton
@@ -38,10 +40,17 @@ public class MouseManager
 	// Button numbers greater than BUTTON3 have no constant identifier
 	private static final int MOUSE_BUTTON_4 = 4;
 
-	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
-	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
+	private List<Subscriber<MouseListener>> mouseListeners = new ArrayList<>();
+	private List<Subscriber<MouseWheelListener>> mouseWheelListeners = new ArrayList<>();
 
 	private final RuneLiteConfig runeLiteConfig;
+
+	@Value
+	private static class Subscriber<T>
+	{
+		final float priority;
+		final T listener;
+	}
 
 	@Inject
 	private MouseManager(RuneLiteConfig runeLiteConfig)
@@ -51,38 +60,54 @@ public class MouseManager
 
 	public void registerMouseListener(MouseListener mouseListener)
 	{
-		if (!mouseListeners.contains(mouseListener))
+		registerMouseListener(0.f, mouseListener);
+	}
+
+	public synchronized void registerMouseListener(float priority, MouseListener mouseListener)
+	{
+		if (mouseListeners.stream().noneMatch(it -> it.listener == mouseListener))
 		{
-			mouseListeners.add(mouseListener);
+			var ml = new ArrayList<>(mouseListeners);
+			ml.add(new Subscriber<>(priority, mouseListener));
+			ml.sort(Comparator.<Subscriber<?>>comparingDouble(Subscriber::getPriority).reversed()
+				.thenComparing(s -> s.listener.getClass().getName()));
+			mouseListeners = ml;
 		}
 	}
 
-	public void registerMouseListener(int position, MouseListener mouseListener)
+	public synchronized void unregisterMouseListener(MouseListener mouseListener)
 	{
-		mouseListeners.add(position, mouseListener);
-	}
-
-	public void unregisterMouseListener(MouseListener mouseListener)
-	{
-		mouseListeners.remove(mouseListener);
+		var ml = new ArrayList<>(mouseListeners);
+		if (ml.removeIf(it -> it.listener == mouseListener))
+		{
+			mouseListeners = ml;
+		}
 	}
 
 	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener)
 	{
-		if (!mouseWheelListeners.contains(mouseWheelListener))
-		{
-			mouseWheelListeners.add(mouseWheelListener);
-		}
+		registerMouseWheelListener(0.f, mouseWheelListener);
 	}
 
-	public void registerMouseWheelListener(int position, MouseWheelListener mouseWheelListener)
+	public synchronized void registerMouseWheelListener(float priority, MouseWheelListener mouseWheelListener)
 	{
-		mouseWheelListeners.add(position, mouseWheelListener);
+		if (mouseWheelListeners.stream().noneMatch(it -> it.listener == mouseWheelListener))
+		{
+			var ml = new ArrayList<>(mouseWheelListeners);
+			ml.add(new Subscriber<>(priority, mouseWheelListener));
+			ml.sort(Comparator.<Subscriber<?>>comparingDouble(Subscriber::getPriority).reversed()
+				.thenComparing(s -> s.listener.getClass().getName()));
+			mouseWheelListeners = ml;
+		}
 	}
 
 	public void unregisterMouseWheelListener(MouseWheelListener mouseWheelListener)
 	{
-		mouseWheelListeners.remove(mouseWheelListener);
+		var ml = new ArrayList<>(mouseWheelListeners);
+		if (ml.removeIf(it -> it.listener == mouseWheelListener))
+		{
+			mouseWheelListeners = ml;
+		}
 	}
 
 	public MouseEvent processMousePressed(MouseEvent mouseEvent)
@@ -93,8 +118,9 @@ public class MouseManager
 		}
 
 		checkExtraMouseButtons(mouseEvent);
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mousePressed(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -112,8 +138,9 @@ public class MouseManager
 		}
 
 		checkExtraMouseButtons(mouseEvent);
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mouseReleased(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -131,8 +158,9 @@ public class MouseManager
 		}
 
 		checkExtraMouseButtons(mouseEvent);
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mouseClicked(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -160,8 +188,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mouseEntered(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -178,8 +207,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mouseExited(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -196,8 +226,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mouseDragged(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -214,8 +245,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (var sub : mouseListeners)
 		{
+			var mouseListener = sub.listener;
 			mouseEvent = mouseListener.mouseMoved(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
@@ -232,8 +264,9 @@ public class MouseManager
 			return mouseWheelEvent;
 		}
 
-		for (MouseWheelListener mouseWheelListener : mouseWheelListeners)
+		for (var sub : mouseWheelListeners)
 		{
+			var mouseWheelListener = sub.listener;
 			mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
 			if (mouseWheelEvent.isConsumed())
 			{
