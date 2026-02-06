@@ -25,11 +25,13 @@
 package net.runelite.client.input;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -43,6 +45,8 @@ public class KeyManager
 {
 	private final Client client;
 
+	private List<Subscriber> keyListeners = new ArrayList<>();
+
 	@Inject
 	private KeyManager(@Nullable final Client client, final EventBus eventBus)
 	{
@@ -50,22 +54,38 @@ public class KeyManager
 		eventBus.register(this);
 	}
 
-	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+	@Value
+	private static class Subscriber
+	{
+		final float priority;
+		final KeyListener listener;
+	}
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
-		if (!keyListeners.contains(keyListener))
+		registerKeyListener(0.f, keyListener);
+	}
+
+	public synchronized void registerKeyListener(float priority, KeyListener keyListener)
+	{
+		if (keyListeners.stream().noneMatch(it -> it.listener == keyListener))
 		{
 			log.debug("Registering key listener: {}", keyListener);
-			keyListeners.add(keyListener);
+			var kl = new ArrayList<>(keyListeners);
+			kl.add(new Subscriber(priority, keyListener));
+			kl.sort(Comparator.comparingDouble(Subscriber::getPriority).reversed()
+				.thenComparing(s -> s.listener.getClass().getName()));
+			keyListeners = kl;
 		}
 	}
 
-	public void unregisterKeyListener(KeyListener keyListener)
+	public synchronized void unregisterKeyListener(KeyListener keyListener)
 	{
-		final boolean unregistered = keyListeners.remove(keyListener);
+		var kl = new ArrayList<>(keyListeners);
+		final boolean unregistered = kl.removeIf(it -> it.listener == keyListener);
 		if (unregistered)
 		{
+			keyListeners = kl;
 			log.debug("Unregistered key listener: {}", keyListener);
 		}
 	}
@@ -77,8 +97,10 @@ public class KeyManager
 			return;
 		}
 
-		for (KeyListener keyListener : keyListeners)
+		for (Subscriber sub : keyListeners)
 		{
+			var keyListener = sub.listener;
+
 			if (!shouldProcess(keyListener))
 			{
 				continue;
@@ -102,8 +124,9 @@ public class KeyManager
 			return;
 		}
 
-		for (KeyListener keyListener : keyListeners)
+		for (Subscriber sub : keyListeners)
 		{
+			var keyListener = sub.listener;
 			if (!shouldProcess(keyListener))
 			{
 				continue;
@@ -127,8 +150,9 @@ public class KeyManager
 			return;
 		}
 
-		for (KeyListener keyListener : keyListeners)
+		for (Subscriber sub : keyListeners)
 		{
+			var keyListener = sub.listener;
 			if (!shouldProcess(keyListener))
 			{
 				continue;
@@ -167,8 +191,10 @@ public class KeyManager
 	{
 		if (!event.isFocused())
 		{
-			for (KeyListener keyListener : keyListeners)
+			for (Subscriber sub : keyListeners)
 			{
+				var keyListener = sub.listener;
+
 				keyListener.focusLost();
 			}
 		}
