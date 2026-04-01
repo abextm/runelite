@@ -45,6 +45,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.components.DNDTabbedPane;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -59,7 +60,7 @@ public class ClientToolbar
 	private final Provider<ClientUI> clientUI;
 
 	@Getter(AccessLevel.PACKAGE)
-	private JTabbedPane sidebar;
+	private DNDTabbedPane sidebar;
 	private final List<NavigationButton> navButtons = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
@@ -73,7 +74,7 @@ public class ClientToolbar
 
 	void init()
 	{
-		sidebar = new JTabbedPane(JTabbedPane.RIGHT);
+		sidebar = new DNDTabbedPane(JTabbedPane.RIGHT);
 		sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		sidebar.setOpaque(true);
 		sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
@@ -181,7 +182,7 @@ public class ClientToolbar
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
 		int index = navButtons.indexOf(navBtn);
-		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), index);
+		sidebar.insertDraggableTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), navBtn.getId(), index);
 
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)

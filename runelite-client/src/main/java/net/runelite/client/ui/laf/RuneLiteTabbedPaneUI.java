@@ -180,15 +180,23 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 		MouseListener delegate = super.createMouseListener();
 		return new MouseListener()
 		{
+			boolean deselectInProgress;
+
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				if (deselectInProgress)
+				{
+					tabPane.setSelectedIndex(-1);
+				}
+
 				delegate.mouseClicked(e);
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
+				deselectInProgress = false;
 				hackUpdateRollover(e);
 
 				if (!deselectable)
@@ -208,7 +216,14 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 					return;
 				}
 
-				tabPane.setSelectedIndex(tabPane.getSelectedIndex() == tabIndex ? -1 : tabIndex);
+				if (tabPane.getSelectedIndex() == tabIndex)
+				{
+					deselectInProgress = true;
+				}
+				else
+				{
+					tabPane.setSelectedIndex(tabIndex);
+				}
 			}
 
 			@Override
@@ -226,6 +241,7 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
+				deselectInProgress = false;
 				delegate.mouseExited(e);
 			}
 
