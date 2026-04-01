@@ -26,18 +26,12 @@ package net.runelite.client.ui;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Rectangle;
-import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -51,9 +45,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.ConfigManager;
-import static net.runelite.client.ui.ClientUI.CONFIG_CLIENT_SIDEBAR_ORDER;
-import static net.runelite.client.ui.ClientUI.CONFIG_GROUP;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -65,17 +56,13 @@ import net.runelite.client.util.SwingUtil;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ClientToolbar
 {
-	private static final int TAB_IMAGE_SIZE = 16;
-
 	private final Provider<ClientUI> clientUI;
-	private final ConfigManager configManager;
 
 	@Getter(AccessLevel.PACKAGE)
 	private JTabbedPane sidebar;
 	private final List<NavigationButton> navButtons = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
-	private int dragCurIndex = -1;
 
 	@RequiredArgsConstructor
 	private static class HistoryEntry
@@ -93,11 +80,6 @@ public class ClientToolbar
 		sidebar.setSelectedIndex(-1);
 		sidebar.addChangeListener(ev ->
 		{
-			if (dragCurIndex > -1)
-			{
-				return;
-			}
-
 			NavigationButton oldSelectedTab = selectedTab;
 			NavigationButton newSelectedTab;
 
@@ -137,39 +119,11 @@ public class ClientToolbar
 				}
 			}
 		});
-		sidebar.addMouseMotionListener(new MouseMotionListener()
-		{
-			@Override
-			public void mouseDragged(MouseEvent e)
-			{
-				if (dragCurIndex > -1)
-				{
-					int dragEndIndex = sidebar.indexAtLocation(e.getX(), e.getY());
-					if (dragEndIndex > -1 && dragCurIndex != dragEndIndex)
-					{
-						System.out.println("mouse drag rebuild " + dragCurIndex + " to " + dragEndIndex);
-						reorderNavButton(dragCurIndex, dragEndIndex);
-						saveSidebarOrder();
-						rebuildSidebar();
-						dragCurIndex = dragEndIndex;
-					}
-				}
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e)
-			{
-			}
-		});
-		final var defaultMouseListener = sidebar.getMouseListeners()[0];
-		sidebar.removeMouseListener(defaultMouseListener);
-		sidebar.addMouseListener(new MouseListener()
+		sidebar.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				defaultMouseListener.mouseClicked(e);
-
 				if (e.getButton() == MouseEvent.BUTTON3)
 				{
 					int index = 0;
@@ -194,74 +148,8 @@ public class ClientToolbar
 					}
 				}
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				// TODO RL HOTKEY THING
-				if (SwingUtilities.isLeftMouseButton(e) && (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0)
-				{
-					dragCurIndex = sidebar.indexAtLocation(e.getX(), e.getY());
-					System.out.println("Drag start at " + dragCurIndex);
-					return;
-				}
-				defaultMouseListener.mousePressed(e);
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				if (dragCurIndex > -1)
-				{
-					System.out.println("Drag end");
-					dragCurIndex = -1;
-					int index = sidebar.getSelectedIndex();
-					selectedTab = index == -1 ? null : navButtons.get(index);
-					return;
-				}
-
-				defaultMouseListener.mouseReleased(e);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				defaultMouseListener.mouseEntered(e);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				defaultMouseListener.mouseExited(e);
-			}
 		});
-		JPopupMenu menu = new JPopupMenu();
-		JMenuItem item = new JMenuItem("Reset order");
-		item.addActionListener(l -> unsetSidebarOrder());
-		menu.add(item);
-		sidebar.setComponentPopupMenu(menu);
 	}
-
-	private void reorderNavButton(int from, int to)
-	{
-		var n = navButtons.remove(from);
-		navButtons.add(to, n);
-	}
-
-	private Comparator<NavigationButton> navButtonComparator()
-	{
-		var order = loadSidebarOrder();
-		return Comparator.<NavigationButton>comparingInt(n ->
-		{
-			int i = order.indexOf(n.getId());
-			if (i == -1)
-			{
-				i = Integer.MAX_VALUE; // unknown panels go to the end
-			}
-			return i;
-		}).thenComparing(NavigationButton.COMPARATOR);
-	}
-
 
 	public void addNavigation(NavigationButton button)
 	{
@@ -287,9 +175,10 @@ public class ClientToolbar
 		}
 
 		navButtons.add(navBtn);
-		navButtons.sort(navButtonComparator());
+		navButtons.sort(NavigationButton.COMPARATOR);
 
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_IMAGE_SIZE, TAB_IMAGE_SIZE));
+		final int TAB_SIZE = 16;
+		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
 		int index = navButtons.indexOf(navBtn);
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), index);
@@ -323,30 +212,6 @@ public class ClientToolbar
 		}
 
 		navButtons.remove(navBtn);
-	}
-
-	void rebuildSidebar()
-	{
-		navButtons.sort(navButtonComparator());
-
-		var component = sidebar.getSelectedComponent();
-		sidebar.removeAll();
-
-		for (var navButton : navButtons)
-		{
-			Icon icon = new ImageIcon(ImageUtil.resizeImage(navButton.getIcon(), TAB_IMAGE_SIZE, TAB_IMAGE_SIZE));
-			sidebar.insertTab(null, icon, navButton.getPanel().getWrappedPanel(), navButton.getTooltip(),
-				sidebar.getTabCount());
-		}
-
-		if (component != null)
-		{
-			sidebar.setSelectedComponent(component);
-		}
-		else
-		{
-			sidebar.setSelectedIndex(-1);
-		}
 	}
 
 	public void openPanel(NavigationButton button)
@@ -434,29 +299,5 @@ public class ClientToolbar
 				selectedTabHistory.addFirst(ent);
 			}
 		}
-	}
-
-	private void unsetSidebarOrder()
-	{
-		configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_ORDER);
-	}
-
-	private void saveSidebarOrder()
-	{
-		var s = navButtons.stream()
-			.map(NavigationButton::getId)
-			.collect(Collectors.joining(","));
-		configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_ORDER, s);
-	}
-
-	private List<String> loadSidebarOrder()
-	{
-		final String s = configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_ORDER);
-		if (s == null)
-		{
-			return Collections.emptyList();
-		}
-		final String[] navButtonIds = s.split(",");
-		return Arrays.asList(navButtonIds);
 	}
 }
