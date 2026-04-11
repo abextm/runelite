@@ -25,36 +25,62 @@
 package net.runelite.client.ui;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 
 /**
- * Plugin toolbar buttons holder.
+ * Plugin toolbar.
  */
 @Singleton
 public class ClientToolbar
 {
-	private final ClientUI clientUI;
+	private final Provider<ClientToolbarPanel> clientToolbar;
+	private final Provider<Sidebar> sidebar;
 
 	@Inject
-	private ClientToolbar(final ClientUI clientUI)
+	private ClientToolbar(
+		Provider<ClientToolbarPanel> clientToolbar,
+		Provider<Sidebar> sidebar
+	)
 	{
-		this.clientUI = clientUI;
+		this.clientToolbar = clientToolbar;
+		this.sidebar = sidebar;
 	}
 
 	public void addNavigation(NavigationButton button)
 	{
-		SwingUtilities.invokeLater(() -> clientUI.addNavigation(button));
+		SwingUtilities.invokeLater(() ->
+		{
+			if (button.getPanel() != null)
+			{
+				sidebar.get().add(button);
+			}
+			else
+			{
+				clientToolbar.get().add(button, true);
+			}
+		});
 	}
 
 	public void removeNavigation(final NavigationButton button)
 	{
-		SwingUtilities.invokeLater(() -> clientUI.removeNavigation(button));
+		SwingUtilities.invokeLater(() ->
+		{
+			if (button.getPanel() != null)
+			{
+				sidebar.get().remove(button);
+			}
+			else
+			{
+				clientToolbar.get().remove(button);
+			}
+		});
 	}
 
 	public void openPanel(NavigationButton button)
 	{
 		assert SwingUtilities.isEventDispatchThread() : "must be on EDT";
-		clientUI.openPanel(button, true);
+		sidebar.get().openPanel(button);
 	}
 }

@@ -24,10 +24,11 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.TreeMap;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,14 +41,21 @@ import net.runelite.client.util.SwingUtil;
 /**
  * non-tab toolbar items, in the title bar or bottom of the sidebar
  */
+@Singleton
 class ClientToolbarPanel extends JPanel
 {
 	private final TreeMap<NavigationButton, Component> entries = new TreeMap<>(NavigationButton.COMPARATOR);
 
-	ClientToolbarPanel(boolean isInSidebar)
+	@Inject
+	ClientToolbarPanel()
 	{
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		setInSidebar(false);
+		revalidate();
+	}
 
+	void setInSidebar(boolean isInSidebar)
+	{
 		if (isInSidebar)
 		{
 			setLayout(new DynamicGridLayout(0, 1, 0, 4));
@@ -57,7 +65,6 @@ class ClientToolbarPanel extends JPanel
 			setLayout(new DynamicGridLayout(1, 0, 4, 0));
 		}
 
-		revalidate();
 	}
 
 	JButton add(NavigationButton nb, boolean resize)
@@ -68,8 +75,6 @@ class ClientToolbarPanel extends JPanel
 		jb.setToolTipText(nb.getTooltip());
 		jb.setFocusable(false);
 		jb.setPreferredSize(new Dimension(23, 23));
-		jb.setAlignmentX(.5f);
-		jb.setAlignmentY(.5f);
 
 		jb.addActionListener(l ->
 		{
@@ -115,14 +120,5 @@ class ClientToolbarPanel extends JPanel
 	private void revalidateMaxSize()
 	{
 		setMaximumSize(getPreferredSize());
-	}
-
-	public JPanel createSidebarPanel()
-	{
-		JPanel wrap = new JPanel();
-		wrap.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		wrap.setLayout(new BorderLayout());
-		wrap.add(this, BorderLayout.SOUTH);
-		return wrap;
 	}
 }

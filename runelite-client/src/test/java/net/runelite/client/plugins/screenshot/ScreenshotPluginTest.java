@@ -46,7 +46,7 @@ import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.ImageCapture;
 import static org.junit.Assert.assertEquals;
@@ -94,7 +94,7 @@ public class ScreenshotPluginTest
 
 	@Mock
 	@Bind
-	ClientUI clientUi;
+	ClientToolbar clientToolbar;
 
 	@Mock
 	@Bind

@@ -32,6 +32,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.AWTEvent;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -41,9 +43,11 @@ import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.RootPaneContainer;
@@ -79,8 +83,10 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.HotkeyListener;
@@ -96,8 +102,10 @@ import org.slf4j.LoggerFactory;
 @Getter
 public class DevToolsPlugin extends Plugin
 {
+	private static final BufferedImage PANEL_ICON = ImageUtil.loadImageResource(DevToolsPlugin.class, "devtools_icon.png");
+
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+		MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
 
 	@Inject
 	private Client client;
@@ -174,6 +182,8 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton uiDefaultsInspector;
 	private DevToolsButton worldEntities;
 	private NavigationButton navButton;
+
+	private final Map<Integer, TestPanel> testPanels = new HashMap<>();
 
 	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
 	{
@@ -288,13 +298,12 @@ public class DevToolsPlugin extends Plugin
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
-		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "devtools_icon.png");
-
 		navButton = NavigationButton.builder()
 			.tooltip("Developer Tools")
-			.icon(icon)
+			.icon(PANEL_ICON)
 			.priority(1)
 			.panel(panel)
+			.popup(Map.of("Add panel", this::addTestPanel))
 			.build();
 
 		clientToolbar.addNavigation(navButton);
@@ -317,6 +326,11 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(soundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
 		Toolkit.getDefaultToolkit().removeAWTEventListener(swingInspectorKeyListener);
+		for (var tp : testPanels.values())
+		{
+			clientToolbar.removeNavigation(tp.navBtn);
+		}
+		testPanels.clear();
 	}
 
 	@Subscribe
@@ -662,6 +676,55 @@ public class DevToolsPlugin extends Plugin
 					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
 			}
 		}
+	}
+
+	private class TestPanel extends PluginPanel
+	{
+		private final int id;
+		private final NavigationButton navBtn;
+
+		TestPanel(int id, BufferedImage icon)
+		{
+			this.id = id;
+
+			testPanels.put(id, this);
+
+			add(new JLabel("Test panel " + id));
+
+			BufferedImage out = new BufferedImage(icon.getWidth(), icon.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = out.createGraphics();
+			g2d.drawImage(icon, 0, 0, null);
+			g2d.setColor(Color.RED);
+			g2d.setFont(FontManager.getRunescapeBoldFont());
+			g2d.drawString("" + id, 0, icon.getHeight());
+			g2d.dispose();
+
+			navBtn = NavigationButton.builder()
+				.tooltip("Test Panel")
+				.icon(out)
+				.priority(1)
+				.id("devtools" + id)
+				.panel(this)
+				.popup(Map.of("remove", this::remove))
+				.build();
+		}
+
+		void remove()
+		{
+			clientToolbar.removeNavigation(this.navBtn);
+			testPanels.remove(this.id);
+		}
+	}
+
+	private void addTestPanel()
+	{
+		int id = 0;
+		while (testPanels.containsKey(id))
+		{
+			id++;
+		}
+
+		clientToolbar.addNavigation(new TestPanel(id, PANEL_ICON).navBtn);
 	}
 
 	static Map<Integer, String> loadFieldNames(Class<?> clazz)
