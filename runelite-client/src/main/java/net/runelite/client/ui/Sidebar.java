@@ -1174,7 +1174,9 @@ class Sidebar extends JComponent
 						g.fillRect(x[i], y[i], SELECTION_BAR_WIDTH, TAB_HEIGHT);
 					}
 
-					btn.icon.paintIcon(this, g, x[i] + 7, y[i] + 5);//todo:prop
+					btn.icon.paintIcon(this, g,
+						x[i] + (TAB_WIDTH - btn.icon.getIconWidth()) / 2,
+						y[i] + (TAB_HEIGHT - btn.icon.getIconHeight()) / 2);
 				}
 			}
 		}
@@ -1319,7 +1321,7 @@ class Sidebar extends JComponent
 
 		MoreTabsButton()
 		{
-			super(new ImageIcon(ImageUtil.loadImageResource(Sidebar.class, "open_rs.png")));//TODO:
+			super(new ImageIcon(ImageUtil.loadImageResource(Sidebar.class, "popout_open.png")));
 			setPreferredSize(new Dimension(TAB_WIDTH, TAB_HEIGHT));
 			setMinimumSize(new Dimension(TAB_WIDTH, TAB_HEIGHT));
 			putClientProperty(FlatClientProperties.STYLE_CLASS, "iconButton");
