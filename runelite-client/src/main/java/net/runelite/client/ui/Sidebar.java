@@ -111,24 +111,13 @@ class Sidebar extends JComponent
 	@Nullable
 	private TabButton draggedTab;
 
-	// List<TabConfigItem | POPOUT>
+	// List<TabConfigItem | OVERFLOW>
 	private List<Object> configOrder = new ArrayList<>();
 	private final TabButtonContainer sidebarButtons = new TabButtonContainer();
 	private final TabButtonContainer overflowActive = new TabButtonContainer();
 	private final TabButtonContainer overflowButtons = new TabButtonContainer();
 	private final JMenuBar overflowButtonBar = new JMenuBar();
-	private final JMenu overflowMenu = new JMenu()
-	{
-		@Override
-		protected Point getPopupMenuOrigin()
-		{
-			var sz = overflowMenu.getPopupMenu().getPreferredSize();
-			var sidebarPt = SwingUtilities.convertPoint(sidebarButtons, 0, 0, overflowMenu);
-			return new Point(
-				sidebarPt.x - sz.width,
-				overflowMenu.getHeight() - sz.height);
-		}
-	};
+	private final OverflowMenu overflowMenu = new OverflowMenu();
 	private final JMenu overflowSubmenu = new JMenu();
 
 	private final Map<String, TabButton> registeredButtons = new HashMap<>();
@@ -136,7 +125,7 @@ class Sidebar extends JComponent
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 
 	private Color backgroundColor;
-	private Color popoutBackgroundColor;
+	private Color overflowBackgroundColor;
 	private Color underlineColor;
 	private Color hoverColor;
 	private Color contentAreaColor;
@@ -206,7 +195,7 @@ class Sidebar extends JComponent
 		setLayout(new SidebarLayoutManager());
 		add(sidebarButtons);
 
-		setMoreTabsForceShown(false);
+		setOverflowForceShown(false);
 
 		keyListeners = List.of(
 			new HotkeyListener(config::sidebarToggleKey)
@@ -236,7 +225,7 @@ class Sidebar extends JComponent
 	{
 		backgroundColor = UIManager.getColor("ToolBar.background");
 		setBackground(backgroundColor);
-		popoutBackgroundColor = UIManager.getColor("PopupMenu.background");
+		overflowBackgroundColor = UIManager.getColor("PopupMenu.background");
 		underlineColor = UIManager.getColor("TabbedPane.underlineColor");
 		hoverColor = UIManager.getColor("TabbedPane.hoverColor");
 		contentAreaColor = UIManager.getColor("TabbedPane.contentAreaColor");
@@ -466,7 +455,7 @@ class Sidebar extends JComponent
 		var search = new TabConfigItem(btn);
 
 		int hi = 0;
-		boolean hitPopout = false;
+		boolean hitOverflow = false;
 		for (Object v : configOrder)
 		{
 			if (v instanceof TabConfigItem)
@@ -476,14 +465,14 @@ class Sidebar extends JComponent
 				{
 					return tci;
 				}
-				if (!hitPopout && TCI_COMPARATOR.compare(tci, search) > 0)
+				if (!hitOverflow && TCI_COMPARATOR.compare(tci, search) > 0)
 				{
 					hi++;
 				}
 			}
 			else if (OVERFLOW.equals(v))
 			{
-				hitPopout = true;
+				hitOverflow = true;
 			}
 		}
 
@@ -516,7 +505,7 @@ class Sidebar extends JComponent
 				}
 				else if (OVERFLOW.equals(v))
 				{
-					// never insert into the popout region
+					// never insert into the overflow region
 					break;
 				}
 			}
@@ -552,18 +541,18 @@ class Sidebar extends JComponent
 			}
 		}
 
-		updatePopoutActive();
+		updateOverflowActive();
 		into.buttonsChanged();
 	}
 
-	private void updatePopoutActive()
+	private void updateOverflowActive()
 	{
 		overflowActive.buttons.clear();
 		if (overflowButtons.buttons.size() > 0)
 		{
 			overflowMenu.setEnabled(true);
-			boolean popoutIsActive = overflowButtons.buttons.contains(selectedTab);
-			overflowActive.buttons.add(popoutIsActive ? selectedTab : null);
+			boolean overflowIsActive = overflowButtons.buttons.contains(selectedTab);
+			overflowActive.buttons.add(overflowIsActive ? selectedTab : null);
 		}
 		else
 		{
@@ -572,7 +561,7 @@ class Sidebar extends JComponent
 		overflowActive.revalidate();
 	}
 
-	private void setMoreTabsForceShown(boolean shown)
+	private void setOverflowForceShown(boolean shown)
 	{
 		overflowMenu.setDisabledIcon(shown
 			? overflowMenu.getIcon()
@@ -623,7 +612,7 @@ class Sidebar extends JComponent
 
 		overflowMenu.setPopupMenuVisible(false);
 
-		updatePopoutActive();
+		updateOverflowActive();
 		this.revalidate();
 		this.repaint();
 
@@ -658,15 +647,15 @@ class Sidebar extends JComponent
 
 	void insert(TabButton button, MouseEvent source)
 	{
-		final int IDX_POPOUT_APPEND = -2;
+		final int IDX_OVERFLOW_APPEND = -2;
+
 		TabButton insertPoint = null;
 		int newIdx = -1;
-
 		var mtPt = SwingUtilities.convertPoint(source.getComponent(), source.getX(), source.getY(), overflowMenu);
 		if (overflowMenu.contains(mtPt))
 		{
 			overflowMenu.setPopupMenuVisible(true);
-			newIdx = IDX_POPOUT_APPEND;
+			newIdx = IDX_OVERFLOW_APPEND;
 		}
 		else
 		{
@@ -682,6 +671,7 @@ class Sidebar extends JComponent
 				boolean contained = tc.contains(pt);
 				if (contained)
 				{
+					min = Integer.MAX_VALUE;
 					insertPoint = null;
 				}
 
@@ -703,7 +693,7 @@ class Sidebar extends JComponent
 					{
 						newIdx = tc == sidebarButtons
 							? 0
-							: IDX_POPOUT_APPEND;
+							: IDX_OVERFLOW_APPEND;
 					}
 					break;
 				}
@@ -744,7 +734,7 @@ class Sidebar extends JComponent
 			}
 		}
 
-		if (newIdx == IDX_POPOUT_APPEND)
+		if (newIdx == IDX_OVERFLOW_APPEND)
 		{
 			if (!configOrder.contains(OVERFLOW))
 			{
@@ -1022,7 +1012,7 @@ class Sidebar extends JComponent
 					{
 						if (btn.navBtn.getPopup() != null)
 						{
-							// to make popup from popup work, we need the MenuSelectionManager machinery
+							// to make popup from overflow work, we need the MenuSelectionManager machinery
 							// to understand our relationship with our parent popup, which means everything
 							// needs to be a JMenu for this case
 							boolean isSubmenu = TabButtonContainer.this == overflowButtons;
@@ -1089,7 +1079,7 @@ class Sidebar extends JComponent
 				{
 					dragStart = null;
 					draggedTab = null;
-					setMoreTabsForceShown(false);
+					setOverflowForceShown(false);
 				}
 
 				@Override
@@ -1101,7 +1091,7 @@ class Sidebar extends JComponent
 						if (dragStart.distanceSq(e.getX(), e.getY()) > 10 * 10)
 						{
 							draggedTab = findButton(dragStart.x, dragStart.y);
-							setMoreTabsForceShown(draggedTab != null);
+							setOverflowForceShown(draggedTab != null);
 						}
 					}
 
@@ -1116,7 +1106,6 @@ class Sidebar extends JComponent
 				{
 					repaintTab(hoveredTab);
 					hoveredTab = null;
-					//pendingClick = false;
 				}
 
 				@Override
@@ -1138,7 +1127,15 @@ class Sidebar extends JComponent
 				x = Arrays.copyOf(x, buttons.size() + 10);
 				y = Arrays.copyOf(y, x.length);
 			}
+
 			revalidate();
+			if (this == overflowButtons && overflowMenu.isPopupMenuVisible())
+			{
+				SwingUtilities.getWindowAncestor(this).pack();
+				var origin = overflowMenu.getPopupMenuOrigin();
+				var screen = overflowMenu.getPopupMenu().getInvoker().getLocationOnScreen();
+				overflowMenu.getPopupMenu().setLocation(origin.x + screen.x, origin.y + screen.y);
+			}
 		}
 
 		private void repaintTab(TabButton tab)
@@ -1172,7 +1169,7 @@ class Sidebar extends JComponent
 		protected void paintComponent(Graphics g)
 		{
 			var backgroundColor = this == overflowButtons
-				? popoutBackgroundColor
+				? overflowBackgroundColor
 				: Sidebar.this.backgroundColor;
 
 			g.setColor(backgroundColor);
@@ -1329,7 +1326,7 @@ class Sidebar extends JComponent
 		final Icon icon;
 
 		// `parent.buttons.get(idx) == this` always, but `buttons.get(this.idx).idx == this` may
-		// be false for the popoutActive TCI
+		// be false for the overflowActive TCI
 		int idx;
 		TabButtonContainer parent;
 
@@ -1340,6 +1337,19 @@ class Sidebar extends JComponent
 
 			final int TAB_SIZE = 16;
 			icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
+		}
+	}
+
+	private class OverflowMenu extends JMenu
+	{
+		@Override
+		public Point getPopupMenuOrigin()
+		{
+			var sz = overflowMenu.getPopupMenu().getPreferredSize();
+			var sidebarPt = SwingUtilities.convertPoint(sidebarButtons, 0, 0, overflowMenu);
+			return new Point(
+				sidebarPt.x - sz.width,
+				overflowMenu.getHeight() - sz.height);
 		}
 	}
 
