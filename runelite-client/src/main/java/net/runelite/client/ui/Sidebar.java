@@ -1003,6 +1003,7 @@ class Sidebar extends JComponent
 						}
 						else
 						{
+							pendingClick = false;
 							openPanel(btn, true);
 						}
 
