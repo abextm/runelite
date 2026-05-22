@@ -652,7 +652,7 @@ class Sidebar extends JComponent
 		TabButton insertPoint = null;
 		int newIdx = -1;
 		var mtPt = SwingUtilities.convertPoint(source.getComponent(), source.getX(), source.getY(), overflowMenu);
-		if (overflowMenu.contains(mtPt))
+		if (overflowMenu.contains(mtPt) && source.getComponent() != overflowButtons)
 		{
 			overflowMenu.setPopupMenuVisible(true);
 			newIdx = IDX_OVERFLOW_APPEND;
