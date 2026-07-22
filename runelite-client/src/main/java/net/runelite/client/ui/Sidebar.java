@@ -27,6 +27,7 @@ package net.runelite.client.ui;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.google.common.base.Splitter;
+import java.awt.AWTEvent;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -37,6 +38,7 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -282,6 +284,17 @@ class Sidebar extends JComponent
 				overflowMenu.setPopupMenuVisibleRL(false);
 			}
 		});
+
+		Toolkit.getDefaultToolkit().addAWTEventListener(ev ->
+		{
+			// If something eats the drag event (looking at you MenuSelectionManager)
+			// we never register the drop and things get confused, so install a global
+			// listener that gets called even if the event is consumed
+			if (ev.getID() == MouseEvent.MOUSE_RELEASED)
+			{
+				stopDrag();
+			}
+		}, AWTEvent.MOUSE_EVENT_MASK);
 	}
 
 	void add(NavigationButton navBtn)
@@ -833,6 +846,21 @@ class Sidebar extends JComponent
 		}
 	}
 
+	void stopDrag()
+	{
+		if (draggedTab == null)
+		{
+			return;
+		}
+
+		sidebarButtons.dragStart = null;
+		overflowActive.dragStart = null;
+		overflowButtons.dragStart = null;
+		draggedTab = null;
+		sidebarButtons.revalidate();
+		setOverflowButtonForceShown(false);
+	}
+
 	private class TabButtonContainer extends JComponent
 	{
 		final List<TabButton> buttons = new ArrayList<>();
@@ -840,6 +868,7 @@ class Sidebar extends JComponent
 		int buttonsPerColumn;
 		int[] x = new int[10];
 		int[] y = new int[10];
+		Point dragStart = null;
 
 		@Nullable
 		TabButton hoveredTab;
@@ -999,7 +1028,6 @@ class Sidebar extends JComponent
 			var ma = new MouseAdapter()
 			{
 				private boolean pendingClick;
-				private Point dragStart = null;
 
 				@Override
 				public void mousePressed(MouseEvent e)
@@ -1094,14 +1122,7 @@ class Sidebar extends JComponent
 				@Override
 				public void mouseReleased(MouseEvent e)
 				{
-					var wasDragged = draggedTab != null;
-					dragStart = null;
-					draggedTab = null;
-					if (wasDragged)
-					{
-						sidebarButtons.revalidate();
-					}
-					setOverflowButtonForceShown(false);
+					stopDrag();
 				}
 
 				@Override
