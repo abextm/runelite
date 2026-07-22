@@ -98,6 +98,7 @@ class Sidebar extends JComponent
 	private static final int TAB_HEIGHT = 26;
 	private static final int TAB_WIDTH = 31;
 	private static final int SELECTION_BAR_WIDTH = 3;
+	private static final int OVERFLOW_MAX_HEIGHT = 10;
 
 	private static final String OVERFLOW = ">";
 
@@ -862,6 +863,8 @@ class Sidebar extends JComponent
 			setOpaque(true);
 			setLayout(new LayoutManager()
 			{
+				int columns;
+
 				@Override
 				public void addLayoutComponent(String name, Component comp)
 				{
@@ -874,7 +877,6 @@ class Sidebar extends JComponent
 
 				protected Dimension calculateSize(Container comp, boolean minimum)
 				{
-					int width = TAB_WIDTH;
 					boolean drivenHeight = TabButtonContainer.this == sidebarButtons;
 
 					Insets insets = comp.getInsets();
@@ -902,14 +904,22 @@ class Sidebar extends JComponent
 					}
 					else
 					{
-						rows = Math.min(count, 10);
+						rows = Math.min(count, OVERFLOW_MAX_HEIGHT);
 					}
-					if (rows > 0)
+
+					int columns = rows > 0
+						? Math.max(1, (count + rows - 1) / rows)
+						: 1;
+
+					if (draggedTab != null)
 					{
-						int columns = (count + rows - 1) / rows;
-						rows = (count + columns - 1) / columns;
-						width = Math.max(width, columns * TAB_WIDTH);
+						columns = Math.max(columns, this.columns);
 					}
+					this.columns = columns;
+
+					rows = (count + columns - 1) / columns;
+					int width = columns * TAB_WIDTH;
+
 					int height;
 					if (drivenHeight)
 					{
@@ -952,15 +962,21 @@ class Sidebar extends JComponent
 					Insets insets = comp.getInsets();
 					int yInsets = insets.bottom + insets.top;
 
-					int numColumns = 1;
 					int rows = (comp.getHeight() - yInsets) / TAB_HEIGHT;
-					if (rows > 0)
+					int count = buttons.size() + lastColumnItems;
+
+					int columns = rows > 0
+						? Math.max(1, (count + rows - 1) / rows)
+						: 1;
+
+					if (draggedTab != null)
 					{
-						numColumns = Math.max(1, (buttons.size() + lastColumnItems + rows - 1) / rows);
+						columns = Math.max(columns, this.columns);
 					}
+					this.columns = columns;
 
 					int size = buttons.size();
-					buttonsPerColumn = Math.max(1, (size + numColumns - 1) / numColumns);
+					buttonsPerColumn = Math.max(1, (size + columns - 1) / columns);
 					while (size % buttonsPerColumn > rows - lastColumnItems && lastColumnItems < rows)
 					{
 						buttonsPerColumn++;
@@ -1078,8 +1094,13 @@ class Sidebar extends JComponent
 				@Override
 				public void mouseReleased(MouseEvent e)
 				{
+					var wasDragged = draggedTab != null;
 					dragStart = null;
 					draggedTab = null;
+					if (wasDragged)
+					{
+						sidebarButtons.revalidate();
+					}
 					setOverflowForceShown(false);
 				}
 
