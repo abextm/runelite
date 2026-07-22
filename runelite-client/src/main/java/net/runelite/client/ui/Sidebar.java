@@ -188,7 +188,7 @@ class Sidebar extends JComponent
 			@Override
 			public void ancestorMoved(AncestorEvent event)
 			{
-				overflowMenu.setPopupMenuVisible(false);
+				overflowMenu.setPopupMenuVisibleRL(false);
 			}
 		});
 
@@ -196,7 +196,7 @@ class Sidebar extends JComponent
 		setLayout(new SidebarLayoutManager());
 		add(sidebarButtons);
 
-		setOverflowForceShown(false);
+		setOverflowButtonForceShown(false);
 
 		keyListeners = List.of(
 			new HotkeyListener(config::sidebarToggleKey)
@@ -279,7 +279,7 @@ class Sidebar extends JComponent
 					keyListener.focusLost();
 				}
 
-				overflowMenu.setPopupMenuVisible(false);
+				overflowMenu.setPopupMenuVisibleRL(false);
 			}
 		});
 	}
@@ -562,7 +562,7 @@ class Sidebar extends JComponent
 		overflowActive.revalidate();
 	}
 
-	private void setOverflowForceShown(boolean shown)
+	private void setOverflowButtonForceShown(boolean shown)
 	{
 		overflowMenu.setDisabledIcon(shown
 			? overflowMenu.getIcon()
@@ -611,7 +611,7 @@ class Sidebar extends JComponent
 			giveClientFocus();
 		}
 
-		overflowMenu.setPopupMenuVisible(false);
+		overflowMenu.setPopupMenuVisibleRL(false);
 
 		updateOverflowActive();
 		this.revalidate();
@@ -655,7 +655,7 @@ class Sidebar extends JComponent
 		var mtPt = SwingUtilities.convertPoint(source.getComponent(), source.getX(), source.getY(), overflowMenu);
 		if (overflowMenu.contains(mtPt) && source.getComponent() != overflowButtons)
 		{
-			overflowMenu.setPopupMenuVisible(true);
+			overflowMenu.setPopupMenuVisibleRL(true);
 			newIdx = IDX_OVERFLOW_APPEND;
 		}
 		else
@@ -1051,8 +1051,7 @@ class Sidebar extends JComponent
 							{
 								overflowSubmenu.setMenuLocation(pt.x, pt.y);
 								var msm = MenuSelectionManager.defaultManager();
-								var path = new MenuElement[]
-								{
+								var path = new MenuElement[]{
 									overflowButtonBar,
 									overflowMenu,
 									overflowMenu.getPopupMenu(),
@@ -1101,7 +1100,7 @@ class Sidebar extends JComponent
 					{
 						sidebarButtons.revalidate();
 					}
-					setOverflowForceShown(false);
+					setOverflowButtonForceShown(false);
 				}
 
 				@Override
@@ -1113,7 +1112,7 @@ class Sidebar extends JComponent
 						if (dragStart.distanceSq(e.getX(), e.getY()) > 10 * 10)
 						{
 							draggedTab = findButton(dragStart.x, dragStart.y);
-							setOverflowForceShown(draggedTab != null);
+							setOverflowButtonForceShown(draggedTab != null);
 						}
 					}
 
@@ -1347,8 +1346,8 @@ class Sidebar extends JComponent
 		final Component panel;
 		final Icon icon;
 
-		// `parent.buttons.get(idx) == this` always, but `buttons.get(this.idx).idx == this` may
-		// be false for the overflowActive TCI
+		// `parent.buttons.get(idx) == this` always, but `buttons.get(myIdx).idx == myIdx` may
+		// be false for the overflowActive TBC
 		int idx;
 		TabButtonContainer parent;
 
@@ -1372,6 +1371,29 @@ class Sidebar extends JComponent
 			return new Point(
 				sidebarPt.x - sz.width,
 				overflowMenu.getHeight() - sz.height);
+		}
+
+		void setPopupMenuVisibleRL(boolean visible)
+		{
+			// setPopupMenuVisible doesn't update the selected state of the MenuSelectionManager,
+			// so if you set a popup visible then click on it, it will try to open it again which is a noop
+
+			if (isPopupMenuVisible() == visible)
+			{
+				return;
+			}
+
+			MenuSelectionManager.defaultManager().clearSelectedPath();
+			if (visible)
+			{
+				var msm = MenuSelectionManager.defaultManager();
+				var path = new MenuElement[]{
+					(MenuElement) getParent(),
+					this,
+					this.getPopupMenu(),
+				};
+				msm.setSelectedPath(path);
+			}
 		}
 	}
 
