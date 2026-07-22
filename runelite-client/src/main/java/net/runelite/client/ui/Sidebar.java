@@ -386,6 +386,7 @@ class Sidebar extends JComponent
 		}
 
 		this.setVisible(open);
+		overflowMenu.setPopupMenuVisibleRL(false);
 
 		if (pushHistory)
 		{
