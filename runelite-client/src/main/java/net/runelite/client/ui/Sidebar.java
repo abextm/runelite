@@ -287,14 +287,18 @@ class Sidebar extends JComponent
 
 		Toolkit.getDefaultToolkit().addAWTEventListener(ev ->
 		{
-			// If something eats the drag event (looking at you MenuSelectionManager)
-			// we never register the drop and things get confused, so install a global
-			// listener that gets called even if the event is consumed
+			// MenuSelectionManager consumes and re-targets events that target
+			// components inside a Menu to the MenuItem instead of the component
+			// itself
 			if (ev.getID() == MouseEvent.MOUSE_RELEASED)
 			{
 				stopDrag();
 			}
-		}, AWTEvent.MOUSE_EVENT_MASK);
+			else if (ev.getID() == MouseEvent.MOUSE_DRAGGED && draggedTab != null)
+			{
+				insert(draggedTab, (MouseEvent) ev);
+			}
+		}, AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 	}
 
 	void add(NavigationButton navBtn)
