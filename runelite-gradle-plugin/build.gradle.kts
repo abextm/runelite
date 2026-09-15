@@ -29,8 +29,6 @@ plugins {
 }
 
 dependencies {
-    implementation("net.runelite:cache:${project.version}")
-
     implementation(libs.guava)
 }
 

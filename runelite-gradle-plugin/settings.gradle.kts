@@ -25,5 +25,3 @@
 
 rootProject.name = "runelite-gradle-plugin"
 apply(from = "../common.settings.gradle.kts")
-
-includeBuild("../cache")

@@ -44,6 +44,8 @@ java {
     withSourcesJar()
 }
 
+val cache by configurations.creating
+
 dependencies {
     api("net.runelite:runelite-api:${project.version}")
     implementation(project(":jshell"))
@@ -94,6 +96,8 @@ dependencies {
         runtimeOnly(variantOf(libs.lwjgl.opengl) { classifier("natives-$platform") })
     }
 
+    cache("net.runelite:cache:${project.version}")
+
     testImplementation(libs.junit)
     testImplementation(libs.hamcrest)
     testImplementation(libs.mockito)
@@ -137,6 +141,7 @@ publishing {
 }
 
 val assemble = tasks.withType<net.runelite.gradle.assemble.AssembleTask> {
+    cacheClasspath = cache
     scriptDirectory = file("src/main/scripts")
     outputDirectory = sourceSets.main.map { File(it.output.resourcesDir, "runelite") }
     longSupport = true

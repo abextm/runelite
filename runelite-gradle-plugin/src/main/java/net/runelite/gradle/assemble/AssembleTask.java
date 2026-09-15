@@ -30,26 +30,34 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import net.runelite.cache.IndexType;
-import net.runelite.cache.definitions.ScriptDefinition;
-import net.runelite.cache.definitions.savers.ScriptSaver;
-import net.runelite.cache.script.RuneLiteInstructions;
-import net.runelite.cache.script.assembler.Assembler;
+import java.io.InputStream;
+import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.GradleException;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.CacheableTask;
+import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.workers.WorkAction;
+import org.gradle.workers.WorkParameters;
+import org.gradle.workers.WorkerExecutor;
 
 @CacheableTask
 public abstract class AssembleTask extends DefaultTask
 {
+	@Classpath
+	public abstract ConfigurableFileCollection getCacheClasspath();
+
 	@InputDirectory
 	@PathSensitive(PathSensitivity.RELATIVE)
 	public abstract DirectoryProperty getScriptDirectory();
@@ -60,54 +68,108 @@ public abstract class AssembleTask extends DefaultTask
 	@Input
 	public abstract Property<Boolean> getLongSupport();
 
-	private final Logger log = getLogger();
+	@Inject
+	protected abstract WorkerExecutor getWorkerExecutor();
 
 	@TaskAction
 	public void assembleRs2Asm() throws IOException
 	{
-		File scriptDirectory = getScriptDirectory().getAsFile().get();
-		File outputDirectory = getOutputDirectory().getAsFile().get();
-
-		RuneLiteInstructions instructions = new RuneLiteInstructions();
-		instructions.init();
-
-		Assembler assembler = new Assembler(instructions);
-		ScriptSaver saver = new ScriptSaver(getLongSupport().getOrElse(true));
-
-		int count = 0;
-		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
-
-		getProject().delete(scriptOut);
-		scriptOut.mkdirs();
-
-		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))
-		{
-			log.debug("Assembling {}", scriptFile);
-
-			try (FileInputStream fin = new FileInputStream(scriptFile))
+		getWorkerExecutor()
+			.classLoaderIsolation(s -> s.getClasspath().from(getCacheClasspath()))
+			.submit(Action.class, p ->
 			{
-				ScriptDefinition script = assembler.assemble(fin);
-				byte[] packedScript = saver.save(script);
+				p.getScriptDirectory().set(getScriptDirectory());
+				p.getOutputDirectory().set(getOutputDirectory());
+				p.getLongSupport().set(getLongSupport());
+			});
+	}
 
-				File targetFile = new File(scriptOut, Integer.toString(script.getId()));
-				Files.write(packedScript, targetFile);
+	public interface Params extends WorkParameters
+	{
+		public abstract DirectoryProperty getScriptDirectory();
 
-				// Copy hash file
+		public abstract DirectoryProperty getOutputDirectory();
 
-				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
-				if (hashFile.exists())
+		public abstract Property<Boolean> getLongSupport();
+	}
+
+	public abstract static class Action implements WorkAction<Params>
+	{
+		private static final Logger log = Logging.getLogger(Action.class);
+
+		@Inject
+		protected abstract FileSystemOperations getFileSystemOperations();
+
+		@Override
+		public void execute()
+		{
+			try
+			{
+				var params = getParameters();
+
+				File scriptDirectory = params.getScriptDirectory().getAsFile().get();
+				File outputDirectory = params.getOutputDirectory().getAsFile().get();
+
+				var cl = Action.class.getClassLoader();
+
+				var clRLInstruction = cl.loadClass("net.runelite.cache.script.RuneLiteInstructions");
+				var instructions = clRLInstruction.getConstructor().newInstance();
+				instructions.getClass().getMethod("init").invoke(instructions);
+
+				var clInstruction = cl.loadClass("net.runelite.cache.script.Instructions");
+				var clAssembler = cl.loadClass("net.runelite.cache.script.assembler.Assembler");
+				var assembler = clAssembler.getConstructor(clInstruction).newInstance(instructions);
+				var assemblerAssemble = clAssembler.getMethod("assemble", InputStream.class);
+
+				var clScriptDefinition = cl.loadClass("net.runelite.cache.definitions.ScriptDefinition");
+				var scriptDefinitionGetId = clScriptDefinition.getMethod("getId");
+
+				var clScriptSaver = cl.loadClass("net.runelite.cache.definitions.savers.ScriptSaver");
+				var saver = clScriptSaver.getConstructor(boolean.class).newInstance(params.getLongSupport().getOrElse(true));
+				var saverSave = clScriptSaver.getMethod("save", clScriptDefinition);
+
+				int count = 0;
+				File scriptOut = new File(outputDirectory, "12");
+
+				getFileSystemOperations().delete(e -> e.delete(scriptOut));
+				scriptOut.mkdirs();
+
+				for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))
 				{
-					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
-				}
-				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
-				{
-					throw new FileNotFoundException("Unable to find hash file for " + scriptFile);
+					log.debug("Assembling {}", scriptFile);
+
+					try (FileInputStream fin = new FileInputStream(scriptFile))
+					{
+						var script = assemblerAssemble.invoke(assembler, fin);
+						byte[] packedScript = (byte[]) saverSave.invoke(saver, script);
+
+						int id = (Integer) scriptDefinitionGetId.invoke(script);
+
+						File targetFile = new File(scriptOut, "" + id);
+						Files.write(packedScript, targetFile);
+
+						// Copy hash file
+
+						File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
+						if (hashFile.exists())
+						{
+							Files.copy(hashFile, new File(scriptOut, id + ".hash"));
+						}
+						else if (id < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
+						{
+							throw new FileNotFoundException("Unable to find hash file for " + scriptFile);
+						}
+
+						++count;
+					}
 				}
 
-				++count;
+				log.lifecycle("Assembled {} scripts", count);
+			}
+			catch (Exception e)
+			{
+				throw new GradleException(e.getMessage(), e);
 			}
 		}
-
-		log.lifecycle("Assembled {} scripts", count);
 	}
 }

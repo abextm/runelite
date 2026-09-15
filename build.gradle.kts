@@ -46,15 +46,15 @@ tasks.register("testAll") {
 tasks.register("publishAll") {
     this@register.dependsOn(project(":client").tasks["publish"])
     this@register.dependsOn(project(":jshell").tasks["publish"])
+    this@register.dependsOn(project(":cache").tasks[":publish"])
 
-    this@register.dependsOn(gradle.includedBuild("cache").task(":publish"))
     this@register.dependsOn(gradle.includedBuild("runelite-api").task(":publish"))
 }
 
 tasks.register("publishAllToMavenLocal") {
     this@register.dependsOn(project(":client").tasks["publishToMavenLocal"])
     this@register.dependsOn(project(":jshell").tasks["publishToMavenLocal"])
+    this@register.dependsOn(project("cache").tasks[":publishToMavenLocal"])
 
-    this@register.dependsOn(gradle.includedBuild("cache").task(":publishToMavenLocal"))
     this@register.dependsOn(gradle.includedBuild("runelite-api").task(":publishToMavenLocal"))
 }
