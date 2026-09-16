@@ -39,6 +39,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.ChatIconManager;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
@@ -77,6 +78,10 @@ public class EmojiPluginTest
 	@Bind
 	@Named("runelite.static.base")
 	private HttpUrl staticBase = HttpUrl.get("http://localhost");
+
+	@Mock
+	@Bind
+	private OkHttpClient okHttpClient;
 
 	@Inject
 	private EmojiPlugin emojiPlugin;

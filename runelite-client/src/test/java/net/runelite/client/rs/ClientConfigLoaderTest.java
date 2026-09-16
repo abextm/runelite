@@ -57,7 +57,7 @@ public class ClientConfigLoaderTest
 	@Test
 	public void testFetch() throws IOException
 	{
-		final RSConfig config = new ClientConfigLoader(new OkHttpClient()).fetch(server.url("/"));
+		final RSConfig config = new ClientConfigLoader(OkHttpClient.Builder.create().build()).fetch(server.url("/"));
 		assertEquals("http://oldschool1.runescape.com/", config.getCodeBase());
 	}
 

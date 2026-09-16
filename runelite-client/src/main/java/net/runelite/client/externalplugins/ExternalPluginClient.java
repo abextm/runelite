@@ -47,10 +47,10 @@ import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.VerificationException;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -184,7 +184,7 @@ public class ExternalPluginClient
 
 		Request request = new Request.Builder()
 			.url(url)
-			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(plugins)))
+			.post(RequestBody.create(MediaType.get("application/json"), gson.toJson(plugins)))
 			.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()

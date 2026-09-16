@@ -76,6 +76,7 @@ dependencies {
     api(libs.jna.platform)
     api(libs.findbugs)
     compileOnly(libs.jetbrains.annotations)
+    api(libs.okhttp)
     api(libs.protobuf)
     api(libs.lwjgl.core)
     api(libs.lwjgl.opengl)

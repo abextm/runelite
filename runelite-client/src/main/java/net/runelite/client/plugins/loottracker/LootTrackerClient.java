@@ -35,11 +35,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import static net.runelite.http.api.RuneLiteAPI.JSON;
 import net.runelite.http.api.loottracker.LootRecord;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -77,7 +77,7 @@ public class LootTrackerClient
 		{
 			requestBuilder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
 		}
-		requestBuilder.post(RequestBody.create(JSON, gson.toJson(lootRecords)))
+		requestBuilder.post(RequestBody.create(MediaType.get("application/json"), gson.toJson(lootRecords)))
 			.url(url)
 			.build();
 

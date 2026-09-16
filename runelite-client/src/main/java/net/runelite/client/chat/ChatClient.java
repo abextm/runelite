@@ -35,11 +35,11 @@ import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -342,7 +342,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(rooms)))
+			.post(RequestBody.create(MediaType.get("application/json"), gson.toJson(rooms)))
 			.url(url)
 			.build();
 
@@ -389,7 +389,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(petList)))
+			.post(RequestBody.create(MediaType.get("application/json"), gson.toJson(petList)))
 			.url(url)
 			.build();
 

@@ -47,6 +47,7 @@ import net.runelite.http.api.config.Profile;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -142,7 +143,7 @@ public class ConfigClient
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.patch(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(patch)))
+			.patch(RequestBody.create(MediaType.get("application/json"), gson.toJson(patch)))
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();

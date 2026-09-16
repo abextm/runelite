@@ -87,7 +87,6 @@ import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.ReflectUtil;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -206,7 +205,6 @@ public class RuneLite
 		});
 
 		final OkHttpClient okHttpClient = buildHttpClient(options.has("insecure-skip-tls-verification"));
-		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
 		SplashScreen.stage(0, "Preparing RuneScape", "");
@@ -415,7 +413,7 @@ public class RuneLite
 	@VisibleForTesting
 	static OkHttpClient buildHttpClient(boolean insecureSkipTlsVerification)
 	{
-		OkHttpClient.Builder builder = new OkHttpClient.Builder()
+		OkHttpClient.Builder builder = OkHttpClient.Builder.create()
 			.pingInterval(30, TimeUnit.SECONDS)
 			.addInterceptor(chain ->
 			{

@@ -89,7 +89,7 @@ public class PluginManagerTest
 	@Before
 	public void before() throws IOException
 	{
-		OkHttpClient okHttpClient = new OkHttpClient.Builder()
+		OkHttpClient okHttpClient = OkHttpClient.Builder.create()
 			.addInterceptor(chain ->
 			{
 				throw new RuntimeException("in plugin manager test");

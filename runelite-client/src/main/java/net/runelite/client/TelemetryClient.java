@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.telemetry.Telemetry;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -62,7 +61,7 @@ public class TelemetryClient
 
 		Request request = new Request.Builder()
 			.url(url)
-			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(buildTelemetry())))
+			.post(RequestBody.create(MediaType.get("application/json"), gson.toJson(buildTelemetry())))
 			.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
