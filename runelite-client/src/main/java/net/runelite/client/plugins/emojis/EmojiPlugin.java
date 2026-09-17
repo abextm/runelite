@@ -48,6 +48,7 @@ import javax.inject.Named;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
@@ -87,6 +88,7 @@ public class EmojiPlugin extends Plugin
 	private ChatIconManager chatIconManager;
 
 	@Inject
+	@CoreBinding
 	private OkHttpClient okHttpClient;
 
 	@Inject

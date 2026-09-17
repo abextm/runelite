@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.account.OAuthResponse;
 import okhttp3.HttpUrl;
@@ -53,7 +54,10 @@ public class AccountClient
 	private UUID uuid;
 
 	@Inject
-	private AccountClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
+	private AccountClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.api.base") HttpUrl apiBase,
+		Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;

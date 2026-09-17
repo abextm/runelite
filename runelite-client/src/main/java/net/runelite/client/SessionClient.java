@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
+import net.runelite.api.CoreBinding;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,7 +41,9 @@ class SessionClient
 	private final HttpUrl sessionUrl;
 
 	@Inject
-	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl)
+	private SessionClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.session") HttpUrl sessionUrl)
 	{
 		this.client = client;
 		this.sessionUrl = sessionUrl;

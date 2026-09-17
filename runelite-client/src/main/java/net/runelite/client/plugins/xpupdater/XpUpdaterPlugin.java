@@ -32,6 +32,7 @@ import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.WorldType;
@@ -71,6 +72,7 @@ public class XpUpdaterPlugin extends Plugin
 	private XpUpdaterConfig config;
 
 	@Inject
+	@CoreBinding
 	private OkHttpClient okHttpClient;
 
 	private long lastAccount;

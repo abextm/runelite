@@ -41,6 +41,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
@@ -98,6 +99,7 @@ public class DiscordPlugin extends Plugin
 	private WSClient wsClient;
 
 	@Inject
+	@CoreBinding
 	private OkHttpClient okHttpClient;
 
 	@Inject

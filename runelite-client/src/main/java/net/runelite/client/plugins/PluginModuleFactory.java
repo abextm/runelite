@@ -27,10 +27,21 @@ package net.runelite.client.plugins;
 import com.google.inject.AbstractModule;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.api.CoreBinding;
+import net.runelite.client.RuneLite;
+import net.runelite.client.externalplugins.ExternalPluginManager;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 @Singleton
 class PluginModuleFactory
 {
+	@Inject
+	@CoreBinding
+	private OkHttpClient client;
+
 	@RequiredArgsConstructor
 	class PluginModule extends AbstractModule
 	{
@@ -42,6 +53,39 @@ class PluginModuleFactory
 			// Since the plugin itself is a module, it won't bind itself, so we'll bind it here
 			binder().bind((Class<Plugin>) plugin.getClass()).toInstance(plugin);
 			binder().install(plugin);
+		}
+
+		@Provides
+		@Singleton
+		public OkHttpClient okHttpClient()
+		{
+			String userAgent = RuneLite.USER_AGENT;
+			var internalName = ExternalPluginManager.getInternalName(plugin.getClass());
+			if (internalName != null)
+			{
+				userAgent += " (" + internalName;
+
+				var dd = ExternalPluginManager.getDisplayData(plugin.getClass());
+				if (dd != null)
+				{
+					userAgent += "/" + dd.getVersion();
+				}
+				userAgent += ")";
+			}
+			String userAgent0 = userAgent;
+
+			return client.newBuilder()
+				.addInterceptor(chain ->
+				{
+					Request request = chain.request();
+
+					Request userAgentRequest = request
+						.newBuilder()
+						.header("User-Agent", userAgent0)
+						.build();
+					return chain.proceed(userAgentRequest);
+				})
+				.build();
 		}
 	}
 }

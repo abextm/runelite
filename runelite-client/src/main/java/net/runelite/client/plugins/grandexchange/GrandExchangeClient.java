@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import okhttp3.Call;
@@ -55,7 +56,10 @@ public class GrandExchangeClient
 	private String machineId;
 
 	@Inject
-	private GrandExchangeClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
+	private GrandExchangeClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.api.base") HttpUrl apiBase,
+		Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;

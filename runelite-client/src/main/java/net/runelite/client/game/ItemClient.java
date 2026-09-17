@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.http.api.item.ItemPrice;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -50,7 +51,8 @@ public class ItemClient
 	private final Gson gson;
 
 	@Inject
-	private ItemClient(OkHttpClient client,
+	private ItemClient(
+		@CoreBinding OkHttpClient client,
 		@Named("runelite.api.base") HttpUrl apiBase,
 		@Named("runelite.static.base") HttpUrl staticBase,
 		Gson gson

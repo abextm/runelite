@@ -45,6 +45,7 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.Hooks;
@@ -177,6 +178,7 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
+	@CoreBinding
 	OkHttpClient provideHttpClient(Client client)
 	{
 		return bootupHttpClient.newBuilder()
@@ -248,7 +250,7 @@ public class RuneLiteModule extends AbstractModule
 	@Provides
 	@Singleton
 	TelemetryClient provideTelemetry(
-		OkHttpClient okHttpClient,
+		@CoreBinding OkHttpClient okHttpClient,
 		Gson gson,
 		@Named("runelite.api.base") HttpUrl apiBase)
 	{

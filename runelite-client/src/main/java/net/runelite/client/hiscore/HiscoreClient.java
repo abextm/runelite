@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -51,7 +52,9 @@ public class HiscoreClient
 	private final Gson gson;
 
 	@Inject
-	private HiscoreClient(OkHttpClient client, Gson gson)
+	private HiscoreClient(
+		@CoreBinding OkHttpClient client,
+		Gson gson)
 	{
 		this.client = client;
 		this.gson = gson;

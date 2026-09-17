@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
@@ -91,6 +92,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	private KeyManager keyManager;
 
 	@Inject
+	@CoreBinding
 	private OkHttpClient okHttpClient;
 
 	@Inject

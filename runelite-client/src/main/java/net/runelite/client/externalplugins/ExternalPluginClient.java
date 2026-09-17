@@ -45,6 +45,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.VerificationException;
 import okhttp3.Call;
@@ -66,7 +67,8 @@ public class ExternalPluginClient
 	private final HttpUrl pluginHubBase;
 
 	@Inject
-	private ExternalPluginClient(OkHttpClient okHttpClient,
+	private ExternalPluginClient(
+		@CoreBinding OkHttpClient okHttpClient,
 		Gson gson,
 		@Named("runelite.api.base") HttpUrl apiBase,
 		@Named("runelite.pluginhub.url") HttpUrl pluginHubBase

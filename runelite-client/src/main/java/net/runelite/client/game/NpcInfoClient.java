@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,7 +50,10 @@ public class NpcInfoClient
 	private final Gson gson;
 
 	@Inject
-	private NpcInfoClient(OkHttpClient client, @Named("runelite.static.base") HttpUrl staticBase, Gson gson)
+	private NpcInfoClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.static.base") HttpUrl staticBase,
+		Gson gson)
 	{
 		this.client = client;
 		this.staticBase = staticBase;

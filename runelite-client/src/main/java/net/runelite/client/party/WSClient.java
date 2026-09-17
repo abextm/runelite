@@ -36,6 +36,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.party.events.UserJoin;
@@ -65,7 +66,10 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private WebSocket webSocket;
 
 	@Inject
-	private WSClient(EventBus eventBus, OkHttpClient okHttpClient, @Named("runelite.ws") HttpUrl runeliteWs)
+	private WSClient(
+		EventBus eventBus,
+		@CoreBinding OkHttpClient okHttpClient,
+		@Named("runelite.ws") HttpUrl runeliteWs)
 	{
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;

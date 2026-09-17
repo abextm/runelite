@@ -40,6 +40,7 @@ java {
 dependencies {
     implementation(libs.slf4j.api)
     compileOnly(libs.findbugs)
+    implementation(libs.javax.inject)
 
     compileOnly(libs.jetbrains.annotations)
 

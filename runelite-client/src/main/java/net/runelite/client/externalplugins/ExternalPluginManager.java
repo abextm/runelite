@@ -55,6 +55,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
@@ -63,6 +64,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.SplashScreen;
@@ -100,7 +102,7 @@ public class ExternalPluginManager
 		ScheduledExecutorService executor,
 		PluginManager pluginManager,
 		EventBus eventBus,
-		OkHttpClient okHttpClient,
+		@CoreBinding OkHttpClient okHttpClient,
 		Gson gson
 	)
 	{
@@ -454,7 +456,22 @@ public class ExternalPluginManager
 	public static String getInternalName(Class<? extends Plugin> plugin)
 	{
 		PluginHubManifest.JarData jd = getJarData(plugin);
-		return jd == null ? null : jd.getInternalName();
+		if (jd != null)
+		{
+			return jd.getInternalName();
+		}
+
+		var pd = plugin.getAnnotation(PluginDescriptor.class);
+		if (pd != null)
+		{
+			var name = pd.internalName();
+			if (!name.isEmpty())
+			{
+				return name;
+			}
+		}
+
+		return null;
 	}
 
 	public static void loadBuiltin(Class<? extends Plugin>... plugins)

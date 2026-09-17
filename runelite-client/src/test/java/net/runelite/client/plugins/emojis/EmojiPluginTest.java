@@ -33,6 +33,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
@@ -81,6 +82,7 @@ public class EmojiPluginTest
 
 	@Mock
 	@Bind
+	@CoreBinding
 	private OkHttpClient okHttpClient;
 
 	@Inject

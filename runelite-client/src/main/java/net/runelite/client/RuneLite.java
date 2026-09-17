@@ -418,19 +418,14 @@ public class RuneLite
 			.addInterceptor(chain ->
 			{
 				Request request = chain.request();
-				var ua = request.header("User-Agent");
-				if (ua == null)
+				if (request.header("User-Agent") != null)
 				{
-					ua = USER_AGENT;
-				}
-				else if (!ua.startsWith("RuneLite"))
-				{
-					ua = USER_AGENT + " " + ua;
+					return chain.proceed(request);
 				}
 
 				Request userAgentRequest = request
 					.newBuilder()
-					.header("User-Agent", ua)
+					.header("User-Agent", USER_AGENT)
 					.build();
 				return chain.proceed(userAgentRequest);
 			})

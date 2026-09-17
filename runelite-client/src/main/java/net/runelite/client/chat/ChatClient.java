@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
+import net.runelite.api.CoreBinding;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
@@ -52,7 +53,10 @@ public class ChatClient
 	private final Gson gson;
 
 	@Inject
-	private ChatClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
+	private ChatClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.api.base") HttpUrl apiBase,
+		Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;

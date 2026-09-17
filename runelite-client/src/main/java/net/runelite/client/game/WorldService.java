@@ -37,6 +37,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.GameState;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.WorldsFetch;
@@ -61,8 +62,12 @@ public class WorldService
 	private WorldResult worlds;
 
 	@Inject
-	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, OkHttpClient okHttpClient,
-		@Named("runelite.api.base") HttpUrl apiBase, EventBus eventBus)
+	private WorldService(
+		Client client,
+		ScheduledExecutorService scheduledExecutorService,
+		@CoreBinding OkHttpClient okHttpClient,
+		@Named("runelite.api.base") HttpUrl apiBase,
+		EventBus eventBus)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;

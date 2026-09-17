@@ -28,6 +28,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -42,7 +43,9 @@ public class XpClient
 	private final HttpUrl apiBase;
 
 	@Inject
-	private XpClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private XpClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.api.base") HttpUrl apiBase)
 	{
 		this.client = client;
 		this.apiBase = apiBase;

@@ -39,6 +39,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -75,9 +76,13 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private String offPrediction = null;
 
 	@Inject
-	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
-		OkHttpClient okHttpClient, Gson gson)
+	public WikiSearchChatboxTextInput(
+		ChatboxPanelManager chatboxPanelManager,
+		ClientThread clientThread,
+		ScheduledExecutorService scheduledExecutorService,
+		@Named("developerMode") final boolean developerMode,
+		@CoreBinding OkHttpClient okHttpClient,
+		Gson gson)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;

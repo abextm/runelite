@@ -32,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -48,6 +49,7 @@ public class CrowdsourcingManager
 	private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
 	@Inject
+	@CoreBinding
 	private OkHttpClient okHttpClient;
 
 	@Inject

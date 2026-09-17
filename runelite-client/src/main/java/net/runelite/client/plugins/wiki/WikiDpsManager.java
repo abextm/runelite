@@ -37,6 +37,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.CoreBinding;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -112,7 +113,7 @@ class WikiDpsManager
 		Client client,
 		ClientThread clientThread,
 		EventBus eventBus,
-		OkHttpClient okHttpClient,
+		@CoreBinding OkHttpClient okHttpClient,
 		Gson gson
 	)
 	{

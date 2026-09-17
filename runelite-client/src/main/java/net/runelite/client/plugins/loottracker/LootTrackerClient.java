@@ -34,6 +34,7 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.loottracker.LootRecord;
 import okhttp3.Call;
@@ -57,7 +58,10 @@ public class LootTrackerClient
 	private UUID uuid;
 
 	@Inject
-	private LootTrackerClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
+	private LootTrackerClient(
+		@CoreBinding OkHttpClient client,
+		@Named("runelite.api.base") HttpUrl apiBase,
+		Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;

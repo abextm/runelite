@@ -46,6 +46,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.CoreBinding;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.util.OSType;
@@ -73,7 +74,7 @@ class Updater
 
 	@Inject
 	Updater(
-		OkHttpClient okHttpClient,
+		@CoreBinding OkHttpClient okHttpClient,
 		@Nullable RuntimeConfig runtimeConfig,
 		ConfigManager configManager,
 		@Named("noupdate") boolean noupdate
