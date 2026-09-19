@@ -24,16 +24,25 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import com.google.inject.Provides;
-import javax.inject.Inject;
 import net.runelite.api.CoreBinding;
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 @Singleton
 class PluginModuleFactory
@@ -41,6 +50,16 @@ class PluginModuleFactory
 	@Inject
 	@CoreBinding
 	private OkHttpClient client;
+
+	@Inject(optional = true)
+	@Named("pluginRequestsPerMinute")
+	@SuppressWarnings("PMD.ImmutableField")
+	private int permitsPerMinute = 15;
+
+	@Inject(optional = true)
+	@Named("pluginMaxRequestPermits")
+	@SuppressWarnings("PMD.ImmutableField")
+	private int maxPermits = 100;
 
 	@RequiredArgsConstructor
 	class PluginModule extends AbstractModule
@@ -85,7 +104,110 @@ class PluginModuleFactory
 						.build();
 					return chain.proceed(userAgentRequest);
 				})
+				.addInterceptor(new RateLimitInterceptor(maxPermits, permitsPerMinute))
 				.build();
+		}
+	}
+
+	static class RateLimitInterceptor implements Interceptor
+	{
+		private final int maxPermits;
+		private final int permitsPerMinute;
+
+		private final Map<String, Long> domainTimeout = new HashMap<>();
+		private int permits;
+		private long lastPermit;
+
+		public RateLimitInterceptor(int maxPermits, int permitsPerMinute)
+		{
+			this.maxPermits = maxPermits;
+			this.permitsPerMinute = permitsPerMinute;
+			permits = maxPermits;
+			lastPermit = now();
+		}
+
+		long now()
+		{
+			return System.nanoTime();
+		}
+
+		@Override
+		public Response intercept(Chain chain) throws IOException
+		{
+			var request = chain.request();
+			var now = now();
+
+			var host = chain.request().url().host();
+			boolean rateLimited;
+			synchronized (this)
+			{
+				var mustAfter = domainTimeout.get(host);
+				if (mustAfter != null)
+				{
+					if (mustAfter > now)
+					{
+						throw new IOException("Host " + host + " requested retry after");
+					}
+					else
+					{
+						domainTimeout.remove(host);
+					}
+				}
+
+				long elapsed = now - lastPermit;
+				permits = (int) Math.min(maxPermits, permits + (elapsed * permitsPerMinute) / TimeUnit.MINUTES.toNanos(1));
+				lastPermit = now;
+
+				rateLimited = permits <= 0;
+				if (rateLimited)
+				{
+					request = request.newBuilder()
+						.cacheControl(CacheControl.FORCE_CACHE)
+						.build();
+				}
+				else
+				{
+					permits -= 1;
+				}
+			}
+
+			var res = chain.proceed(request);
+
+			if (rateLimited && res.cacheResponse() == null)
+			{
+				throw new IOException("Rate limit exceeded");
+			}
+
+			if (!rateLimited && res.networkResponse() == null)
+			{
+				synchronized (this)
+				{
+					permits = Math.min(maxPermits, permits + 1);
+				}
+			}
+
+			if (res.networkResponse() != null)
+			{
+				var retryAfter = res.networkResponse().header("Retry-After");
+				if (!Strings.isNullOrEmpty(retryAfter))
+				{
+					long longRetryAfter = 5;
+					try
+					{
+						longRetryAfter = Long.parseLong(retryAfter);
+					}
+					catch (NumberFormatException ignored)
+					{
+					}
+
+					synchronized (this)
+					{
+						domainTimeout.put(host, now() + longRetryAfter * TimeUnit.SECONDS.toNanos(1));
+					}
+				}
+			}
+
+			return res;
 		}
 	}
 }
