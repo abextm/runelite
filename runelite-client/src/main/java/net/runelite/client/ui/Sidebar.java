@@ -98,6 +98,8 @@ class Sidebar extends JComponent
 	private static final Comparator<TabConfigItem> TCI_COMPARATOR = Comparator.<TabConfigItem>comparingInt(tci -> tci.priority)
 		.thenComparing(tci -> tci.id);
 
+	private static final BufferedImage OVERFLOW_OPEN = ImageUtil.loadImageResource(Sidebar.class, "overflow_open.png");
+
 	private static final int TAB_HEIGHT = 26;
 	private static final int TAB_WIDTH = 31;
 	private static final int SELECTION_BAR_WIDTH = 3;
@@ -149,6 +151,8 @@ class Sidebar extends JComponent
 	private Color hoverColor;
 	private Color contentAreaColor;
 
+	private RuneLiteConfig.SidebarSide sidebarSide = RuneLiteConfig.SidebarSide.RIGHT;
+
 	private final List<KeyListener> keyListeners;
 
 	private JButton toolbarSidebarToggleButton;
@@ -185,7 +189,6 @@ class Sidebar extends JComponent
 		// allow the drag indicator to draw under this
 		overflowActive.setOpaque(false);
 
-		overflowMenu.setIcon(new ImageIcon(ImageUtil.loadImageResource(Sidebar.class, "overflow_open.png")));
 		overflowMenu.setPreferredSize(new Dimension(TAB_WIDTH, TAB_HEIGHT));
 		overflowMenu.setMinimumSize(new Dimension(TAB_WIDTH, TAB_HEIGHT));
 		overflowMenu.getPopupMenu().setLayout(new OverflowMenuLayoutManager());
@@ -241,6 +244,7 @@ class Sidebar extends JComponent
 		updateUI();
 
 		deserialize(configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, CONFIG_SIDEBAR_ORDER));
+		setSide(sidebarSide);
 	}
 
 	@Override
@@ -320,6 +324,15 @@ class Sidebar extends JComponent
 				insert(draggedTab, (MouseEvent) ev);
 			}
 		}, AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+	}
+
+	void setSide(RuneLiteConfig.SidebarSide sidebarSide)
+	{
+		this.sidebarSide = sidebarSide;
+		overflowMenu.setIcon(new ImageIcon(sidebarSide == RuneLiteConfig.SidebarSide.LEFT
+			? ImageUtil.flipImage(OVERFLOW_OPEN, true, false)
+			: OVERFLOW_OPEN));
+		revalidate();
 	}
 
 	void add(NavigationButton navBtn)
@@ -1206,7 +1219,7 @@ class Sidebar extends JComponent
 				lastColumnItems += (trailerSize.height + TAB_HEIGHT - 1) / TAB_HEIGHT;
 
 				trailer.setBounds(
-					getWidth() - TAB_WIDTH,
+					sidebarSide == RuneLiteConfig.SidebarSide.LEFT ? 0 : getWidth() - TAB_WIDTH,
 					getHeight() - trailerSize.height,
 					TAB_WIDTH,
 					trailerSize.height);
@@ -1235,12 +1248,19 @@ class Sidebar extends JComponent
 				buttonsPerColumn++;
 			}
 
+			var xOrigin = insets.left;
+			int tabStride = TAB_WIDTH;
+			if (sidebarSide == RuneLiteConfig.SidebarSide.LEFT)
+			{
+				xOrigin += (columns - 1) * tabStride;
+				tabStride = -tabStride;
+			}
 			for (int i = 0; i < buttons.size(); i++)
 			{
 				var btn = buttons.get(i);
 				if (btn != null)
 				{
-					x[i] = insets.left + (i / buttonsPerColumn) * TAB_WIDTH;
+					x[i] = xOrigin + (i / buttonsPerColumn) * tabStride;
 					y[i] = insets.top + (i % buttonsPerColumn) * TAB_HEIGHT;
 				}
 			}
@@ -1297,7 +1317,9 @@ class Sidebar extends JComponent
 			if (this == sidebarButtons)
 			{
 				g.setColor(contentAreaColor);
-				g.fillRect(0, 0, 1, getHeight());
+				g.fillRect(
+					sidebarSide == RuneLiteConfig.SidebarSide.LEFT ? getWidth() - 1 : 0,
+					0, 1, getHeight());
 			}
 
 			boolean drawDragged = false;
@@ -1343,7 +1365,9 @@ class Sidebar extends JComponent
 			if (btn == selectedTab)
 			{
 				g.setColor(underlineColor);
-				g.fillRect(x, y, SELECTION_BAR_WIDTH, TAB_HEIGHT);
+				g.fillRect(
+					sidebarSide == RuneLiteConfig.SidebarSide.LEFT ? x + TAB_WIDTH - SELECTION_BAR_WIDTH : x,
+					y, SELECTION_BAR_WIDTH, TAB_HEIGHT);
 			}
 
 			btn.icon.paintIcon(this, g,
@@ -1423,7 +1447,15 @@ class Sidebar extends JComponent
 
 			int sw = sidebarButtons.calculateSize(false, h).width;
 			w -= sw;
-			sidebarButtons.setBounds(w, y, sw, h);
+			if (sidebarSide == RuneLiteConfig.SidebarSide.LEFT)
+			{
+				sidebarButtons.setBounds(x, y, sw, h);
+				x += sw;
+			}
+			else
+			{
+				sidebarButtons.setBounds(w, y, sw, h);
+			}
 
 			Component selectedPanel = null;
 			if (selectedTab != null)
@@ -1494,7 +1526,7 @@ class Sidebar extends JComponent
 			var sz = overflowMenu.getPopupMenu().getPreferredSize();
 			var sidebarPt = SwingUtilities.convertPoint(sidebarButtons, 0, 0, overflowMenu);
 			return new Point(
-				sidebarPt.x - sz.width,
+				sidebarSide == RuneLiteConfig.SidebarSide.LEFT ? sidebarPt.x + sidebarButtons.getWidth() : sidebarPt.x - sz.width,
 				overflowMenu.getHeight() - sz.height);
 		}
 

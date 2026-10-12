@@ -52,12 +52,13 @@ public class ContainableFrame extends JFrame
 	@Setter
 	private Mode containedInScreen;
 	private boolean rightSideSuction;
+	private boolean leftSideSuction;
 	private boolean scaleMinSize = false;
 	private boolean overrideUndecorated;
 
 	// we must use the deprecated variants since that it what Component ultimately delegates to
 	@SuppressWarnings("deprecation")
-	private void applyChange(int wX, int wY, int wWidth, int wHeight, int wOldx, int wOldY, int wOldWidth, boolean contain)
+	private void applyChange(int wX, int wY, int wWidth, int wHeight, int wOldx, int wOldY, int wOldWidth, boolean contain, boolean expandLeft)
 	{
 		boolean isSnapped = WinUtil.isWindowArranged(this);
 
@@ -66,33 +67,61 @@ public class ContainableFrame extends JFrame
 			Rectangle cDpyBounds = this.getGraphicsConfiguration().getBounds();
 			Insets insets = this.getInsets();
 			Rectangle cRect = new Rectangle(wX + insets.left, wY + insets.top, wWidth - (insets.left + insets.right), wHeight - (insets.top + insets.bottom));
+			int cOldLeft = wOldx + insets.left;
+			int cOldRight = wOldx + wOldWidth - insets.right;
 
-			if (rightSideSuction || isSnapped)
+			if (expandLeft)
 			{
-				// only keep suction while where are near the screen edge
-				rightSideSuction = wOldx + wOldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
+				if (leftSideSuction || isSnapped)
+				{
+					// only keep suction while where are near the screen edge
+					leftSideSuction = cOldLeft - SCREEN_EDGE_CLOSE_DISTANCE <= cDpyBounds.x;
+				}
+
+				if (leftSideSuction && wWidth < wOldWidth)
+				{
+					// shift the window so the left side is near the edge again
+					cRect.x -= wOldWidth - wWidth;
+				}
+
+				if (wWidth > wOldWidth
+					&& cRect.x < cDpyBounds.x
+					&& cOldLeft - SCREEN_EDGE_CLOSE_DISTANCE < cDpyBounds.x
+					&& cOldLeft >= cDpyBounds.x)
+				{
+					// attempt to retain the distance between us and the edge when shifting right
+					cRect.x += wWidth - wOldWidth;
+				}
 			}
-
-			if (rightSideSuction && wWidth < wOldWidth)
+			else
 			{
-				// shift the window so the right side is near the edge again
-				cRect.x += wOldWidth - wWidth;
-			}
+				if (rightSideSuction || isSnapped)
+				{
+					// only keep suction while where are near the screen edge
+					rightSideSuction = cOldRight + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
+				}
 
-			if (wWidth > wOldWidth
-				&& cRect.getMaxX() > cDpyBounds.getMaxX()
-				&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
-				&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) <= cDpyBounds.getMaxX())
-			{
-				// attempt to retain the distance between us and the edge when shifting left
-				cRect.x -= wWidth - wOldWidth;
+				if (rightSideSuction && wWidth < wOldWidth)
+				{
+					// shift the window so the right side is near the edge again
+					cRect.x += wOldWidth - wWidth;
+				}
+
+				if (wWidth > wOldWidth
+					&& cRect.getMaxX() > cDpyBounds.getMaxX()
+					&& cOldRight + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
+					&& cOldRight <= cDpyBounds.getMaxX())
+				{
+					// attempt to retain the distance between us and the edge when shifting left
+					cRect.x -= wWidth - wOldWidth;
+				}
 			}
 
 			cRect.x -= Math.max(0, cRect.getMaxX() - cDpyBounds.getMaxX());
 			cRect.y -= Math.max(0, cRect.getMaxY() - cDpyBounds.getMaxY());
 
 			// if we are just resizing don't try to move the left side out
-			if (cRect.x != wOldx + insets.left)
+			if (cRect.x != cOldLeft)
 			{
 				cRect.x = Math.max(cRect.x, cDpyBounds.x);
 			}
@@ -102,10 +131,18 @@ public class ContainableFrame extends JFrame
 				cRect.y = Math.max(cRect.y, cDpyBounds.y);
 			}
 
-			if (wWidth > wOldWidth && cRect.x < wOldx + insets.left)
+			if (wWidth > wOldWidth)
 			{
-				// we have shifted the window left to avoid the right side going oob
-				rightSideSuction = true;
+				if (expandLeft && cRect.getMaxX() > cOldRight)
+				{
+					// we have shifted the window right to avoid the left side going oob
+					leftSideSuction = true;
+				}
+				else if (!expandLeft && cRect.x < cOldLeft)
+				{
+					// we have shifted the window left to avoid the right side going oob
+					rightSideSuction = true;
+				}
 			}
 
 			wX = cRect.x - insets.left;
@@ -132,12 +169,19 @@ public class ContainableFrame extends JFrame
 	}
 
 	/**
-	 * Adjust the frame's size, containing to the screen if {@code Mode.RESIZING} is set
+	 * Adjust the frame's size, containing to the screen if {@code Mode.RESIZING} is set.
+	 * If {@code expandLeft} is set the right edge of the frame is kept in place instead of the left edge
 	 */
-	public void containedSetSize(Dimension size, Rectangle oldBounds)
+	public void containedSetSize(Dimension size, Rectangle oldBounds, boolean expandLeft)
 	{
+		int x = getX();
+		if (expandLeft)
+		{
+			x -= size.width - oldBounds.width;
+		}
+
 		// accept oldSize from the outside since the min size might have been set, which forces the size to change
-		applyChange(getX(), getY(), size.width, size.height, oldBounds.x, oldBounds.y, oldBounds.width, this.containedInScreen != Mode.NEVER);
+		applyChange(x, getY(), size.width, size.height, oldBounds.x, oldBounds.y, oldBounds.width, this.containedInScreen != Mode.NEVER, expandLeft);
 	}
 
 	/**

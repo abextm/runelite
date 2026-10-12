@@ -146,6 +146,7 @@ public class ClientUI
 	private ClientPanel clientPanel;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
+	private RuneLiteConfig.SidebarSide sidebarSide = RuneLiteConfig.SidebarSide.RIGHT;
 
 	private String lastNormalBounds;
 	private final Timer normalBoundsTimer;
@@ -202,6 +203,9 @@ public class ClientUI
 		{
 			case CONFIG_CLIENT_MAXIMIZED:
 			case CONFIG_CLIENT_BOUNDS:
+				break;
+			case RuneLiteConfig.SIDEBAR_SIDE:
+				SwingUtilities.invokeLater(this::updateSidebar);
 				break;
 			default:
 				SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
@@ -420,6 +424,7 @@ public class ClientUI
 			updateFrameConfig(false);
 
 			sidebar.get().init(withTitleBar);
+			updateSidebar();
 		});
 	}
 
@@ -428,6 +433,12 @@ public class ClientUI
 		content.setBorder((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
 			? null
 			: new MatteBorder(4, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
+	}
+
+	private void updateSidebar()
+	{
+		sidebarSide = config.sidebarSide();
+		sidebar.get().setSide(sidebarSide);
 	}
 
 	public void show()
@@ -1204,15 +1215,23 @@ public class ClientUI
 			content.setPreferredSize(content.getSize());
 			previousContentWidth = width;
 
-			client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
-			sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
+			if (sidebarSide == RuneLiteConfig.SidebarSide.LEFT)
+			{
+				sidebar.setBounds(insets.left, insets.top, sidebarWidth, innerHeight);
+				client.setBounds(insets.left + sidebarWidth, insets.top, clientWidth, innerHeight);
+			}
+			else
+			{
+				client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
+				sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
+			}
 
 			Rectangle oldBounds = frame.getBounds();
 			frame.revalidateMinimumSize();
 			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
 				&& !frame.getPreferredSize().equals(oldBounds.getSize()))
 			{
-				frame.containedSetSize(frame.getPreferredSize(), oldBounds);
+				frame.containedSetSize(frame.getPreferredSize(), oldBounds, sidebarSide == RuneLiteConfig.SidebarSide.LEFT);
 				if (!doingLayout)
 				{
 					try

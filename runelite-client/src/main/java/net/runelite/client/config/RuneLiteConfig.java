@@ -37,6 +37,7 @@ import net.runelite.client.util.OSType;
 public interface RuneLiteConfig extends Config
 {
 	String GROUP_NAME = "runelite";
+	String SIDEBAR_SIDE = "sidebarSide";
 
 	@ConfigSection(
 		name = "Window settings",
@@ -182,6 +183,24 @@ public interface RuneLiteConfig extends Config
 	default boolean usernameInTitle()
 	{
 		return true;
+	}
+
+	enum SidebarSide
+	{
+		RIGHT,
+		LEFT,
+	}
+
+	@ConfigItem(
+		keyName = SIDEBAR_SIDE,
+		name = "Sidebar side",
+		description = "Edge of the window to show plugins.",
+		position = 20,
+		section = windowSettings
+	)
+	default SidebarSide sidebarSide()
+	{
+		return SidebarSide.RIGHT;
 	}
 
 	@ConfigItem(
