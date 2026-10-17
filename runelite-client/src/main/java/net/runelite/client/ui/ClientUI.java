@@ -201,14 +201,18 @@ public class ClientUI
 		var key = event.getKey();
 		switch (key)
 		{
-			case CONFIG_CLIENT_MAXIMIZED:
-			case CONFIG_CLIENT_BOUNDS:
-				break;
 			case RuneLiteConfig.SIDEBAR_SIDE:
 				SwingUtilities.invokeLater(this::updateSidebar);
 				break;
-			default:
-				SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+			case RuneLiteConfig.GAME_SIZE:
+			case RuneLiteConfig.LOCK_WINDOW_SIZE:
+			case RuneLiteConfig.CONTAIN_IN_SCREEN:
+			case RuneLiteConfig.REMEMBER_SCREEN_BOUNDS:
+			case RuneLiteConfig.WINDOW_OPACITY:
+			case RuneLiteConfig.GAME_ALWAYS_ON_TOP:
+			case RuneLiteConfig.USERNAME_IN_TITLE:
+				SwingUtilities.invokeLater(() -> updateFrameConfig(key.equals(RuneLiteConfig.LOCK_WINDOW_SIZE)));
+				break;
 		}
 	}
 

@@ -38,6 +38,13 @@ public interface RuneLiteConfig extends Config
 {
 	String GROUP_NAME = "runelite";
 	String SIDEBAR_SIDE = "sidebarSide";
+	String GAME_SIZE = "gameSize";
+	String LOCK_WINDOW_SIZE = "lockWindowSize";
+	String CONTAIN_IN_SCREEN = "containInScreen2";
+	String REMEMBER_SCREEN_BOUNDS = "rememberScreenBounds";
+	String WINDOW_OPACITY = "uiWindowOpacity";
+	String GAME_ALWAYS_ON_TOP = "gameAlwaysOnTop";
+	String USERNAME_IN_TITLE = "usernameInTitle";
 
 	@ConfigSection(
 		name = "Window settings",
@@ -61,7 +68,7 @@ public interface RuneLiteConfig extends Config
 	String overlaySettings = "overlaySettings";
 
 	@ConfigItem(
-		keyName = "gameSize",
+		keyName = GAME_SIZE,
 		name = "Game size",
 		description = "The game will resize to this resolution upon starting the client.",
 		position = 10,
@@ -85,7 +92,7 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lockWindowSize",
+		keyName = LOCK_WINDOW_SIZE,
 		name = "Lock window size",
 		description = "Determines if the window resizing is allowed or not.",
 		position = 12,
@@ -97,7 +104,7 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "containInScreen2",
+		keyName = CONTAIN_IN_SCREEN,
 		name = "Contain in screen",
 		description = "Makes the client move itself to stay within the screen when resizing.<br>Note: 'Always' only works on Windows and if custom chrome is enabled.",
 		position = 13,
@@ -109,7 +116,7 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rememberScreenBounds",
+		keyName = REMEMBER_SCREEN_BOUNDS,
 		name = "Remember client position",
 		description = "Save the position and size of the client after exiting.",
 		position = 14,
@@ -138,7 +145,7 @@ public interface RuneLiteConfig extends Config
 		max = 100
 	)
 	@ConfigItem(
-		keyName = "uiWindowOpacity",
+		keyName = WINDOW_OPACITY,
 		name = "Window opacity",
 		description = "Set the windows opacity.",
 		position = 16,
@@ -150,7 +157,7 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "gameAlwaysOnTop",
+		keyName = GAME_ALWAYS_ON_TOP,
 		name = "Always on top",
 		description = "The game will always be on the top of the screen.",
 		position = 17,
@@ -174,7 +181,7 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "usernameInTitle",
+		keyName = USERNAME_IN_TITLE,
 		name = "Show display name in title",
 		description = "Toggles displaying of local player's display name in client title.",
 		position = 19,
