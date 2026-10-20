@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -149,46 +148,43 @@ public class PartyService
 
 	public void changeParty(@Nullable String passphrase)
 	{
-		if (wsClient.sessionExists())
+		if (wsClient.isOpen())
 		{
 			wsClient.part();
 			memberId = randomMemberId(); // use a different member id between parties
 		}
 
-		long id = passphrase != null ? passphraseToId(passphrase) : 0;
-
-		log.debug("Party change to {} (id {})", passphrase, id);
 		members.clear();
-		partyId = id;
 		partyPassphrase = passphrase;
 
 		if (passphrase == null)
 		{
-			wsClient.changeSession(null);
-			eventBus.post(new PartyChanged(partyPassphrase, null));
+			partyId = 0;
+			eventBus.post(new PartyChanged(null, null));
 			return;
 		}
 
-		// If there isn't already a session open, open one
-		if (!wsClient.sessionExists())
-		{
-			wsClient.changeSession(UUID.randomUUID());
-		}
+		partyId = passphraseToId(passphrase);
+		log.debug("Party change to {} (id {})", passphrase, partyId);
 
-		wsClient.join(partyId, memberId);
+		wsClient.connect(partyId, memberId);
 		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 	}
 
 	public <T extends PartyMessage> void send(T message)
 	{
+		if (!isInParty())
+		{
+			return;
+		}
+
 		if (!wsClient.isOpen())
 		{
 			log.debug("Reconnecting to server");
 
 			members.clear();
 
-			wsClient.connect();
-			wsClient.join(partyId, memberId);
+			wsClient.connect(partyId, memberId);
 		}
 
 		wsClient.send(message);

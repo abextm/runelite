@@ -29,12 +29,9 @@ import com.google.gson.JsonParseException;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
@@ -60,8 +57,6 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
 
 	private volatile Gson gson;
-	@Getter
-	private UUID sessionId;
 	private WebSocket webSocket;
 
 	@Inject
@@ -73,43 +68,17 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		this.gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
 	}
 
-	public boolean sessionExists()
+	void connect(long partyId, long memberId)
 	{
-		return sessionId != null;
-	}
-
-	public void changeSession(UUID sessionId)
-	{
-		if (Objects.equals(sessionId, this.sessionId))
-		{
-			return;
-		}
-
 		if (webSocket != null)
 		{
-			close();
-			webSocket = null;
-		}
-
-		this.sessionId = sessionId;
-
-		if (sessionId != null)
-		{
-			connect();
-		}
-	}
-
-	void connect()
-	{
-		if (sessionId == null)
-		{
-			throw new IllegalStateException("Cannot connect with no session id");
+			throw new IllegalStateException("Already connected");
 		}
 
 		Request request = new Request.Builder()
-			.url(runeliteWs.newBuilder()
-				.addQueryParameter("sessionId", sessionId.toString())
-				.build())
+			.url(runeliteWs)
+			.header("X-RuneLite-Party", "" + partyId)
+			.header("X-RuneLite-Member", "" + memberId)
 			.header("User-Agent", RuneLite.USER_AGENT)
 			.build();
 
@@ -137,26 +106,9 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 	}
 
-	void join(long partyId, long memberId)
-	{
-		final Party.Join join = Party.Join.newBuilder()
-			.setPartyId(partyId)
-			.setMemberId(memberId)
-			.build();
-		final Party.C2S c2s = Party.C2S.newBuilder()
-			.setJoin(join)
-			.build();
-		send(c2s);
-	}
-
 	void part()
 	{
-		final Party.Part part = Party.Part.newBuilder()
-			.build();
-		final Party.C2S c2s = Party.C2S.newBuilder()
-			.setPart(part)
-			.build();
-		send(c2s);
+		webSocket.close(1000, null);
 	}
 
 	void send(WebsocketMessage message)
@@ -177,8 +129,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	{
 		if (webSocket == null)
 		{
-			log.debug("Reconnecting to server");
-			connect();
+			throw new IllegalStateException("not connected");
 		}
 
 		webSocket.send(ByteString.of(message.toByteArray()));
